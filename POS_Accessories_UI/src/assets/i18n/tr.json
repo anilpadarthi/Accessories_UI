@@ -1,0 +1,75 @@
+{   
+  "WELCOME": "Pazarımıza hoş geldiniz!", 
+  "LOGIN": "Oturum aç", 
+  "LOGOUT": "Çıkış", 
+  "REGISTER": "Kayıt ol",
+  "ACCOUNT": "Hesap", 
+  "COMPARE": "Karşılaştırmak",
+  "WISHLIST": "Dilek listesi",
+  "NAV": {  
+    "HOME": "Ana Sayfa",  
+    "PAGES": "Sayfalar",   
+    "SHOP": "Mağaza",
+    "ALL_PRODUCTS": "Tüm ürünler",
+    "PRODUCT_DETAIL": "Ürün ayrıntısı",
+    "CART": "Sepet",
+    "CHECKOUT": "Ödeme",
+    "FAQS": "Faqs",
+    "PRICING": "Pricing",
+    "TERMS_CONDITIONS": "Şartlar ve Koşullar",
+    "LANDING": "Açılış sayfası", 
+    "404_PAGE": "404 Sayfa",
+    "OTHERS": "Diğerleri",
+    "EXTERNAL_LINK": "Harici Bağlantı",
+    "MENU_ITEM": "Menü",
+    "CONTACT": "İletişim",
+    "ABOUT_US": "Hakkımızda",
+    "ADMIN": "Admin"
+  },
+  "ADMIN_NAV": {  
+    "DASHBOARD": "Kontrol Paneli",  
+    "PRODUCTS": "Ürünler", 
+    "CATEGORIES": "Kategoriler",
+    "PRODUCT_LIST": "Ürün Listesi", 
+    "PRODUCT_DETAIL": "Ürün Detayı",
+    "ADD_PRODUCT": "Ürün Ekle",
+    "SALES": "Satış",
+    "ORDERS": "Emirler",
+    "TRANSACTIONS": "İşlemler",
+    "USERS": "Kullanıcılar", 
+    "CUSTOMERS": "Müşteriler", 
+    "COUPONS": "Kuponlar",
+    "WITHDRAWAL": "Para çekme",
+    "ANALYTICS": "Analitik",
+    "REFUND": "Geri ödeme",
+    "FOLLOWERS": "Takipçiler",
+    "SUPPORT": "Destek",
+    "REVIEWS": "Yorumlar", 
+    "EXTERNAL_LINK": "Harici Bağlantı" 
+  }, 
+  "BTN": {
+    "ADD": "Ekle",
+    "SAVE": "Kaydet",
+    "SUBMIT": "Sunmak",
+    "CANCEL": "İptal",
+    "UPLOAD": "Yükle",
+    "REMOVE": "Kaldırmak",
+    "YES": "Evet",
+    "NO": "Hayır",
+    "OK": "Tamam"
+  },
+  "MESSAGE": {
+    "SURE_DELETE": "Silmek istediğine emin misin?",
+    "FILE_SIZE": "Dosya boyutu {{param}} kb'yi aşamaz."
+  },
+  "FIELD": { 
+    "NAME": "İsim" 
+  }, 
+  "PAGINATION":{
+    "ITEMS_PER_PAGE": "Sayfa başına öğeler:",
+    "NEXT_PAGE": "Sonraki Sayfa",
+    "PREV_PAGE": "Önceki sayfa",
+    "FIRST_PAGE": "İlk sayfa",
+    "LAST_PAGE": "Son Sayfa"
+  }
+}

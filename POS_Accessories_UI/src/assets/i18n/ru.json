@@ -1,0 +1,75 @@
+{  
+  "WELCOME": "Добро пожаловать на наш рынок!", 
+  "LOGIN": "Войти", 
+  "LOGOUT": "Выйти", 
+  "REGISTER": "Регистрация",
+  "ACCOUNT": "Аккаунт", 
+  "COMPARE": "Сравнить",
+  "WISHLIST": "Список желаний",
+  "NAV": {  
+    "HOME": "Главная страница", 
+    "PAGES": "Страницы",   
+    "SHOP": "Магазин",
+    "ALL_PRODUCTS": "Все продукты",
+    "PRODUCT_DETAIL": "Информация о продукте",
+    "CART": "Корзина",
+    "CHECKOUT": "Oформления",
+    "FAQS": "Faqs",
+    "PRICING": "Pricing",
+    "TERMS_CONDITIONS": "Условия и положения",
+    "LANDING": "Целевая страница", 
+    "404_PAGE": "404 страница",
+    "OTHERS": "Другие",
+    "EXTERNAL_LINK": "Ссылка",
+    "MENU_ITEM": "Menu Item",
+    "CONTACT": "Kонтакт",
+    "ABOUT_US": "O нас",
+    "ADMIN": "Aдмин"
+  },
+  "ADMIN_NAV": {  
+    "DASHBOARD": "Приборная панель",  
+    "PRODUCTS": "Продукты", 
+    "CATEGORIES": "Категории",
+    "PRODUCT_LIST": "Список продуктoв", 
+    "PRODUCT_DETAIL": "Детали продуктa",
+    "ADD_PRODUCT": "Добавить продукт",
+    "SALES": "Продажи",
+    "ORDERS": "Заказы",
+    "TRANSACTIONS": "Сделки",
+    "USERS": "Пользователи", 
+    "CUSTOMERS": "Клиенты", 
+    "COUPONS": "Купоны",
+    "WITHDRAWAL": "Вывод средств",
+    "ANALYTICS": "Аналитика",
+    "REFUND": "Возврат",
+    "FOLLOWERS": "Подписчики",
+    "SUPPORT": "Поддержка",
+    "REVIEWS": "Отзывы", 
+    "EXTERNAL_LINK": "Ссылка" 
+  },
+  "BTN": {
+    "ADD": "Добавить",
+    "SAVE": "Сохранить",
+    "SUBMIT": "Отправить",
+    "CANCEL": "Отмена",
+    "UPLOAD": "Загрузить",
+    "REMOVE": "Удалить",
+    "YES": "Да",
+    "NO": "Нет",
+    "OK": "OK"
+  },
+  "MESSAGE": {
+    "SURE_DELETE": "Вы уверены, что хотите удалить?",
+    "FILE_SIZE": "Размер файла не может превышать {{param}} кб."
+  },
+  "FIELD": { 
+    "NAME": "Имя" 
+  }, 
+  "PAGINATION":{
+    "ITEMS_PER_PAGE": "Пункты на странице:",
+    "NEXT_PAGE": "Следующая страница",
+    "PREV_PAGE": "Предыдущая страница",
+    "FIRST_PAGE": "Первая страница",
+    "LAST_PAGE": "Последняя страница"
+  }
+}

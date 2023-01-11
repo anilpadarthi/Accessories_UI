@@ -1,0 +1,75 @@
+{   
+  "WELCOME": "Welcome to our market!", 
+  "LOGIN": "Sign In", 
+  "LOGOUT": "Logout", 
+  "REGISTER": "Register",
+  "ACCOUNT": "Account", 
+  "COMPARE": "Compare",
+  "WISHLIST": "Wishlist", 
+  "NAV": {  
+    "HOME": "Home",  
+    "PAGES": "Pages", 
+    "SHOP": "Shop",
+    "ALL_PRODUCTS": "All products",
+    "PRODUCT_DETAIL": "Product detail",
+    "CART": "Cart",
+    "CHECKOUT": "Checkout",
+    "FAQS": "Faqs",
+    "PRICING": "Pricing",
+    "TERMS_CONDITIONS": "Terms & Conditions",
+    "LANDING": "Landing", 
+    "404_PAGE": "404 Page",
+    "OTHERS": "Others",
+    "EXTERNAL_LINK": "External Link",
+    "MENU_ITEM": "Menu Item",
+    "CONTACT": "Contact",
+    "ABOUT_US": "About Us",
+    "ADMIN": "Admin Panel"
+  },
+  "ADMIN_NAV": {  
+    "DASHBOARD": "Dashboard",  
+    "PRODUCTS": "Products", 
+    "CATEGORIES": "Categories",
+    "PRODUCT_LIST": "Products List", 
+    "PRODUCT_DETAIL": "Product Detail",
+    "ADD_PRODUCT": "Add Product",
+    "SALES": "Sales",
+    "ORDERS": "Orders",
+    "TRANSACTIONS": "Transactions",
+    "USERS": "Users", 
+    "CUSTOMERS": "Customers", 
+    "COUPONS": "Coupons",
+    "WITHDRAWAL": "Withdrawal",
+    "ANALYTICS": "Analytics",
+    "REFUND": "Refund",
+    "FOLLOWERS": "Followers",
+    "SUPPORT": "Support",
+    "REVIEWS": "Reviews", 
+    "EXTERNAL_LINK": "External Link" 
+  },
+  "BTN": {
+    "ADD": "Add",
+    "SAVE": "Save",
+    "SUBMIT": "Submit",
+    "CANCEL": "Cancel",
+    "UPLOAD": "Upload",
+    "REMOVE": "Remove",
+    "YES": "Yes",
+    "NO": "No",
+    "OK": "OK"
+  },
+  "MESSAGE": {
+    "SURE_DELETE": "Are you sure you want to delete?",
+    "FILE_SIZE": "The file size cannot exceed {{param}} kb."
+  },
+  "FIELD": { 
+    "NAME": "Name" 
+  }, 
+  "PAGINATION":{
+    "ITEMS_PER_PAGE": "Items per page:",
+    "NEXT_PAGE": "Next page",
+    "PREV_PAGE": "Previous page",
+    "FIRST_PAGE": "First page",
+    "LAST_PAGE": "Last page"
+  }
+}

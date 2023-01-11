@@ -1,0 +1,75 @@
+{   
+  "WELCOME": "Willkommen auf unserem Markt!", 
+  "LOGIN": "Einloggen", 
+  "LOGOUT": "Ausloggen", 
+  "REGISTER": "Registrieren",
+  "ACCOUNT": "Konto", 
+  "COMPARE": "Vergleichen Sie",
+  "WISHLIST": "Wunschzettel",
+  "NAV": {  
+    "HOME": "Zuhause", 
+    "PAGES": "Seiten",  
+    "SHOP": "Geschäft",
+    "ALL_PRODUCTS": "Alle Produkte",
+    "PRODUCT_DETAIL": "Produktdetail",
+    "CART": "Wagen",
+    "CHECKOUT": "Auschecken",
+    "FAQS": "Faqs",
+    "PRICING": "Pricing",
+    "TERMS_CONDITIONS": "Terms & Conditions",
+    "LANDING": "Landing", 
+    "404_PAGE": "404 Seite",
+    "OTHERS": "Others",
+    "EXTERNAL_LINK": "Externer Link",
+    "MENU_ITEM": "Menu Item",
+    "CONTACT": "Kontakt",
+    "ABOUT_US": "Über",
+    "ADMIN": "Admin"
+  },
+  "ADMIN_NAV": {  
+    "DASHBOARD": "Instrumententafel",  
+    "PRODUCTS": "Produkte", 
+    "CATEGORIES": "Kategorien",
+    "PRODUCT_LIST": "Liste der Produkt", 
+    "PRODUCT_DETAIL": "Produktdetail",
+    "ADD_PRODUCT": "Produkt hinzufügen",
+    "SALES": "Der Umsatz",
+    "ORDERS": "Aufträge",
+    "TRANSACTIONS": "Transaktionen",
+    "USERS": "Benutzer", 
+    "CUSTOMERS": "Kunden", 
+    "COUPONS": "Gutscheine",
+    "WITHDRAWAL": "Rückzug",
+    "ANALYTICS": "Analytik",
+    "REFUND": "Rückerstattung",
+    "FOLLOWERS": "Anhänger",
+    "SUPPORT": "Unterstützung",
+    "REVIEWS": "Bewertungen", 
+    "EXTERNAL_LINK": "Externer Link" 
+  }, 
+  "BTN": {
+    "ADD": "Hinzufügen",
+    "SAVE": "Speichern",
+    "SUBMIT": "Einreichen",
+    "CANCEL": "Stornieren",
+    "UPLOAD": "Hochladen",
+    "REMOVE": "Entfernen",
+    "YES": "Ja",
+    "NO": "Nein",
+    "OK": "in Ordnung"
+  },
+  "MESSAGE": {
+    "SURE_DELETE": "Sind Sie sicher, dass Sie löschen möchten?",
+    "FILE_SIZE": "Die Dateigröße darf {{param}} kb nicht überschreiten."
+  },
+  "FIELD": { 
+    "NAME": "Name" 
+  }, 
+  "PAGINATION":{
+    "ITEMS_PER_PAGE": "Objekte pro seite:",
+    "NEXT_PAGE": "Nächste seite",
+    "PREV_PAGE": "Vorherige seite",
+    "FIRST_PAGE": "Erste seite",
+    "LAST_PAGE": "Letzte seite"
+  } 
+}

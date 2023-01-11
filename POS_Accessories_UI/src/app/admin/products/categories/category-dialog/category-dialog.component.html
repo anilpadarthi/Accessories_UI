@@ -1,0 +1,33 @@
+<h1 mat-dialog-title>Category</h1>
+<form [formGroup]="form" (ngSubmit)="onSubmit()" autocomplete="off">
+    <div mat-dialog-content>
+        <div fxLayout="row wrap">
+            <div fxFlex="100">
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Name</mat-label>
+                    <input matInput formControlName="name" required>
+                    <mat-error *ngIf="form.controls.name.errors?.required">Name is required</mat-error> 
+                </mat-form-field>
+            </div> 
+            <div fxFlex="100">
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Parent category</mat-label>
+                    <mat-select formControlName="parentId">
+                        <mat-option *ngFor="let cat of data.categories" [value]="cat.id">
+                            <span>{{cat.name}}</span>
+                        </mat-option>
+                    </mat-select> 
+                </mat-form-field>
+            </div> 
+            <div fxFlex="100" class="py-1">    
+                <mat-checkbox formControlName="hasSubCategory" color="primary">Has SubCategory</mat-checkbox>
+            </div> 
+        </div>
+    </div>
+    <div mat-dialog-actions>
+        <div fxLayout="row" fxLayoutAlign="space-between center" class="w-100"> 
+            <button mat-raised-button color="warn" type="button" mat-dialog-close>Close</button>
+            <button mat-raised-button color="primary" type="submit">Save</button>
+        </div> 
+    </div>
+</form>

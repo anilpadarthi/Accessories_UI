@@ -1,0 +1,42 @@
+<div class="p-1">
+    <mat-card class="p-0"> 
+        <div fxLayout="row wrap" fxLayoutAlign="space-between center" class="w-100 p-2">
+            <h2>Transactions List</h2>  
+        </div>
+        <mat-divider></mat-divider>
+        <div class="mat-table admin-table">
+            <div class="mat-header-row">
+                <div class="mat-header-cell">OrderId</div>
+                <div class="mat-header-cell">TransactionId</div>
+                <div class="mat-header-cell">Date</div>
+                <div class="mat-header-cell">Payment Method</div>
+                <div class="mat-header-cell">Status</div>
+                <div class="mat-header-cell">Amount</div>
+                <div class="mat-header-cell"></div>
+            </div>
+            <div *ngFor="let tran of transactions | paginate: { itemsPerPage: count, currentPage: page }" class="mat-row">
+                <div class="mat-cell"><span class="order">{{tran.orderId}}</span></div>
+                <div class="mat-cell">{{tran.transactionId}}</div>
+                <div class="mat-cell">{{tran.date}}</div>
+                <div class="mat-cell">{{tran.paymentMethod}}</div>
+                <div class="mat-cell">{{tran.status}}</div>
+                <div class="mat-cell">{{tran.amount}}</div>     
+                <div class="mat-cell">
+                    <div class="p-1 actions">          
+                        <button mat-mini-fab color="primary" matTooltip="View">
+                            <mat-icon>remove_red_eye</mat-icon>
+                        </button> 
+                    </div>
+                </div>      
+            </div>
+        </div>
+    </mat-card>
+
+    <div *ngIf="transactions.length > 0" fxLayout="row wrap">
+        <div fxFlex="100"> 
+            <mat-card class="p-0 text-center">           
+                <pagination-controls class="product-pagination" autoHide="true" maxSize="5" (pageChange)="onPageChanged($event)"></pagination-controls>
+            </mat-card>
+        </div>
+    </div>
+</div>

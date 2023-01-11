@@ -1,0 +1,97 @@
+@import "mixins";
+
+.app[dir="rtl"]{    
+    .mat-icon.caret{
+        width: auto;
+    }
+    .flag-menu-title{
+        margin-left: 0;
+        margin-right: 3px;
+    }
+    .app-dropdown.account .mat-menu-content .user-info img{
+        margin-right: 0;
+        margin-left: 16px;
+    } 
+    .search-form{ 
+        input[type=text]{ 
+            border-left: 0;
+            border-right: 1px solid #ccc;      
+        }
+        .search-btn{
+            margin-left: 0; 
+            margin-right: -20px;
+        }
+    }
+    .swiper-container{
+        direction: ltr;
+    }    
+    .swiper-slide{
+        direction: rtl;
+    }
+    .info-bar .mat-card .content {
+        margin-left: 0;
+        margin-right: 10px;
+    }
+    .footer .contact-information .mat-icon{
+        margin-right: 0;
+        margin-left: 10px;        
+    }
+
+    .cart-items-count{
+        right: 24px;
+        left: auto;
+    }
+    .cart-dropdown.mat-menu-panel .mat-list .mat-list-item .mat-list-item-content img { 
+        margin-left: 0;
+        margin-right: 10px;
+    }
+
+    .ratings-count{
+        margin-left: 0;
+        margin-right: 12px;
+    }
+    .details button { 
+        margin-left: 0;
+        margin-right: 6px;
+    }
+    .pl-3{
+        padding-left: 0;
+        padding-right: 30px;
+    }
+    .all-products.p-left,
+    .account-content.p-left{
+        padding-left: 2px;
+        padding-right: 16px;
+    } 
+    .sub-category button{
+        padding-left: 0;
+        padding-right: 30px;
+    }
+    .sub-category .sub-category button{
+        padding-left: 0;
+        padding-right: 50px;
+    }
+    .orders-table.mat-table .mat-cell .btn-invoice{
+        margin-left: 0;
+        margin-right: 8px;
+    }
+
+    .back-to-top{
+        right: auto;
+        left: 20px;
+    }
+    .ps__rail-y{
+        right: auto !important;
+        left: 0 !important;
+    }
+    .ps__thumb-y{
+        right: auto !important;
+        left: 1px !important;
+    } 
+
+    .menu-expand-icon {
+        right: auto;
+        left: 10px;
+    }
+   
+}

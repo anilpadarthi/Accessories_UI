@@ -1,0 +1,47 @@
+<div class="p-1">
+    <mat-card class="p-0"> 
+        <div fxLayout="row wrap" fxLayoutAlign="space-between center" class="w-100 p-2">
+            <h2>Refund Requests</h2>  
+        </div>
+        <mat-divider></mat-divider>
+        <div class="mat-table admin-table">
+            <div class="mat-header-row"> 
+                <div class="mat-header-cell">Request ID</div>
+                <div class="mat-header-cell">Order ID</div> 
+                <div class="mat-header-cell">Store</div>
+                <div class="mat-header-cell">Amount</div>  
+                <div class="mat-header-cell">Type</div>  
+                <div class="mat-header-cell">Reason</div>  
+                <div class="mat-header-cell">Date</div>
+                <div class="mat-header-cell"></div>
+            </div>
+            <div *ngFor="let item of refunds | paginate: { itemsPerPage: count, currentPage: page }" class="mat-row"> 
+                <div class="mat-cell">{{item.requestId}}</div> 
+                <div class="mat-cell primary-text">{{item.orderId}}</div> 
+                <div class="mat-cell">{{ ( stores | filterById : item.storeId )?.name }}</div> 
+                <div class="mat-cell">${{item.amount.toFixed(2)}}</div> 
+                <div class="mat-cell">{{item.type}}</div> 
+                <div class="mat-cell">{{item.reason}}</div>  
+                <div class="mat-cell">{{item.date | date:"dd MMMM, yyyy 'at' HH:mm"}}</div>     
+                <div class="mat-cell">
+                    <div class="p-1 actions">          
+                        <button mat-mini-fab color="primary" matTooltip="Approve">
+                            <mat-icon>check</mat-icon>
+                        </button>
+                        <button mat-mini-fab color="warn" matTooltip="Reject">
+                            <mat-icon>clear</mat-icon>
+                        </button>
+                    </div>
+                </div>      
+            </div>
+        </div>
+    </mat-card>
+
+    <div *ngIf="refunds.length > 0" fxLayout="row wrap">
+        <div fxFlex="100"> 
+            <mat-card class="p-0 text-center">           
+                <pagination-controls class="product-pagination" autoHide="true" maxSize="5" (pageChange)="onPageChanged($event)"></pagination-controls>
+            </mat-card>
+        </div>
+    </div>
+</div>

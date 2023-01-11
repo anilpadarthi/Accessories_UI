@@ -1,0 +1,53 @@
+<div class="p-1">
+    <mat-card class="p-0"> 
+        <div fxLayout="row wrap" fxLayoutAlign="space-between center" class="w-100 p-2">
+            <h2>Store Reviews</h2>   
+        </div>
+        <mat-divider></mat-divider>
+        <div class="mat-table admin-table">
+            <div class="mat-header-row"> 
+                <div class="mat-header-cell status"></div> 
+                <div class="mat-header-cell image">Image</div>
+                <div class="mat-header-cell">Author</div>
+                <div class="mat-header-cell">Comment</div>
+                <div class="mat-header-cell ratings">Rating</div> 
+                <div class="mat-header-cell">Store</div> 
+                <div class="mat-header-cell">Date</div>
+                <div class="mat-header-cell"></div>
+            </div>
+            <div *ngFor="let review of reviews | paginate: { itemsPerPage: count, currentPage: page }" class="mat-row"> 
+                <div class="mat-cell status">
+                    <mat-icon [color]="(review.statusId == 1) ? 'primary' : 'warn'" [matTooltip]="( statuses | filterById : review.statusId )?.name">{{ (review.statusId == 1) ? 'check_circle' : 'access_time' }}</mat-icon>
+                </div> 
+                <div class="mat-cell image">
+                    <img [src]="review.image" alt="" width="50">
+                </div> 
+                <div class="mat-cell">{{review.author}}</div>
+                <div class="mat-cell">{{review.comment}}</div>
+                <div class="mat-cell ratings">
+                    <app-rating [ratingsCount]="review?.ratingsCount" [ratingsValue]="review?.ratingsValue" [showText]="false" [direction]="'row'"></app-rating>
+                </div> 
+                <div class="mat-cell">{{ ( stores | filterById : review.storeId )?.name }}</div>  
+                <div class="mat-cell">{{review.date | date:"dd MMMM, yyyy 'at' HH:mm"}}</div>     
+                <div class="mat-cell">
+                    <div class="p-1 actions">  
+                        <button *ngIf="review.statusId == 1" mat-mini-fab color="primary" matTooltip="UnApprove" (click)="unApprove(review)">
+                            <mat-icon>undo</mat-icon>
+                        </button>
+                        <button mat-mini-fab color="warn" matTooltip="Delete" class="mx-1" (click)="remove(review)">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </div>
+                </div>      
+            </div>
+        </div>
+    </mat-card>
+
+    <div *ngIf="reviews.length > 0" fxLayout="row wrap">
+        <div fxFlex="100"> 
+            <mat-card class="p-0 text-center">           
+                <pagination-controls class="product-pagination" autoHide="true" maxSize="5" (pageChange)="onPageChanged($event)"></pagination-controls>
+            </mat-card>
+        </div>
+    </div>
+</div>

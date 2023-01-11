@@ -1,0 +1,11 @@
+$blue-primary: mat.define-palette(mat.$blue-palette, 700, 50, 900);
+$blue-accent: mat.define-palette(mat.$grey-palette, 300, 100, 700);
+$blue-warn: mat.define-palette(mat.$red-palette, A200);
+ 
+$blue-theme: mat.define-light-theme((
+    color: (
+        primary: $blue-primary,
+        accent: $blue-accent,
+        warn: $blue-warn,
+    )
+));

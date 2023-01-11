@@ -1,0 +1,41 @@
+<div class="p-1">
+    <mat-card class="p-0"> 
+        <div fxLayout="row wrap" fxLayoutAlign="space-between center" class="w-100 p-2">
+            <h2>Orders List</h2>  
+        </div>
+        <mat-divider></mat-divider>
+        <div class="mat-table admin-table">
+            <div class="mat-header-row">
+                <div class="mat-header-cell">Order</div>
+                <div class="mat-header-cell">Date</div>
+                <div class="mat-header-cell">Status</div>
+                <div class="mat-header-cell">Total</div>
+                <div class="mat-header-cell"></div>
+            </div>
+            <div *ngFor="let order of orders | paginate: { itemsPerPage: count, currentPage: page }" class="mat-row">
+                <div class="mat-cell"><span class="order">{{order.number}}</span></div>
+                <div class="mat-cell">{{order.date}}</div>
+                <div class="mat-cell">{{order.status}}</div>
+                <div class="mat-cell">{{order.total}}</div>     
+                <div class="mat-cell">
+                    <div class="p-1 actions">          
+                        <button mat-mini-fab color="primary" matTooltip="View">
+                            <mat-icon>remove_red_eye</mat-icon>
+                        </button>
+                        <button *ngIf="order.invoice" mat-mini-fab color="warn" matTooltip="View invoice" class="btn-invoice">
+                            <mat-icon>receipt</mat-icon>
+                        </button>
+                    </div>
+                </div>      
+            </div>
+        </div>
+    </mat-card>
+
+    <div *ngIf="orders.length > 0" fxLayout="row wrap">
+        <div fxFlex="100"> 
+            <mat-card class="p-0 text-center">           
+                <pagination-controls class="product-pagination" autoHide="true" maxSize="5" (pageChange)="onPageChanged($event)"></pagination-controls>
+            </mat-card>
+        </div>
+    </div>
+</div>
