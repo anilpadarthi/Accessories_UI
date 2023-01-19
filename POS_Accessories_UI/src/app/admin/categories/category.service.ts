@@ -15,7 +15,7 @@ export class CategoryService {
   public url = environment.url + 'https://localhost:7159/api/Category'; 
 
   getCategoryList(): Observable<Category[]> {
-    return this.http.get<Category[]>(this.url);
+    return this.http.get<Category[]>(this.url+'/GetPagedCategories');
   }
 
    getCategory(id:number): Observable<Category> {

@@ -25,7 +25,6 @@ export class AddCategoryComponent implements OnInit {
     this.sub = this.activatedRoute.params.subscribe(params => {  
       if(params['id']){
         this.categoryId = parseInt(params['id']);
-        // this.form.patchValue(this.categoryId);
         this.getCategoryById(); 
       }  
     }); 

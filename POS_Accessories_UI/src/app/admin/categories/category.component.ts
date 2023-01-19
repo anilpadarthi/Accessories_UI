@@ -39,29 +39,6 @@ export class CategoryComponent implements OnInit {
 
   public openCategoryDialog(data:any) {
     this.router.navigate(['add-category'],{relativeTo:this.activatedRoute}); 
-    // this.router.navigate(['add-category'],{relativeTo:this.activatedRoute}); 
-    // const dialogRef = this.dialog.open(AddCategoryComponent, {
-    //   data: {
-    //     category: data,
-    //     categories: this.categories
-    //   },
-    //   panelClass: ['theme-dialog'],
-    //   autoFocus: false,
-    //   direction: (this.settings.rtl) ? 'rtl' : 'ltr'
-    // });
-    // dialogRef.afterClosed().subscribe(category => { 
-    //   if(category){    
-    //     const index: number = this.categories.findIndex(x => x.id == category.id);
-    //     if(index !== -1){
-    //       this.categories[index] = category;
-    //     } 
-    //     else{ 
-    //       let last_category = this.categories[this.categories.length - 1]; 
-    //       category.id = last_category.id + 1;
-    //       this.categories.push(category);  
-    //     }          
-    //   }
-    // });
   }
 
   public remove(category:any){  
