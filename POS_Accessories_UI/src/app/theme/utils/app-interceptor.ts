@@ -3,16 +3,18 @@ import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpResponse, Htt
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Observable, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
+import { AccountService } from '../../../app/shared/services/account.service';
 
 @Injectable()
 export class AppInterceptor implements HttpInterceptor {
-    constructor( private spinner: NgxSpinnerService) {}
+    constructor( private spinner: NgxSpinnerService,
+      private accountService: AccountService) {}
   
     intercept (req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
         this.spinner.show();
         //TODO: Generate token dynamically
-        const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoie1wiVXNlcklkXCI6MSxcIlVzZXJUeXBlXCI6XCJhZG1pblwiLFwiRW1haWxcIjpcImFkbWluQGdtYWlsLmNvbVwiLFwiVXNlck5hbWVcIjpcImFkbWluXCIsXCJQYXNzd29yZFwiOlwiMTIzNFwifSIsIm5iZiI6MTY3NDEwMDA2NywiZXhwIjoxNjc0MTQzMjY3LCJpYXQiOjE2NzQxMDAwNjcsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0OjcxNTIvIiwiYXVkIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NzE1Mi8ifQ.I1PdjpC4qTnfsYWQWS1IDHJ7C-Y5_wbaeyjzag8faw0";
+        const token = this.accountService.getSession();
         if (token) {
           req = req.clone({
             setHeaders: {

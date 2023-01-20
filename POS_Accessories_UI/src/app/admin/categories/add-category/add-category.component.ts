@@ -65,6 +65,7 @@ export class AddCategoryComponent implements OnInit {
         }
     })
     }
+     
   }
 }
   ngOnDestroy() {

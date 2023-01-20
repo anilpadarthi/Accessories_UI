@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 })
 export class CategoryService {
 
-  constructor(public http:HttpClient) { }
+  constructor(public http: HttpClient) { }
 
   //TODO:Keep the prefix url in environment file.
   public url = environment.url + 'https://localhost:7159/api/Category'; 
@@ -19,18 +19,19 @@ export class CategoryService {
   }
 
    getCategory(id:number): Observable<Category> {
-     return this.http.get<Category>(this.url+'/'+id);
+     return this.http.get<Category>(this.url+'/GetById?id='+id);
    }
 
   addCategory(category:Category){	
-    return this.http.post(this.url, category);
+    return this.http.post(this.url +'/Create', category);
   }
 
   updateCategory(category:Category){
-    return this.http.put(this.url, category);
+    return this.http.put(this.url +'/Update', category);
   }
 
   deleteCategory(id: number) {
-    return this.http.delete(this.url + "/" + id);
-  } 
+    return this.http.delete(this.url + "/Delete" + id);
+  }
+  
 }

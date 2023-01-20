@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators,  FormBuilder, FormControl, FormGroup  } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { emailValidator, matchingPasswords } from '../../theme/utils/app-validators';
+import { AuthService } from './auth.service';
+import { AccountService } from 'src/app/shared/services/account.service';
 
 @Component({
   selector: 'app-sign-in',
@@ -13,12 +15,19 @@ export class SignInComponent implements OnInit {
   loginForm: UntypedFormGroup;
   registerForm: UntypedFormGroup;
 
-  constructor(public formBuilder: UntypedFormBuilder, public router:Router, public snackBar: MatSnackBar) { }
+  constructor(
+    public formBuilder: UntypedFormBuilder, 
+    public router:Router, 
+    public snackBar: MatSnackBar,
+    private fb: FormBuilder,
+      public authService: AuthService,
+      private _jwt: AccountService
+    ) { }
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
       'email': ['', Validators.compose([Validators.required, emailValidator])],
-      'password': ['', Validators.compose([Validators.required, Validators.minLength(6)])] 
+      'password': ['', Validators.compose([Validators.required, Validators.minLength(4)])] 
     });
 
     this.registerForm = this.formBuilder.group({
@@ -31,8 +40,17 @@ export class SignInComponent implements OnInit {
   }
 
   public onLoginFormSubmit(values:Object):void {
+    // if (this.loginForm.valid) {
+    //   this.router.navigate(['/']);
+    // }
     if (this.loginForm.valid) {
-      this.router.navigate(['/']);
+      this.authService.AuthorizeUser(this.loginForm.value.email, this.loginForm.value.password).subscribe((res)=>{
+        if (res.status) {    
+          this._jwt.setSession(res.data.token);
+          this._jwt.setUserInfo(res.data.result);
+          this.router.navigate(['/admin']);
+        }
+      });
     }
   }
 
