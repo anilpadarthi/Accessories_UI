@@ -13,7 +13,6 @@ export class AppInterceptor implements HttpInterceptor {
     intercept (req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
         this.spinner.show();
-        //TODO: Generate token dynamically
         const token = this.accountService.getSession();
         if (token) {
           req = req.clone({
@@ -21,6 +20,9 @@ export class AppInterceptor implements HttpInterceptor {
               Authorization: `Bearer ${token}`,
             },
           });
+        }
+        else{
+          this.router.navigate(['/sign-in']);
         }
 
         return next.handle(req).pipe(map((event: HttpEvent<any>) => {
@@ -33,7 +35,6 @@ export class AppInterceptor implements HttpInterceptor {
             const started = Date.now();            
             const elapsed = Date.now() - started;
             console.log(`Request for ${req.urlWithParams} failed after ${elapsed} ms.`);
-           // debugger;
            this.spinner.hide();
            this.router.navigate(['/error']);
             return throwError(error);
