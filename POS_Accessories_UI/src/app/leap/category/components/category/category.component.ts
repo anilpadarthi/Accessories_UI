@@ -1,12 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Category } from 'src/app/app.models';
-import { AppService } from 'src/app/app.service';
-import { AddCategoryComponent } from './add-category/add-category.component';
+import { Category } from 'src/app/shared/models/category.models';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from 'src/app/shared/confirm-dialog/confirm-dialog.component';
 import { AppSettings, Settings } from 'src/app/app.settings';
 import { Router,ActivatedRoute } from '@angular/router';
-import { CategoryService } from './category.service'
+import { CategoryService } from '../../../../shared/services/category.service'
 
 @Component({
   selector: 'app-category',
@@ -38,7 +36,7 @@ export class CategoryComponent implements OnInit {
   }
 
   public openCategoryDialog(data:any) {
-    this.router.navigate(['add-category'],{relativeTo:this.activatedRoute}); 
+    this.router.navigate(['create'],{relativeTo:this.activatedRoute}); 
   }
 
   public remove(category:any){  

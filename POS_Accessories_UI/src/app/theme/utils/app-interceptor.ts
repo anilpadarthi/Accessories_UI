@@ -4,11 +4,11 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { Observable, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { AccountService } from '../../../app/shared/services/account.service';
-
+import {Router } from '@angular/router'
 @Injectable()
 export class AppInterceptor implements HttpInterceptor {
     constructor( private spinner: NgxSpinnerService,
-      private accountService: AccountService) {}
+      private accountService: AccountService,private router: Router) {}
   
     intercept (req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
@@ -34,6 +34,8 @@ export class AppInterceptor implements HttpInterceptor {
             const elapsed = Date.now() - started;
             console.log(`Request for ${req.urlWithParams} failed after ${elapsed} ms.`);
            // debugger;
+           this.spinner.hide();
+           this.router.navigate(['/error']);
             return throwError(error);
           })
         );

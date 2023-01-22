@@ -47,6 +47,10 @@
     "REVIEWS": "Yorumlar", 
     "EXTERNAL_LINK": "Harici Bağlantı" 
   }, 
+  "LEAP_NAV": {  
+    "DASHBOARD": "Kontrol Paneli",  
+    "CATEGORIES": "Kategoriler"
+  }, 
   "BTN": {
     "ADD": "Ekle",
     "SAVE": "Kaydet",

@@ -48,7 +48,7 @@ export class SignInComponent implements OnInit {
         if (res.status) {    
           this._jwt.setSession(res.data.token);
           this._jwt.setUserInfo(res.data.result);
-          this.router.navigate(['/admin']);
+          this.router.navigate(['/']);
         }
       });
     }

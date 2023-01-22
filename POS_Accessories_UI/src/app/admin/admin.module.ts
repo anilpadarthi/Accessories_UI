@@ -20,7 +20,6 @@ export const routes = [
     path: '', 
     component: AdminComponent, children: [
       { path: '', loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule) }, 
-      { path: 'categories', loadChildren: () => import('./categories/category.module').then(m => m.CategoryModule), data: { breadcrumb: 'Categories' } },
       { path: 'products', loadChildren: () => import('./products/products.module').then(m => m.ProductsModule) },
       { path: 'sales', loadChildren: () => import('./sales/sales.module').then(m => m.SalesModule) },
       { path: 'users', loadChildren: () => import('./users/users.module').then(m => m.UsersModule), data: { breadcrumb: 'Users' } },

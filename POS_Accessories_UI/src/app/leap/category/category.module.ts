@@ -6,13 +6,13 @@ import { SharedModule } from '../../shared/shared.module';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { SwiperModule } from 'ngx-swiper-wrapper';
 import { InputFileModule } from 'ngx-input-file';
-import { CategoryComponent } from './category.component';
-import { AddCategoryComponent } from './add-category/add-category.component';
+import { CategoryComponent } from './components/category/category.component';
+import { AddCategoryComponent } from './components/add-category/add-category.component';
 
 export const routes: Routes = [ 
   { path: '', component: CategoryComponent, pathMatch: 'full' },
-  { path: 'add-category', component: AddCategoryComponent },
-  { path: 'add-category/:id', component: AddCategoryComponent, data: { breadcrumb: 'Edit Product' } }, 
+  { path: 'create', component: AddCategoryComponent },
+  { path: 'edit/:id', component: AddCategoryComponent, data: { breadcrumb: 'Edit Category' } }, 
 ];
 
 @NgModule({

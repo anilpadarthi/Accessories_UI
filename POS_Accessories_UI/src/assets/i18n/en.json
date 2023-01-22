@@ -47,6 +47,11 @@
     "REVIEWS": "Reviews", 
     "EXTERNAL_LINK": "External Link" 
   },
+  "LEAP_NAV": {  
+    "DASHBOARD": "Dashboard",  
+    "CATEGORIES": "Categories",
+    "THEME": "Theme"
+  },
   "BTN": {
     "ADD": "Add",
     "SAVE": "Save",

@@ -47,6 +47,10 @@
     "REVIEWS": "Отзывы", 
     "EXTERNAL_LINK": "Ссылка" 
   },
+  "LEAP_NAV": {  
+    "DASHBOARD": "Приборная панель",  
+    "CATEGORIES": "Категории"
+  },
   "BTN": {
     "ADD": "Добавить",
     "SAVE": "Сохранить",

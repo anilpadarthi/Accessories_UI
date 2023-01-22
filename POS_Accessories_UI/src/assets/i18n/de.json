@@ -47,6 +47,10 @@
     "REVIEWS": "Bewertungen", 
     "EXTERNAL_LINK": "Externer Link" 
   }, 
+  "LEAP_NAV": {  
+    "DASHBOARD": "Instrumententafel",  
+    "CATEGORIES": "Kategorien"
+  }, 
   "BTN": {
     "ADD": "Hinzufügen",
     "SAVE": "Speichern",

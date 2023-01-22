@@ -47,6 +47,10 @@
     "REVIEWS": "Commentaires", 
     "EXTERNAL_LINK": "Lien Externe" 
   },
+  "LEAP_NAV": {  
+    "DASHBOARD": "Tableau de bord",  
+    "CATEGORIES": "Catégories"
+  },
   "BTN": {
     "ADD": "Ajouter",
     "SAVE": "Sauvegarder",

@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router,ActivatedRoute } from '@angular/router';
-import { CategoryService } from '../category.service'
+import { CategoryService } from '../../../../shared/services/category.service'
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
@@ -38,7 +38,7 @@ export class AddCategoryComponent implements OnInit {
    
   public navigateToCateogryList()
   {
-    this.router.navigate(['/admin/categories']); 
+    this.router.navigate(['/category']); 
   }
   public onSubmit(){
     console.log(this.form.value);
@@ -46,17 +46,19 @@ export class AddCategoryComponent implements OnInit {
       if(this.categoryId === 0){
       this.categoryService.addCategory(this.form.value).subscribe({
         next:(res) => {
+          this.navigateToCateogryList();
       this.snackBar.open(res.toString(), '×', { panelClass: 'success', verticalPosition: 'top', duration: 3000 });
         },
         error:(e) =>{
           console.log(e);
-          this.snackBar.open('Unable to update Category', '×', { panelClass: 'error', verticalPosition: 'top', duration: 5000 });
+          this.snackBar.open('Unable to create Category', '×', { panelClass: 'error', verticalPosition: 'top', duration: 5000 });
         }
     })
     }
     else{
       this.categoryService.updateCategory(this.form.value).subscribe({
         next:(res) => {
+          this.navigateToCateogryList();
           this.snackBar.open(res.toString(), '×', { panelClass: 'success', verticalPosition: 'top', duration: 3000 });
         },
         error:(e) =>{
