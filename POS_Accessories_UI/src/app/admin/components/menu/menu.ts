@@ -24,5 +24,6 @@ export const menuItems = [
     new Menu (142, 'Level 3', null, null, 'folder_open', null, true, 141),
     new Menu (143, 'Level 4', null, null, 'folder_open', null, true, 142),
     new Menu (144, 'Level 5', null, '/', 'link', null, false, 143),
-    new Menu (200, 'ADMIN_NAV.EXTERNAL_LINK', null, 'http://themeseason.com', 'open_in_new', '_blank', false, 0)
+    new Menu (200, 'ADMIN_NAV.EXTERNAL_LINK', null, 'http://themeseason.com', 'open_in_new', '_blank', false, 0),
+    new Menu (300, 'ADMIN_NAV.PROJECT','/',null, 'project', null, false, 0)
 ]

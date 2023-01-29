@@ -3,7 +3,8 @@ import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms
 import { Router,ActivatedRoute } from '@angular/router';
 import { CategoryService } from '../../../../shared/services/category.service'
 import { MatSnackBar } from '@angular/material/snack-bar';
-
+import { Response } from 'src/app/shared/models/response';
+import { MessageService } from 'src/app/shared/services/message.service';
 @Component({
   selector: 'app-add-category',
   templateUrl: './add-category.component.html',
@@ -14,7 +15,7 @@ export class AddCategoryComponent implements OnInit {
   private sub: any;
   public categoryId:number=0;
 
-  constructor(public router:Router,public fb: UntypedFormBuilder, private activatedRoute: ActivatedRoute, private categoryService:CategoryService,public snackBar: MatSnackBar) { }
+  constructor(public router:Router,public fb: UntypedFormBuilder, private activatedRoute: ActivatedRoute, private categoryService:CategoryService,public snackBar: MatSnackBar,private messageService:MessageService) { }
 
   ngOnInit(): void { 
     this.form = this.fb.group({
@@ -45,25 +46,36 @@ export class AddCategoryComponent implements OnInit {
     if(this.form.valid){
       if(this.categoryId === 0){
       this.categoryService.addCategory(this.form.value).subscribe({
-        next:(res) => {
+        next:(res:Response) => {
+          if(res.status){
           this.navigateToCateogryList();
-      this.snackBar.open(res.toString(), '×', { panelClass: 'success', verticalPosition: 'top', duration: 3000 });
+          this.messageService.showSuccess(res.data);
+          }
+          else{
+            this.messageService.showError(res.data);
+          }
         },
         error:(e) =>{
           console.log(e);
-          this.snackBar.open('Unable to create Category', '×', { panelClass: 'error', verticalPosition: 'top', duration: 5000 });
+          this.messageService.showError('Unable to create Category');
         }
     })
     }
     else{
       this.categoryService.updateCategory(this.form.value).subscribe({
-        next:(res) => {
+        next:(res:Response) => {
+          if(res.status){
+            debugger;
           this.navigateToCateogryList();
-          this.snackBar.open(res.toString(), '×', { panelClass: 'success', verticalPosition: 'top', duration: 3000 });
+          this.messageService.showSuccess(res.message);
+          }
+          else{
+            this.messageService.showError(res.message);
+          }
         },
         error:(e) =>{
           console.log(e);
-          this.snackBar.open('Unable to update Category', '×', { panelClass: 'error', verticalPosition: 'top', duration: 5000 });
+          this.messageService.showError('Unable to update Category');
         }
     })
     }

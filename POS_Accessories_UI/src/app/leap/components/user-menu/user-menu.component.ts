@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { AccountService } from 'src/app/shared/services/account.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-menu',
@@ -7,9 +9,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UserMenuComponent implements OnInit {
   public userImage = 'assets/images/others/admin.jpg';
-  constructor() { }
+  constructor(public accountService:AccountService,public router:Router) { }
 
   ngOnInit(): void {
+  }
+
+  signOut(){
+    this.accountService.logout();
+    this.router.navigate(['/sign-in']);
   }
 
 }

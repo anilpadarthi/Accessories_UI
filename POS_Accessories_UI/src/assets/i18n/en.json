@@ -45,7 +45,8 @@
     "FOLLOWERS": "Followers",
     "SUPPORT": "Support",
     "REVIEWS": "Reviews", 
-    "EXTERNAL_LINK": "External Link" 
+    "EXTERNAL_LINK": "External Link",
+    "PROJECT":"Project"
   },
   "LEAP_NAV": {  
     "DASHBOARD": "Dashboard",  
