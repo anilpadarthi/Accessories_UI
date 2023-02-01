@@ -13,6 +13,9 @@ import { menuScrollStrategy } from './theme/utils/scroll-strategy';
 import { environment } from 'src/environments/environment';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader'; 
+import { FormsModule } from '@angular/forms';
+
+
 export function HttpLoaderFactory(httpClient: HttpClient) { 
   return new TranslateHttpLoader(httpClient, environment.url +'/assets/i18n/', '.json');
 }
@@ -41,6 +44,7 @@ import { AccountService } from './shared/services/account.service';
     BrowserAnimationsModule,
     HttpClientModule,
     NgxSpinnerModule,
+    FormsModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyAO7Mg2Cs1qzo_3jkKkZAKY6jtwIlm41-I'
     }),
@@ -52,7 +56,7 @@ import { AccountService } from './shared/services/account.service';
       }
     }),
     SharedModule,
-    AppRoutingModule
+    AppRoutingModule    
   ],
   declarations: [
     AppComponent,

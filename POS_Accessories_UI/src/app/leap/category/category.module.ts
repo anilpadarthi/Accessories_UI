@@ -8,6 +8,7 @@ import { SwiperModule } from 'ngx-swiper-wrapper';
 import { InputFileModule } from 'ngx-input-file';
 import { CategoryComponent } from './components/category/category.component';
 import { AddCategoryComponent } from './components/add-category/add-category.component';
+import { FormsModule } from '@angular/forms';
 
 export const routes: Routes = [ 
   { path: '', component: CategoryComponent, pathMatch: 'full' },
@@ -27,7 +28,8 @@ export const routes: Routes = [
     SharedModule,
     NgxPaginationModule,
     SwiperModule,
-    InputFileModule
+    InputFileModule,
+    FormsModule
   ]
 })
 export class CategoryModule { }

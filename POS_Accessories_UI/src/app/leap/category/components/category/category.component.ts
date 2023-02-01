@@ -1,10 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Category } from 'src/app/shared/models/category';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from 'src/app/shared/confirm-dialog/confirm-dialog.component';
 import { AppSettings, Settings } from 'src/app/app.settings';
-import { Router,ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { CategoryService } from '../../../../shared/services/category.service'
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { PaginatorConstants } from 'src/app/shared/models/paginator-constants';
 
 @Component({
   selector: 'app-category',
@@ -12,56 +16,90 @@ import { CategoryService } from '../../../../shared/services/category.service'
   styleUrls: ['./category.component.scss']
 })
 export class CategoryComponent implements OnInit {
-  public categories:Category[] = []; 
+
   public page: any;
   public count = 6;
-  public settings:Settings;
-  constructor(public router:Router, public activatedRoute:ActivatedRoute, public dialog: MatDialog, public appSettings:AppSettings,private categoryService:CategoryService) {
+  public settings: Settings;
+  searchText!: string | null;
+  displayedColumns = ['Id', 'Name', 'Actions'];
+  bogusDataSource = new MatTableDataSource<any>();
+  pageEvent: PageEvent | undefined;
+  tableDataSource: any[] = [];
+  pageSize = PaginatorConstants.STANDARD_PAGE_SIZE;
+  pageOptions = PaginatorConstants.LEAP_STANDARD_PAGE_OPTIONS;
+  pageIndex = 1;
+  totalCount!: number;
+
+  constructor(public router: Router, public activatedRoute: ActivatedRoute, public dialog: MatDialog, public appSettings: AppSettings, private categoryService: CategoryService) {
     this.settings = this.appSettings.settings;
   }
 
-  ngOnInit(): void {
-    this.getCategories();
+  async ngOnInit(): Promise<void> {
+    await this.loadData();
   }
 
-  public getCategories(){   
-    this.categoryService.getCategoryList().subscribe(data => {
-      this.categories = data; 
-    }); 
+  async loadData(): Promise<void> {
+    const request = {
+      pageNo: this.pageIndex,
+      pageSize: this.pageSize,
+      searchText: this.searchText
+    };
+
+    this.categoryService.getAll(request).subscribe((res) => {
+      this.tableDataSource = res.data.results;
+      this.totalCount = res.data.totalRecords;
+    });
   }
 
-  public onPageChanged(event){
-    this.page = event; 
-    window.scrollTo(0,0); 
+  handlePageEvent(event: PageEvent): void {
+    this.pageEvent = event;
+    this.pageIndex = event.pageIndex + 1;
+    this.pageSize = event.pageSize;
+    this.loadData();
   }
 
-  public openCategoryDialog(data:any) {
-    this.router.navigate(['create'],{relativeTo:this.activatedRoute}); 
+  search(): void {
+    this.pageIndex = 1;
+    this.loadData();
   }
 
-  public remove(category:any){  
+  async onReset(): Promise<void> {
+    this.pageIndex = 1;
+    this.searchText = null;
+    await this.loadData();
+  }
+
+  public openCategoryDialog(data: any): void {
+    this.router.navigate(['create'], { relativeTo: this.activatedRoute });
+  }
+
+  edit(id: any): void {
+    this.router.navigateByUrl(`/category/edit/${id}`);
+  }
+
+  public remove(category: any): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       maxWidth: "400px",
       data: {
         title: "Confirm Action",
         message: "Are you sure you want remove this category?"
       }
-    }); 
-    dialogRef.afterClosed().subscribe(dialogResult => { 
-      if(dialogResult){
-        const index: number = this.categories.indexOf(category);
+    });
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      if (dialogResult) {
+        const index: number = this.tableDataSource.indexOf(category);
         if (index !== -1) {
           this.categoryService.deleteCategory(category.categoryId).subscribe({
-            next:(res) => {
+            next: (res) => {
               console.log(res);
             },
-            error:(e) =>{
+            error: (e) => {
               console.log(e);
             }
-        })
-          this.categories.splice(index, 1);  
-        } 
-      } 
-    }); 
+          })
+          this.loadData();
+        }
+      }
+    });
   }
 }

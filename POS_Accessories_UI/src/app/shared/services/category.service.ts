@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Category } from 'src/app/shared/models/category';
-import { environment } from 'src/environments/environment'; 
+import { Response } from 'src/app/shared/models/response';
+import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -9,28 +10,34 @@ import { Observable } from 'rxjs';
 })
 export class CategoryService {
 
-  constructor(public http:HttpClient) { }
+  constructor(public http: HttpClient) { }
 
   //TODO:Keep the prefix url in environment file.
-  public url = environment.url + 'https://localhost:7159/api/Category'; 
+  public url = environment.url + 'https://localhost:7159/api/Category';
 
-  getCategoryList(): Observable<Category[]> {
-    return this.http.get<Category[]>(this.url+'/GetPagedCategories');
+  getCategoryList(): Observable<any> {
+    return this.http.get<any>(this.url + '/GetByPaging');
   }
 
-   getCategory(id:number): Observable<Category> {
-     return this.http.get<Category>(this.url+'/'+id);
-   }
-
-  addCategory(category:Category){	
-    return this.http.post(this.url, category);
+  getAll(requestBody: any): Observable<any> {
+    return this.http.post<any>(this.url + '/GetByPaging', requestBody);
   }
 
-  updateCategory(category:Category){
-    return this.http.put(this.url, category);
+
+
+  getCategory(id: number): Observable<Response> {
+    return this.http.get<Response>(this.url + '/' + id);
   }
 
-  deleteCategory(id: number) {
-    return this.http.delete(this.url + "/" + id);
-  } 
+  addCategory(category: Category): Observable<Response> {
+    return this.http.post<Response>(this.url, category);
+  }
+
+  updateCategory(category: Category): Observable<Response> {
+    return this.http.put<Response>(this.url, category);
+  }
+
+  deleteCategory(id: number): Observable<Response> {
+    return this.http.delete<Response>(this.url + "/" + id);
+  }
 }
