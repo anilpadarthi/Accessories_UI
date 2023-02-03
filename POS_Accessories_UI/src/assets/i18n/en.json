@@ -53,6 +53,9 @@
     "PRODUCTS":"Product",
     "CATEGORIES": "Categories",
     "SUBCATEGORIES":"Sub Category",
+    "ORDERS":"Orders",
+    "COUPON":"Coupon",
+    "CONFIGURATION":"Configuration",
     "THEME": "Theme"
   },
   "BTN": {
