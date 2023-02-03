@@ -50,7 +50,9 @@
   },
   "LEAP_NAV": {  
     "DASHBOARD": "Dashboard",  
+    "PRODUCTS":"Product",
     "CATEGORIES": "Categories",
+    "SUBCATEGORIES":"Sub Category",
     "THEME": "Theme"
   },
   "BTN": {

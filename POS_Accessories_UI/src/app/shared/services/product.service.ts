@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Category } from 'src/app/shared/models/category';
+import { Product } from 'src/app/shared/models/product';
 import { Response } from 'src/app/shared/models/response';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
@@ -8,14 +8,14 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class CategoryService {
+export class ProductService {
 
   constructor(public http: HttpClient) { }
 
   //TODO:Keep the prefix url in environment file.
-  public url = environment.url + 'https://localhost:7159/api/Category';
+  public url = environment.url + 'https://localhost:7159/api/Product';
 
-  getCategoryList(): Observable<any> {
+  getProductList(): Observable<any> {
     return this.http.get<any>(this.url + '/GetByPaging');
   }
 
@@ -23,19 +23,21 @@ export class CategoryService {
     return this.http.post<any>(this.url + '/GetByPaging', requestBody);
   }
 
-  getCategory(id: number): Observable<Response> {
+
+
+  getProduct(id: number): Observable<Response> {
     return this.http.get<Response>(this.url + '/' + id);
   }
 
-  addCategory(category: Category): Observable<Response> {
-    return this.http.post<Response>(this.url, category);
+  addProduct(product: Product): Observable<Response> {
+    return this.http.post<Response>(this.url, product);
   }
 
-  updateCategory(category: Category): Observable<Response> {
-    return this.http.put<Response>(this.url, category);
+  updateProduct(product: Product): Observable<Response> {
+    return this.http.put<Response>(this.url, product);
   }
 
-  deleteCategory(category: Category): Observable<Response> {
-    return this.http.put<Response>(this.url + "/UpdateStatus",category);
+  deleteProduct(id: number): Observable<Response> {
+    return this.http.delete<Response>(this.url + "/" + id);
   }
 }

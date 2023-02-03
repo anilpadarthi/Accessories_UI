@@ -1,22 +1,21 @@
-import { Component, OnInit, Input,ChangeDetectorRef } from '@angular/core';
-import { Category } from 'src/app/shared/models/category';
+import { Component, OnInit, Input } from '@angular/core';
+import { Product } from 'src/app/shared/models/product';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from 'src/app/shared/confirm-dialog/confirm-dialog.component';
 import { AppSettings, Settings } from 'src/app/app.settings';
 import { Router, ActivatedRoute } from '@angular/router';
-import { CategoryService } from '../../../../shared/services/category.service'
+import { ProductService } from '../../../../shared/services/product.service'
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { PaginatorConstants } from 'src/app/shared/models/paginator-constants';
-import { MessageService } from 'src/app/shared/services/message.service';
 
 @Component({
-  selector: 'app-category',
-  templateUrl: './category.component.html',
-  styleUrls: ['./category.component.scss']
+  selector: 'app-product',
+  templateUrl: './product.component.html',
+  styleUrls: ['./product.component.scss']
 })
-export class CategoryComponent implements OnInit {
+export class ProductComponent implements OnInit {
 
   public page: any;
   public count = 6;
@@ -31,7 +30,7 @@ export class CategoryComponent implements OnInit {
   pageIndex = 1;
   totalCount!: number;
 
-  constructor(public changeDetectorRefs: ChangeDetectorRef,public router: Router, public activatedRoute: ActivatedRoute, public dialog: MatDialog, public appSettings: AppSettings, private categoryService: CategoryService,private messageService: MessageService) {
+  constructor(public router: Router, public activatedRoute: ActivatedRoute, public dialog: MatDialog, public appSettings: AppSettings, private productService: ProductService) {
     this.settings = this.appSettings.settings;
   }
 
@@ -46,7 +45,7 @@ export class CategoryComponent implements OnInit {
       searchText: this.searchText
     };
 
-    this.categoryService.getAll(request).subscribe((res) => {
+    this.productService.getAll(request).subscribe((res) => {
       this.tableDataSource = res.data.results;
       this.totalCount = res.data.totalRecords;
     });
@@ -70,42 +69,35 @@ export class CategoryComponent implements OnInit {
     await this.loadData();
   }
 
-  public openCategoryDialog(data: any): void {
+  public openProductDialog(data: any): void {
     this.router.navigate(['create'], { relativeTo: this.activatedRoute });
   }
 
   edit(id: any): void {
-    this.router.navigateByUrl(`/category/edit/${id}`);
+    this.router.navigateByUrl(`/product/edit/${id}`);
   }
 
-  public remove(category: any): void {
+  public remove(product: any): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       maxWidth: "400px",
       data: {
         title: "Confirm Action",
-        message: "Are you sure you want remove this category?"
+        message: "Are you sure you want remove this product?"
       }
     });
     dialogRef.afterClosed().subscribe(dialogResult => {
       if (dialogResult) {
-        const index: number = this.tableDataSource.indexOf(category);
+        const index: number = this.tableDataSource.indexOf(product);
         if (index !== -1) {
-          category.status="D";
-          this.categoryService.deleteCategory(category).subscribe({
+          this.productService.deleteProduct(product.productId).subscribe({
             next: (res) => {
-              if (res.status) {   
-                this.loadData();
-                this.messageService.showSuccess(res.data); 
-              }
-              else {
-                this.messageService.showError(res.data);
-              }
+              console.log(res);
             },
             error: (e) => {
               console.log(e);
-              this.messageService.showError('Unable to delete Category');
             }
           })
+          this.loadData();
         }
       }
     });

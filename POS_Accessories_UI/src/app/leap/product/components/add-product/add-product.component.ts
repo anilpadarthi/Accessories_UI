@@ -7,12 +7,12 @@ import { Response } from 'src/app/shared/models/response';
 import { MessageService } from 'src/app/shared/services/message.service';
 
 @Component({
-  selector: 'app-add-category',
-  templateUrl: './add-category.component.html',
-  styleUrls: ['./add-category.component.scss']
+  selector: 'app-add-product',
+  templateUrl: './add-product.component.html',
+  styleUrls: ['./add-product.component.scss']
 })
 
-export class AddCategoryComponent implements OnInit {
+export class AddProductComponent implements OnInit {
   public form: UntypedFormGroup;
   private sub: any;
   public categoryId: number = 0;
@@ -44,6 +44,7 @@ export class AddCategoryComponent implements OnInit {
     this.router.navigate(['/category']);
   }
   public onSubmit() {
+    console.log(this.form.value);
     if (this.form.valid) {
       if (this.categoryId === 0) {
         this.categoryService.addCategory(this.form.value).subscribe({
@@ -67,10 +68,10 @@ export class AddCategoryComponent implements OnInit {
           next: (res: Response) => {
             if (res.status) {
               this.navigateToCateogryList();
-              this.messageService.showSuccess(res.data);
+              this.messageService.showSuccess(res.message);
             }
             else {
-              this.messageService.showError(res.data);
+              this.messageService.showError(res.message);
             }
           },
           error: (e) => {
