@@ -1,53 +1,62 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { CategoryService } from '../../../../shared/services/category.service'
+import { ProductService } from '../../../../shared/services/product.service'
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Response } from 'src/app/shared/models/response';
 import { MessageService } from 'src/app/shared/services/message.service';
 
 @Component({
-  selector: 'app-add-product',
-  templateUrl: './add-product.component.html',
-  styleUrls: ['./add-product.component.scss']
+  selector: 'app-product-detail',
+  templateUrl: './product-detail.component.html',
+  styleUrls: ['./product-detail.component.scss']
 })
 
-export class AddProductComponent implements OnInit {
+export class ProductDetailComponent implements OnInit {
   public form: UntypedFormGroup;
   private sub: any;
-  public categoryId: number = 0;
+  public productId: number = 0;
 
-  constructor(public router: Router, public fb: UntypedFormBuilder, private activatedRoute: ActivatedRoute, private categoryService: CategoryService, public snackBar: MatSnackBar, private messageService: MessageService) { }
+  constructor(public router: Router, public fb: UntypedFormBuilder, private activatedRoute: ActivatedRoute, private productService: ProductService, public snackBar: MatSnackBar, private messageService: MessageService) { }
 
   ngOnInit(): void {
     this.form = this.fb.group({
-      'categoryId': 0,
-      'categoryName': [null, Validators.required],
-      'images': null
+      'productId': 0,
+      'productName': [null, Validators.required],
+      'productCode': [null, Validators.required],
+      'images': null,
+      'isNewArrival':false,
+      'isBundle':false,
+      'isVatEnabled':false,
+      'categoryId':null,
+      'subCategoryId':null,
+      'colours': [[]],
+      'sizes':[[]]
+
     });
 
     this.sub = this.activatedRoute.params.subscribe(params => {
       if (params['id']) {
-        this.categoryId = parseInt(params['id']);
-        this.getCategoryById();
+        this.productId = parseInt(params['id']);
+        this.getProductById();
       }
     });
   }
 
-  public getCategoryById() {
-    this.categoryService.getCategory(this.categoryId).subscribe((res: any) => {
+  public getProductById() {
+    this.productService.getProduct(this.productId).subscribe((res: any) => {
       this.form.patchValue(res.data);
     });
   }
 
   public navigateToCateogryList() {
-    this.router.navigate(['/category']);
+    this.router.navigate(['/product']);
   }
   public onSubmit() {
     console.log(this.form.value);
     if (this.form.valid) {
-      if (this.categoryId === 0) {
-        this.categoryService.addCategory(this.form.value).subscribe({
+      if (this.productId === 0) {
+        this.productService.addProduct(this.form.value).subscribe({
           next: (res: Response) => {
             if (res.status) {
               this.navigateToCateogryList();
@@ -59,12 +68,12 @@ export class AddProductComponent implements OnInit {
           },
           error: (e) => {
             console.log(e);
-            this.messageService.showError('Unable to create Category');
+            this.messageService.showError('Unable to create Product');
           }
         })
       }
       else {
-        this.categoryService.updateCategory(this.form.value).subscribe({
+        this.productService.updateProduct(this.form.value).subscribe({
           next: (res: Response) => {
             if (res.status) {
               this.navigateToCateogryList();
@@ -76,7 +85,7 @@ export class AddProductComponent implements OnInit {
           },
           error: (e) => {
             console.log(e);
-            this.messageService.showError('Unable to update Category');
+            this.messageService.showError('Unable to update Product');
           }
         })
       }

@@ -6,20 +6,24 @@ import { SharedModule } from '../../shared/shared.module';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { SwiperModule } from 'ngx-swiper-wrapper';
 import { InputFileModule } from 'ngx-input-file';
-import { ProductComponent } from './components/product/product.component';
-import { AddProductComponent } from './components/add-product/add-product.component';
+import { ProductListComponent } from './components/product-list/product-list.component';
+import { ProductDetailComponent } from './components/product-detail/product-detail.component';
 import { FormsModule } from '@angular/forms';
+import { ProductImageComponent } from './components/product-image/product-image.component';
+import { ProductPricingComponent } from './components/product-pricing/product-pricing.component';
 
 export const routes: Routes = [ 
-  { path: '', component: ProductComponent, pathMatch: 'full' },
-  { path: 'create', component: AddProductComponent },
-  { path: 'edit/:id', component: AddProductComponent, data: { breadcrumb: 'Edit Product' } }, 
+  { path: '', component: ProductListComponent, pathMatch: 'full' },
+  { path: 'create', component: ProductDetailComponent },
+  { path: 'edit/:id', component: ProductDetailComponent, data: { breadcrumb: 'Edit Product' } }, 
 ];
 
 @NgModule({
   declarations: [
-    ProductComponent,
-    AddProductComponent
+    ProductListComponent,
+    ProductDetailComponent,
+    ProductImageComponent,
+    ProductPricingComponent
   ],
   imports: [
     CommonModule,

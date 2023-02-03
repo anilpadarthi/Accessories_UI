@@ -1,0 +1,101 @@
+<div class="p-1">
+    <mat-card>
+<mat-card-header>
+    <mat-card-title>{{(productId) ? 'Edit' : 'Add New'}} Product</mat-card-title>
+</mat-card-header>
+<mat-card-content>
+<form [formGroup]="form" (ngSubmit)="onSubmit()" autocomplete="off" fxLayout="row wrap">
+    <div fxLayout="row wrap" class="mt-2">
+        <div fxFlex="100" fxFlex.gt-md="50" class="px-1">
+            <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Name</mat-label>
+                <input matInput formControlName="productName" required>
+                <mat-error *ngIf="form.controls.productName.errors?.required">Name is required</mat-error>   
+            </mat-form-field>
+        </div> 
+        <div fxFlex="100" fxFlex.gt-md="50" class="px-1">
+            <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Code</mat-label>
+                <input matInput formControlName="productCode" required>
+                <mat-error *ngIf="form.controls.productCode.errors?.required">Code is required</mat-error>
+            </mat-form-field>
+        </div> 
+        <div fxFlex="100" fxFlex.gt-md="50" class="px-1">
+            <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Category</mat-label>
+                <mat-select formControlName="categoryId">
+                    <mat-option [value]="">-</mat-option>
+                    <!-- <mat-option *ngFor="let type of data.discountTypes" [value]="type.id">
+                        <span>{{type.name}}</span>
+                    </mat-option> -->
+                </mat-select> 
+            </mat-form-field>
+        </div>
+        <div fxFlex="100" fxFlex.gt-md="50" class="px-1">
+            <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Sub-Category</mat-label>
+                <mat-select formControlName="subCategoryId">
+                    <mat-option [value]="">-</mat-option>
+                    <!-- <mat-option *ngFor="let type of data.discountTypes" [value]="type.id">
+                        <span>{{type.name}}</span>
+                    </mat-option> -->
+                </mat-select> 
+            </mat-form-field>
+        </div>
+        <div fxFlex="100" fxFlex.gt-md="50" class="px-1">
+            <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Colour</mat-label>
+                <mat-select formControlName="colours" multiple> 
+                    <!-- <mat-option *ngFor="let cat of data.categories" [value]="cat.id">
+                        <span>{{cat.name}}</span>
+                    </mat-option> -->
+                </mat-select>
+            </mat-form-field>
+        </div>  
+        <div fxFlex="100" fxFlex.gt-md="50" class="px-1">
+            <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Size</mat-label>
+                <mat-select formControlName="sizes" multiple> 
+                    <!-- <mat-option *ngFor="let cat of data.categories" [value]="cat.id">
+                        <span>{{cat.name}}</span>
+                    </mat-option> -->
+                </mat-select>
+            </mat-form-field>
+        </div> 
+        <div fxFlex="100" fxFlex.gt-md="19" class="px-1">
+            <div class="py-1">
+                <mat-checkbox formControlName="isNewArrival" color="primary"> 
+                    <div fxLayout="row" fxLayoutAlign="start center">
+                        <span class="mr-1">New Arrival</span>
+                    </div>
+                </mat-checkbox> 
+            </div>
+        </div>
+        <div fxFlex="100" fxFlex.gt-md="19" class="px-1">
+            <div class="py-1">
+                <mat-checkbox formControlName="isBundle" color="primary"> 
+                    <div fxLayout="row" fxLayoutAlign="start center">
+                        <span class="mr-1">Bundle</span>
+                    </div>
+                </mat-checkbox> 
+            </div>
+        </div>
+        <div fxFlex="100" fxFlex.gt-md="19" class="px-1">
+            <div class="py-1">
+                <mat-checkbox formControlName="isVatEnabled" color="primary"> 
+                    <div fxLayout="row" fxLayoutAlign="start center">
+                        <span class="mr-1">Vat Enabled</span>
+                    </div>
+                </mat-checkbox> 
+            </div>
+        </div> 
+    </div>  
+    <div fxLayout="row" fxLayoutAlign="space-between center" class="w-100"> 
+        <button mat-raised-button color="warn" type="button" (click)="navigateToCateogryList()">Cancel</button>
+        <button mat-raised-button color="primary" type="submit">Submit</button>
+    </div>
+
+</form>
+</mat-card-content>
+</mat-card>
+</div>
