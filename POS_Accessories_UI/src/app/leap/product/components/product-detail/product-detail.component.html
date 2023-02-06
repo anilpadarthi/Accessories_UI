@@ -23,11 +23,11 @@
         <div fxFlex="100" fxFlex.gt-md="50" class="px-1">
             <mat-form-field appearance="outline" class="w-100">
                 <mat-label>Category</mat-label>
-                <mat-select formControlName="categoryId">
+                <mat-select formControlName="categoryId" (selectionChange)="onCategorySelectionChange($event)">
                     <mat-option [value]="">-</mat-option>
-                    <!-- <mat-option *ngFor="let type of data.discountTypes" [value]="type.id">
-                        <span>{{type.name}}</span>
-                    </mat-option> -->
+                    <mat-option *ngFor="let category of categories" [value]="category.id">
+                        <span>{{category.name}}</span>
+                    </mat-option>
                 </mat-select> 
             </mat-form-field>
         </div>
@@ -36,9 +36,9 @@
                 <mat-label>Sub-Category</mat-label>
                 <mat-select formControlName="subCategoryId">
                     <mat-option [value]="">-</mat-option>
-                    <!-- <mat-option *ngFor="let type of data.discountTypes" [value]="type.id">
-                        <span>{{type.name}}</span>
-                    </mat-option> -->
+                    <mat-option *ngFor="let subCategory of subCategories" [value]="subCategory.id">
+                        <span>{{subCategory.name}}</span>
+                    </mat-option>
                 </mat-select> 
             </mat-form-field>
         </div>
@@ -46,9 +46,9 @@
             <mat-form-field appearance="outline" class="w-100">
                 <mat-label>Colour</mat-label>
                 <mat-select formControlName="colours" multiple> 
-                    <!-- <mat-option *ngFor="let cat of data.categories" [value]="cat.id">
-                        <span>{{cat.name}}</span>
-                    </mat-option> -->
+                    <mat-option *ngFor="let colour of colours" [value]="colour.id">
+                        <span>{{colour.name}}</span>
+                    </mat-option>
                 </mat-select>
             </mat-form-field>
         </div>  
@@ -56,9 +56,9 @@
             <mat-form-field appearance="outline" class="w-100">
                 <mat-label>Size</mat-label>
                 <mat-select formControlName="sizes" multiple> 
-                    <!-- <mat-option *ngFor="let cat of data.categories" [value]="cat.id">
-                        <span>{{cat.name}}</span>
-                    </mat-option> -->
+                    <mat-option *ngFor="let size of sizes" [value]="size.id">
+                        <span>{{size.name}}</span>
+                    </mat-option>
                 </mat-select>
             </mat-form-field>
         </div> 
@@ -89,7 +89,21 @@
                 </mat-checkbox> 
             </div>
         </div> 
+        <div fxFlex="100" fxFlex.gt-md="50" class="px-1">
+            <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Description</mat-label>
+                <textarea matInput formControlName="description"></textarea>
+            </mat-form-field>
+        </div> 
+        <div fxFlex="100" fxFlex.gt-md="50" class="px-1">
+            <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Specification</mat-label>
+                <textarea matInput formControlName="specification"></textarea>
+            </mat-form-field>
+        </div> 
     </div>  
+    <app-product-image></app-product-image>
+    <app-product-pricing></app-product-pricing>
     <div fxLayout="row" fxLayoutAlign="space-between center" class="w-100"> 
         <button mat-raised-button color="warn" type="button" (click)="navigateToCateogryList()">Cancel</button>
         <button mat-raised-button color="primary" type="submit">Submit</button>

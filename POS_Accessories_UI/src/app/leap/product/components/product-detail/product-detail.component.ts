@@ -5,6 +5,7 @@ import { ProductService } from '../../../../shared/services/product.service'
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Response } from 'src/app/shared/models/response';
 import { MessageService } from 'src/app/shared/services/message.service';
+import { LookupService } from 'src/app/shared/services/lookup.service';
 
 @Component({
   selector: 'app-product-detail',
@@ -16,8 +17,11 @@ export class ProductDetailComponent implements OnInit {
   public form: UntypedFormGroup;
   private sub: any;
   public productId: number = 0;
-
-  constructor(public router: Router, public fb: UntypedFormBuilder, private activatedRoute: ActivatedRoute, private productService: ProductService, public snackBar: MatSnackBar, private messageService: MessageService) { }
+  public categories :[];
+  public subCategories :[];
+  public sizes:[];
+  public colours:[]
+  constructor(public router: Router, public fb: UntypedFormBuilder, private activatedRoute: ActivatedRoute, private productService: ProductService, public snackBar: MatSnackBar, private messageService: MessageService,private lookupService:LookupService) { }
 
   ngOnInit(): void {
     this.form = this.fb.group({
@@ -30,9 +34,10 @@ export class ProductDetailComponent implements OnInit {
       'isVatEnabled':false,
       'categoryId':null,
       'subCategoryId':null,
+      'description': null,
+      'specification':null, 
       'colours': [[]],
       'sizes':[[]]
-
     });
 
     this.sub = this.activatedRoute.params.subscribe(params => {
@@ -40,6 +45,33 @@ export class ProductDetailComponent implements OnInit {
         this.productId = parseInt(params['id']);
         this.getProductById();
       }
+    });
+    this.getCategories();
+    this.getColours();
+    this.getSizes();
+  }
+
+  getCategories(){
+    this.lookupService.getCategories().subscribe(res => {
+      this.categories = res.data;
+    });
+  }
+
+  getSubCategories(categoryId:number){
+    this.lookupService.getSubCategories(categoryId).subscribe(res => {
+      this.subCategories = res.data;
+    });
+  }
+
+  getColours(){
+    this.lookupService.getColours().subscribe(res => {
+      this.colours = res.data;
+    });
+  }
+
+  getSizes(){
+    this.lookupService.getSizes().subscribe(res => {
+      this.sizes = res.data;
     });
   }
 
@@ -92,6 +124,12 @@ export class ProductDetailComponent implements OnInit {
 
     }
   }
+
+  public onCategorySelectionChange(event:any){  
+    if(event.value){
+      this.getSubCategories(event.value);
+    } 
+  }  
   ngOnDestroy() {
     this.sub.unsubscribe();
   }
