@@ -1,19 +1,10 @@
 <div class="p-1">
     <mat-card class="p-0">
         <div fxLayout="row wrap" fxLayoutAlign="space-between center" class="w-100 p-2">
-            <h2>Sub Category List</h2>
+            <h2>Configuration List</h2>
         </div>
         <div class="filter-controls">
             <div class="row wrap">
-                <mat-form-field appearance="outline">
-                    <mat-label>Category</mat-label>
-                    <mat-select [(ngModel)]="categoryId" (selectionChange)="onCategoryChange()">
-                        <mat-option [value]="null">All</mat-option>
-                        <mat-option *ngFor="let category of categories" [value]="category.id">
-                            <span>{{category.name}}</span>
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
                 <mat-form-field appearance="outline" class="input-field">
                     <mat-label>Search By Name</mat-label>
                     <input matInput placeholder="Search By Name" [(ngModel)]="searchText" autocomplete="off">
@@ -25,8 +16,8 @@
                     <mat-icon>search</mat-icon> search
                 </button>
 
-                <button mat-raised-button color="primary" (click)="openSubCategoryDialog(null)">
-                    <mat-icon>add</mat-icon> Add Sub Category</button>
+                <button mat-raised-button color="primary" (click)="openCategoryDialog(null)">
+                    <mat-icon>add</mat-icon> Add Configuration</button>
             </div>
         </div>
 
@@ -35,11 +26,18 @@
                 <ng-container matColumnDef="Id">
                     <mat-header-cell *matHeaderCellDef> Id </mat-header-cell>
                 </ng-container>
-
-                <ng-container matColumnDef="Name">
-                    <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+                <ng-container matColumnDef="ConfigurationType">
+                    <mat-header-cell *matHeaderCellDef> Configuration Type </mat-header-cell>
                 </ng-container>
-
+                <ng-container matColumnDef="Amount">
+                    <mat-header-cell *matHeaderCellDef> Amount </mat-header-cell>
+                </ng-container>
+                <ng-container matColumnDef="FromDate">
+                    <mat-header-cell *matHeaderCellDef> From Date </mat-header-cell>
+                </ng-container>
+                <ng-container matColumnDef="ToDate">
+                    <mat-header-cell *matHeaderCellDef> To Date </mat-header-cell>
+                </ng-container>
                 <ng-container matColumnDef="Status">
                     <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
                 </ng-container>
@@ -51,14 +49,27 @@
                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                 <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
             </mat-table>
+
             <div class="example-container">
                 <mat-table #table [dataSource]="tableDataSource">
                     <ng-container matColumnDef="Id">
-                        <mat-cell *matCellDef="let element"> {{ element.subCategoryId }} </mat-cell>
+                        <mat-cell *matCellDef="let element"> {{ element.ConfigId }} </mat-cell>
                     </ng-container>
 
-                    <ng-container matColumnDef="Name">
-                        <mat-cell *matCellDef="let element"> {{ element.subCategoryName }} </mat-cell>
+                    <ng-container matColumnDef="ConfigurationType">
+                        <mat-cell *matCellDef="let element"> {{ element.ConfigurationTypeId }} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Amount">
+                        <mat-cell *matCellDef="let element"> {{ element.Amount }} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="FromDate">
+                        <mat-cell *matCellDef="let element"> {{ element.FromDate }} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="ToDate">
+                        <mat-cell *matCellDef="let element"> {{ element.ToDate }} </mat-cell>
                     </ng-container>
 
                     <ng-container matColumnDef="Status">
@@ -71,7 +82,7 @@
                     <ng-container matColumnDef="Actions">
                         <mat-cell *matCellDef="let element">
                             <button mat-icon-button matTooltip="Click to Edit" class="iconbutton" color="primary"
-                                (click)="edit(element.subCategoryId)">
+                                (click)="edit(element.categoryId)">
                                 <mat-icon>edit</mat-icon>
                             </button>
                             <button mat-icon-button matTooltip="Click to Delete" class="iconbutton"
@@ -96,5 +107,4 @@
         </div>
         <div style="height: 0px;"><br></div>
     </mat-card>
-
 </div>

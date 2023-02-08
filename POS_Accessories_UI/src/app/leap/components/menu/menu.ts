@@ -8,5 +8,6 @@ export const menuItems = [
     new Menu (50, 'LEAP_NAV.ORDERS', '/order', null, 'list_alt', null, false, 0),  
     new Menu (60, 'LEAP_NAV.COUPON', '/coupon', null, 'card_giftcard', null, false, 0),  
     new Menu (70, 'LEAP_NAV.CONFIGURATION', '/configuration', null, 'settings', null, false, 0),  
+    new Menu (70, 'LEAP_NAV.Accountability', '/accountability', null, 'inventory', null, false, 0),  
     new Menu (80, 'LEAP_NAV.THEME', '/admin', null, 'admin', null, false, 0),  
 ]

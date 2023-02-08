@@ -35,7 +35,7 @@ export class SubCategoryService {
     return this.http.put<Response>(this.url, subCategory);
   }
 
-  deleteSubCategory(id: number): Observable<Response> {
-    return this.http.delete<Response>(this.url + "/" + id);
+  deleteSubCategory(subCategory: SubCategory): Observable<Response> {
+    return this.http.put<Response>(this.url + "/UpdateStatus", subCategory);
   }
 }

@@ -1,27 +1,40 @@
 <div class="p-1">
     <mat-card>
-<mat-card-header>
-    <mat-card-title>{{(categoryId) ? 'Edit' : 'Add New'}} Category</mat-card-title>
-</mat-card-header>
-<mat-card-content>
-<form [formGroup]="form" (ngSubmit)="onSubmit()" autocomplete="off" fxLayout="row wrap">
-            <div fxFlex="100">
-                <mat-form-field appearance="outline" class="w-100">
-                    <mat-label>Name</mat-label>
-                    <input matInput formControlName="categoryName" required>
-                    <mat-error *ngIf="form.controls.categoryName.errors?.required">Name is required</mat-error> 
-                </mat-form-field>
-            </div>
-            <div fxFlex="40" class="p-2"> 
-                <p class="mt-1"><span class="uppercase fw-500">Image</span></p>  
-                <input-file formControlName="images" fileLimit="1" fileAccept="image/*"></input-file>  
-            </div>
-        <div fxLayout="row" fxLayoutAlign="space-between center" class="w-100"> 
-            <button mat-raised-button color="warn" type="button" (click)="navigateToCateogryList()">Cancel</button>
-            <button mat-raised-button color="primary" type="submit">Submit</button>
-        </div>
+        <mat-card-header>
+            <mat-card-title class="header-title">{{(subCategoryId) ? 'Edit' : 'Add New'}} Sub-Category</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <form [formGroup]="form" (ngSubmit)="onSubmit()" autocomplete="off" fxLayout="row wrap">
+                <div fxFlex="100">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Category</mat-label>
+                        <mat-select formControlName="categoryId">
+                            <mat-option [value]="null">All</mat-option>
+                            <mat-option *ngFor="let category of categories" [value]="category.id">
+                                <span>{{category.name}}</span>
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
 
-</form>
-</mat-card-content>
-</mat-card>
+                <div fxFlex="100">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Sub-Category Name</mat-label>
+                        <input matInput formControlName="subCategoryName" required>
+                        <mat-error *ngIf="form.controls.subCategoryName.errors?.required">Name is required</mat-error>
+                    </mat-form-field>
+                </div>
+                <div fxFlex="40" class="p-2">
+                    <p class="mt-1"><span class="uppercase fw-500">Image</span></p>
+                    <input-file formControlName="images" fileLimit="1" fileAccept="image/*"></input-file>
+                </div>
+                <div fxLayout="row" class="w-100">
+                    <button mat-raised-button color="warn" type="button"
+                        (click)="navigateToCateogryList()">Cancel</button>
+                    <button mat-raised-button color="primary" type="submit">Submit</button>
+                </div>
+
+            </form>
+        </mat-card-content>
+    </mat-card>
 </div>

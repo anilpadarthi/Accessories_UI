@@ -30,4 +30,8 @@ export class LookupService {
   getSizes(): Observable<any> {
     return this.http.get<any>(this.url+'Sizes');
   }
+
+  getConfigurationTypes(): Observable<any> {
+    return this.http.get<any>(this.url+'ConfigurationTypes');
+  }
 }

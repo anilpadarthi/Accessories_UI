@@ -1,0 +1,48 @@
+<div class="p-1">
+    <mat-card>
+<mat-card-header>
+    <mat-card-title>{{(couponId) ? 'Edit' : 'Add New'}} Coupon</mat-card-title>
+</mat-card-header>
+<mat-card-content>
+<form [formGroup]="form" (ngSubmit)="onSubmit()" autocomplete="off" fxLayout="row wrap">
+            <div fxFlex="100">
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Code</mat-label>
+                    <input matInput formControlName="couponCode" required>
+                    <mat-error *ngIf="form.controls.couponCode.errors?.required">Code is required</mat-error> 
+                </mat-form-field>
+            </div>
+            <div fxFlex="100">
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Description</mat-label>
+                    <input matInput formControlName="description" required>
+                    <mat-error *ngIf="form.controls.description.errors?.required">Description is required</mat-error> 
+                </mat-form-field>
+            </div>
+            <div fxFlex="100">
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Valid From</mat-label>
+                    <input matInput formControlName="validFrom" required>
+                    <mat-error *ngIf="form.controls.validFrom.errors?.required">Valid From is required</mat-error> 
+                </mat-form-field>
+            </div>
+            <div fxFlex="100">
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Valid To</mat-label>
+                    <input matInput formControlName="validTo" required>
+                    <mat-error *ngIf="form.controls.validTo.errors?.required">Valid TO is required</mat-error> 
+                </mat-form-field>
+            </div>
+            <div fxFlex="40" class="p-2"> 
+                <p class="mt-1"><span class="uppercase fw-500">Image</span></p>  
+                <input-file formControlName="images" fileLimit="1" fileAccept="image/*"></input-file>  
+            </div>
+        <div fxLayout="row" fxLayoutAlign="space-between center" class="w-100"> 
+            <button mat-raised-button color="warn" type="button" (click)="navigateToListPage()">Cancel</button>
+            <button mat-raised-button color="primary" type="submit">Submit</button>
+        </div>
+
+</form>
+</mat-card-content>
+</mat-card>
+</div>

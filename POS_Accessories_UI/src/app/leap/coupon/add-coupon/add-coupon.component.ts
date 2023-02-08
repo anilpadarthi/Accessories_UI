@@ -1,76 +1,68 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { SubCategoryService } from '../../../../shared/services/subCategory.service';
+import { CouponService } from 'src/app/shared/services/coupon.service'
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Response } from 'src/app/shared/models/response';
 import { MessageService } from 'src/app/shared/services/message.service';
-import { LookupService } from 'src/app/shared/services/lookup.service';
 
 @Component({
-  selector: 'app-add-sub-category',
-  templateUrl: './add-sub-category.component.html',
-  styleUrls: ['./add-sub-category.component.scss']
+  selector: 'app-add-coupon',
+  templateUrl: './add-coupon.component.html',
+  styleUrls: ['./add-coupon.component.scss']
 })
+export class AddCouponComponent implements OnInit {
 
-export class AddSubCategoryComponent implements OnInit {
   public form: UntypedFormGroup;
   private sub: any;
-  subCategoryId: number = 0;
-  categories: any[];
+  couponId = 0;
 
   constructor(
     public router: Router,
     public fb: UntypedFormBuilder,
     private activatedRoute: ActivatedRoute,
-    private subCategoryService: SubCategoryService,
+    private couponService: CouponService,
     public snackBar: MatSnackBar,
-    private lookupService: LookupService,
     private messageService: MessageService
   ) { }
 
   ngOnInit(): void {
+
     this.form = this.fb.group({
-      'categoryId': null,
-      'subCategoryId': 0,
-      'subCategoryName': [null, Validators.required],
+      'couponId': 0,
+      'couponCode': [null, Validators.required],
+      'description': [null, Validators.required],
+      'validFrom': [null, Validators.required],
+      'validTo': [null, Validators.required],
       'images': null
     });
 
     this.sub = this.activatedRoute.params.subscribe(params => {
       if (params['id']) {
-        this.subCategoryId = parseInt(params['id']);
-        this.loadData();
+        this.couponId = parseInt(params['id']);
+        this.getById();
       }
     });
-    this.getCategoryLookup();
+
   }
 
-  public loadData() {
-    this.subCategoryService.getSubCategory(this.subCategoryId).subscribe((res: any) => {
+  getById(): void {
+    this.couponService.getById(this.couponId).subscribe((res: any) => {
       this.form.patchValue(res.data);
     });
   }
 
-  getCategoryLookup() {
-    this.lookupService.getCategories().subscribe(res => {
-      this.categories = res.data;
-    });
+  navigateToListPage(): void {
+    this.router.navigate(['/coupon']);
   }
 
-  public navigateToCateogryList() {
-    this.router.navigate(['/sub-category']);
-  }
-
-
-  public onSubmit() {
-    console.log(this.form.value);
+  onSubmit(): void {
     if (this.form.valid) {
-      if (this.subCategoryId === 0) {
-        this.subCategoryService.addSubCategory(this.form.value).subscribe({
+      if (this.couponId === 0) {
+        this.couponService.create(this.form.value).subscribe({
           next: (res: Response) => {
             if (res.status) {
-              this.navigateToCateogryList();
+              this.navigateToListPage();
               this.messageService.showSuccess(res.data);
             }
             else {
@@ -79,15 +71,15 @@ export class AddSubCategoryComponent implements OnInit {
           },
           error: (e) => {
             console.log(e);
-            this.messageService.showError('Unable to create Category');
+            this.messageService.showError('Unable to create coupon');
           }
         })
       }
       else {
-        this.subCategoryService.updateSubCategory(this.form.value).subscribe({
+        this.couponService.update(this.form.value).subscribe({
           next: (res: Response) => {
             if (res.status) {
-              this.navigateToCateogryList();
+              this.navigateToListPage();
               this.messageService.showSuccess(res.data);
             }
             else {
@@ -96,13 +88,13 @@ export class AddSubCategoryComponent implements OnInit {
           },
           error: (e) => {
             console.log(e);
-            this.messageService.showError('Unable to update Category');
+            this.messageService.showError('Unable to update coupon');
           }
         })
       }
-
     }
   }
+
   ngOnDestroy() {
     this.sub.unsubscribe();
   }

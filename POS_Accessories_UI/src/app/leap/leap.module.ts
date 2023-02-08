@@ -24,6 +24,10 @@ export const routes = [
       { path: 'category', loadChildren: () => import('./category/category.module').then(m => m.CategoryModule), data: { breadcrumb: 'Categories' } },
       { path: 'product', loadChildren: () => import('./product/product.module').then(m => m.ProductModule) },
       { path: 'sub-category', loadChildren: () => import('./sub-category/sub-category.module').then(m => m.SubCategoryModule) },
+      { path: 'coupon', loadChildren: () => import('./coupon/coupon.module').then(m => m.CouponModule) },
+      { path: 'configuration', loadChildren: () => import('./configuration/configuration.module').then(m => m.ConfigurationModule) },
+      { path: 'order', loadChildren: () => import('./order/order.module').then(m => m.OrderModule) },
+      { path: 'accountability', loadChildren: () => import('./accountability/accountability.module').then(m => m.AccountabilityModule) },
     ]
   },
   { path: 'error', component: ErrorComponent}

@@ -1,12 +1,10 @@
-import { Component, OnInit, Input,ChangeDetectorRef } from '@angular/core';
-import { Category } from 'src/app/shared/models/category';
+import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from 'src/app/shared/confirm-dialog/confirm-dialog.component';
 import { AppSettings, Settings } from 'src/app/app.settings';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CategoryService } from '../../../../shared/services/category.service'
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
+import { PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { PaginatorConstants } from 'src/app/shared/models/paginator-constants';
 import { MessageService } from 'src/app/shared/services/message.service';
@@ -18,11 +16,9 @@ import { MessageService } from 'src/app/shared/services/message.service';
 })
 export class CategoryComponent implements OnInit {
 
-  public page: any;
-  public count = 6;
   public settings: Settings;
   searchText!: string | null;
-  displayedColumns = ['Id', 'Name', 'Actions'];
+  displayedColumns = ['Id', 'Name', 'Status', 'Actions'];
   bogusDataSource = new MatTableDataSource<any>();
   pageEvent: PageEvent | undefined;
   tableDataSource: any[] = [];
@@ -31,15 +27,23 @@ export class CategoryComponent implements OnInit {
   pageIndex = 1;
   totalCount!: number;
 
-  constructor(public changeDetectorRefs: ChangeDetectorRef,public router: Router, public activatedRoute: ActivatedRoute, public dialog: MatDialog, public appSettings: AppSettings, private categoryService: CategoryService,private messageService: MessageService) {
+  constructor(
+    public changeDetectorRefs: ChangeDetectorRef,
+    public router: Router,
+    public activatedRoute: ActivatedRoute,
+    public dialog: MatDialog,
+    public appSettings: AppSettings,
+    private categoryService: CategoryService,
+    private messageService: MessageService
+  ) {
     this.settings = this.appSettings.settings;
   }
 
   async ngOnInit(): Promise<void> {
-    await this.loadData();
+    this.loadData();
   }
 
-  async loadData(): Promise<void> {
+  loadData(): void {
     const request = {
       pageNo: this.pageIndex,
       pageSize: this.pageSize,
@@ -64,10 +68,10 @@ export class CategoryComponent implements OnInit {
     this.loadData();
   }
 
-  async onReset(): Promise<void> {
+  onReset(): void {
     this.pageIndex = 1;
     this.searchText = null;
-    await this.loadData();
+    this.loadData();
   }
 
   public openCategoryDialog(data: any): void {
@@ -78,11 +82,16 @@ export class CategoryComponent implements OnInit {
     this.router.navigateByUrl(`/category/edit/${id}`);
   }
 
+  updateStatus(element) {
+    element.status = !element.status;
+
+  }
+
   public remove(category: any): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       maxWidth: "400px",
       data: {
-        title: "Confirm Action",
+        title: "Confirm",
         message: "Are you sure you want remove this category?"
       }
     });
@@ -90,12 +99,12 @@ export class CategoryComponent implements OnInit {
       if (dialogResult) {
         const index: number = this.tableDataSource.indexOf(category);
         if (index !== -1) {
-          category.status="D";
+          category.status = "D";
           this.categoryService.deleteCategory(category).subscribe({
             next: (res) => {
-              if (res.status) {   
+              if (res.status) {
                 this.loadData();
-                this.messageService.showSuccess(res.data); 
+                this.messageService.showSuccess("Deleted successfully.");
               }
               else {
                 this.messageService.showError(res.data);

@@ -18,9 +18,11 @@
     margin-right: 1em;
   }
 }
+
 .results {
-  margin: 0px 15px 75px 15px;
+  margin: 0px 15px 15px 15px;
 }
+
 .example-container {
   display: flex;
   flex-direction: column;
@@ -36,4 +38,9 @@
 .zero-results {
   text-align: center;
   color: red;
+  margin: 1em;
+  font-weight: bold;
+  font-size: 16px;
 }
+
+

@@ -1,29 +1,29 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { SubCategoryService } from '../../../../shared/services/subCategory.service';
+import { ConfigurationService } from 'src/app/shared/services/configuration.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Response } from 'src/app/shared/models/response';
 import { MessageService } from 'src/app/shared/services/message.service';
 import { LookupService } from 'src/app/shared/services/lookup.service';
 
 @Component({
-  selector: 'app-add-sub-category',
-  templateUrl: './add-sub-category.component.html',
-  styleUrls: ['./add-sub-category.component.scss']
+  selector: 'app-add-configuration',
+  templateUrl: './add-configuration.component.html',
+  styleUrls: ['./add-configuration.component.scss']
 })
 
-export class AddSubCategoryComponent implements OnInit {
+export class AddConfigurationComponent implements OnInit {
   public form: UntypedFormGroup;
   private sub: any;
-  subCategoryId: number = 0;
-  categories: any[];
+  configurationId: number = 0;
+  configurationTypes: any[];
 
   constructor(
     public router: Router,
     public fb: UntypedFormBuilder,
     private activatedRoute: ActivatedRoute,
-    private subCategoryService: SubCategoryService,
+    private configurationService: ConfigurationService,
     public snackBar: MatSnackBar,
     private lookupService: LookupService,
     private messageService: MessageService
@@ -31,46 +31,47 @@ export class AddSubCategoryComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = this.fb.group({
-      'categoryId': null,
-      'subCategoryId': 0,
-      'subCategoryName': [null, Validators.required],
-      'images': null
+      'configurationId': 0,
+      'configurationTypeId': 0,
+      'amount': [0, Validators.required],
+      'fromDate': [null, Validators.required],
+      'toDate': null
     });
 
     this.sub = this.activatedRoute.params.subscribe(params => {
       if (params['id']) {
-        this.subCategoryId = parseInt(params['id']);
+        this.configurationId = parseInt(params['id']);
         this.loadData();
       }
     });
-    this.getCategoryLookup();
+    this.getConfigurationTypesLookup();
   }
 
   public loadData() {
-    this.subCategoryService.getSubCategory(this.subCategoryId).subscribe((res: any) => {
+    this.configurationService.getById(this.configurationId).subscribe((res: any) => {
       this.form.patchValue(res.data);
     });
   }
 
-  getCategoryLookup() {
-    this.lookupService.getCategories().subscribe(res => {
-      this.categories = res.data;
+  getConfigurationTypesLookup() {
+    this.lookupService.getConfigurationTypes().subscribe(res => {
+      this.configurationTypes = res.data;
     });
   }
 
-  public navigateToCateogryList() {
-    this.router.navigate(['/sub-category']);
+  public navigateToListPage() {
+    this.router.navigate(['/configuration']);
   }
 
 
   public onSubmit() {
     console.log(this.form.value);
     if (this.form.valid) {
-      if (this.subCategoryId === 0) {
-        this.subCategoryService.addSubCategory(this.form.value).subscribe({
+      if (this.configurationId === 0) {
+        this.configurationService.create(this.form.value).subscribe({
           next: (res: Response) => {
             if (res.status) {
-              this.navigateToCateogryList();
+              this.navigateToListPage();
               this.messageService.showSuccess(res.data);
             }
             else {
@@ -79,15 +80,15 @@ export class AddSubCategoryComponent implements OnInit {
           },
           error: (e) => {
             console.log(e);
-            this.messageService.showError('Unable to create Category');
+            this.messageService.showError('Unable to create Configuration');
           }
         })
       }
       else {
-        this.subCategoryService.updateSubCategory(this.form.value).subscribe({
+        this.configurationService.update(this.form.value).subscribe({
           next: (res: Response) => {
             if (res.status) {
-              this.navigateToCateogryList();
+              this.navigateToListPage();
               this.messageService.showSuccess(res.data);
             }
             else {
@@ -96,7 +97,7 @@ export class AddSubCategoryComponent implements OnInit {
           },
           error: (e) => {
             console.log(e);
-            this.messageService.showError('Unable to update Category');
+            this.messageService.showError('Unable to update Configuration');
           }
         })
       }
@@ -108,3 +109,4 @@ export class AddSubCategoryComponent implements OnInit {
   }
 
 }
+

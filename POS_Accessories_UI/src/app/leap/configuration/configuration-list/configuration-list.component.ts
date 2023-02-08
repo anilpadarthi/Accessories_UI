@@ -1,71 +1,56 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from 'src/app/shared/confirm-dialog/confirm-dialog.component';
 import { AppSettings, Settings } from 'src/app/app.settings';
 import { Router, ActivatedRoute } from '@angular/router';
-import { SubCategoryService } from '../../../../shared/services/subCategory.service'
+import { ConfigurationService } from 'src/app/shared/services/configuration.service'
+import { PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { PaginatorConstants } from 'src/app/shared/models/paginator-constants';
-import { PageEvent } from '@angular/material/paginator';
-import { LookupService } from 'src/app/shared/services/lookup.service';
 import { MessageService } from 'src/app/shared/services/message.service';
 
 @Component({
-  selector: 'app-sub-category',
-  templateUrl: './sub-category.component.html',
-  styleUrls: ['./sub-category.component.scss']
+  selector: 'app-configuration-list',
+  templateUrl: './configuration-list.component.html',
+  styleUrls: ['./configuration-list.component.scss']
 })
-export class SubCategoryComponent implements OnInit {
+export class ConfigurationListComponent implements OnInit {
 
   public settings: Settings;
   searchText!: string | null;
-  categoryId!: number | null;
-  displayedColumns = ['Id', 'Name', 'Status', 'Actions'];
+  displayedColumns = ['Id', 'ConfigurationType', 'Amount', 'FromDate', 'ToDate', 'Status', 'Actions'];
   bogusDataSource = new MatTableDataSource<any>();
+  pageEvent: PageEvent | undefined;
   tableDataSource: any[] = [];
   pageSize = PaginatorConstants.STANDARD_PAGE_SIZE;
   pageOptions = PaginatorConstants.LEAP_STANDARD_PAGE_OPTIONS;
-  pageEvent: PageEvent | undefined;
   pageIndex = 1;
   totalCount!: number;
-  categories: any[];
 
   constructor(
+    public changeDetectorRefs: ChangeDetectorRef,
     public router: Router,
     public activatedRoute: ActivatedRoute,
     public dialog: MatDialog,
     public appSettings: AppSettings,
-    private subCategroyService: SubCategoryService,
-    private lookupService: LookupService,
+    private configurationService: ConfigurationService,
     private messageService: MessageService
   ) {
     this.settings = this.appSettings.settings;
   }
 
   async ngOnInit(): Promise<void> {
-    await this.loadData();
-    this.getCategoryLookup();
-  }
-
-  getCategoryLookup() {
-    this.lookupService.getCategories().subscribe(res => {
-      this.categories = res.data;
-    });
-  }
-
-  onCategoryChange() {
     this.loadData();
   }
 
-  async loadData(): Promise<void> {
+  loadData(): void {
     const request = {
       pageNo: this.pageIndex,
       pageSize: this.pageSize,
-      searchText: this.searchText,
-      categoryId: this.categoryId
+      searchText: this.searchText
     };
 
-    this.subCategroyService.getAll(request).subscribe((res) => {
+    this.configurationService.getByPaging(request).subscribe((res) => {
       this.tableDataSource = res.data.results;
       this.totalCount = res.data.totalRecords;
     });
@@ -83,19 +68,18 @@ export class SubCategoryComponent implements OnInit {
     this.loadData();
   }
 
-  async onReset(): Promise<void> {
+  onReset(): void {
     this.pageIndex = 1;
     this.searchText = null;
-    this.categoryId = null;
-    await this.loadData();
+    this.loadData();
   }
 
-  public openSubCategoryDialog(data: any): void {
+  public openCategoryDialog(data: any): void {
     this.router.navigate(['create'], { relativeTo: this.activatedRoute });
   }
 
   edit(id: any): void {
-    this.router.navigateByUrl(`/sub-category/edit/${id}`);
+    this.router.navigateByUrl(`/configuration/edit/${id}`);
   }
 
   updateStatus(element) {
@@ -103,20 +87,20 @@ export class SubCategoryComponent implements OnInit {
 
   }
 
-  public remove(subCategroy: any): void {
+  public remove(category: any): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       maxWidth: "400px",
       data: {
         title: "Confirm",
-        message: "Are you sure you want remove this Sub-Category?"
+        message: "Are you sure you want remove this configuration?"
       }
     });
     dialogRef.afterClosed().subscribe(dialogResult => {
       if (dialogResult) {
-        const index: number = this.tableDataSource.indexOf(subCategroy);
+        const index: number = this.tableDataSource.indexOf(category);
         if (index !== -1) {
-          subCategroy.status = "D";
-          this.subCategroyService.deleteSubCategory(subCategroy).subscribe({
+          category.status = "D";
+          this.configurationService.delete(category).subscribe({
             next: (res) => {
               if (res.status) {
                 this.loadData();
@@ -128,12 +112,11 @@ export class SubCategoryComponent implements OnInit {
             },
             error: (e) => {
               console.log(e);
-              this.messageService.showError('Unable to delete Sub-Category');
+              this.messageService.showError('Unable to delete configuration');
             }
           })
         }
       }
     });
   }
-
 }

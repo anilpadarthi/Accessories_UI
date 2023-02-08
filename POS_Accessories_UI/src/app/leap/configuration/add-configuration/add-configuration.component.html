@@ -1,0 +1,50 @@
+<div class="p-1">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title class="header-title">{{(configurationId) ? 'Edit' : 'Add New'}} Configuration</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <form [formGroup]="form" (ngSubmit)="onSubmit()" autocomplete="off" fxLayout="row wrap">
+                <div fxFlex="100">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Configuraiton Type</mat-label>
+                        <mat-select formControlName="configurationTypeId">
+                            <mat-option [value]="null">All</mat-option>
+                            <mat-option *ngFor="let item of configurationTypes" [value]="item.id">
+                                <span>{{item.name}}</span>
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <div fxFlex="100">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Amount</mat-label>
+                        <input matInput formControlName="amount" required>
+                        <mat-error *ngIf="form.controls.amount.errors?.required">Amount is required</mat-error>
+                    </mat-form-field>
+                </div>
+                <div fxFlex="100">
+                    <mat-form-field appearance="outline">
+                        <mat-label>From Date</mat-label>
+                        <input matInput formControlName="fromDate" required>
+                        <mat-error *ngIf="form.controls.fromDate.errors?.required">From Date is required</mat-error>
+                    </mat-form-field>
+                </div>
+                <div fxFlex="100">
+                    <mat-form-field appearance="outline">
+                        <mat-label>To Date</mat-label>
+                        <input matInput formControlName="toDate">
+                    </mat-form-field>
+                </div>
+                
+                <div fxLayout="row" class="w-100">
+                    <button mat-raised-button color="warn" type="button"
+                        (click)="navigateToListPage()">Cancel</button>
+                    <button mat-raised-button color="primary" type="submit">Submit</button>
+                </div>
+
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>

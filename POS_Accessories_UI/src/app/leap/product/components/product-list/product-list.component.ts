@@ -5,10 +5,11 @@ import { ConfirmDialogComponent } from 'src/app/shared/confirm-dialog/confirm-di
 import { AppSettings, Settings } from 'src/app/app.settings';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ProductService } from '../../../../shared/services/product.service'
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
+import { PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { PaginatorConstants } from 'src/app/shared/models/paginator-constants';
+import { LookupService } from 'src/app/shared/services/lookup.service';
+import { MessageService } from 'src/app/shared/services/message.service';
 
 @Component({
   selector: 'app-product-list',
@@ -21,7 +22,7 @@ export class ProductListComponent implements OnInit {
   public count = 6;
   public settings: Settings;
   searchText!: string | null;
-  displayedColumns = ['Id', 'Name', 'Actions'];
+  displayedColumns = ['Id', 'Name', 'Code', 'Status', 'Actions'];
   bogusDataSource = new MatTableDataSource<any>();
   pageEvent: PageEvent | undefined;
   tableDataSource: any[] = [];
@@ -29,26 +30,67 @@ export class ProductListComponent implements OnInit {
   pageOptions = PaginatorConstants.LEAP_STANDARD_PAGE_OPTIONS;
   pageIndex = 1;
   totalCount!: number;
+  categoryId!: number | null;
+  subCategoryId!: number | null;
+  categories: any[];
+  subCategories: any[];
 
-  constructor(public router: Router, public activatedRoute: ActivatedRoute, public dialog: MatDialog, public appSettings: AppSettings, private productService: ProductService) {
+  constructor(
+    public router: Router,
+    public activatedRoute: ActivatedRoute,
+    public dialog: MatDialog,
+    public appSettings: AppSettings,
+    private productService: ProductService,
+    private lookupService: LookupService,
+    private messageService: MessageService
+  ) {
     this.settings = this.appSettings.settings;
   }
 
   async ngOnInit(): Promise<void> {
     await this.loadData();
+    this.getCategoryLookup();
   }
 
   async loadData(): Promise<void> {
     const request = {
       pageNo: this.pageIndex,
       pageSize: this.pageSize,
-      searchText: this.searchText
+      searchText: this.searchText,
+      categoryId: this.categoryId,
+      subCategoryId: this.subCategoryId
     };
 
     this.productService.getAll(request).subscribe((res) => {
       this.tableDataSource = res.data.results;
       this.totalCount = res.data.totalRecords;
     });
+  }
+
+  getCategoryLookup() {
+    this.lookupService.getCategories().subscribe(res => {
+      this.categories = res.data;
+    });
+  }
+
+  getSubCategoryLookup(categoryId: number) {
+    this.lookupService.getSubCategories(categoryId).subscribe(res => {
+      this.subCategories = res.data;
+    });
+  }
+
+  onCategoryChange(event: any) {
+    this.loadData();
+    if (event.value) {
+      this.getSubCategoryLookup(event.value);
+    }
+    else {
+      this.subCategories = [];
+    }
+  }
+
+  onSubCategoryChange(event: any) {
+    this.loadData();
   }
 
   handlePageEvent(event: PageEvent): void {
@@ -66,6 +108,9 @@ export class ProductListComponent implements OnInit {
   async onReset(): Promise<void> {
     this.pageIndex = 1;
     this.searchText = null;
+    this.categoryId = null;
+    this.subCategoryId = null;
+    this.subCategories = null;
     await this.loadData();
   }
 
@@ -77,11 +122,16 @@ export class ProductListComponent implements OnInit {
     this.router.navigateByUrl(`/product/edit/${id}`);
   }
 
+  updateStatus(element) {
+    element.status = !element.status;
+
+  }
+
   public remove(product: any): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       maxWidth: "400px",
       data: {
-        title: "Confirm Action",
+        title: "Confirm",
         message: "Are you sure you want remove this product?"
       }
     });
@@ -89,9 +139,16 @@ export class ProductListComponent implements OnInit {
       if (dialogResult) {
         const index: number = this.tableDataSource.indexOf(product);
         if (index !== -1) {
-          this.productService.deleteProduct(product.productId).subscribe({
+          product.status = "D";
+          this.productService.deleteProduct(product).subscribe({
             next: (res) => {
-              console.log(res);
+              if (res.status) {
+                this.loadData();
+                this.messageService.showSuccess("Deleted successfully.");
+              }
+              else {
+                this.messageService.showError(res.data);
+              }
             },
             error: (e) => {
               console.log(e);

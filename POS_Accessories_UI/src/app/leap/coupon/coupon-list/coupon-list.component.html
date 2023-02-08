@@ -1,19 +1,10 @@
 <div class="p-1">
     <mat-card class="p-0">
         <div fxLayout="row wrap" fxLayoutAlign="space-between center" class="w-100 p-2">
-            <h2>Sub Category List</h2>
+            <h2>Coupon List</h2>
         </div>
         <div class="filter-controls">
             <div class="row wrap">
-                <mat-form-field appearance="outline">
-                    <mat-label>Category</mat-label>
-                    <mat-select [(ngModel)]="categoryId" (selectionChange)="onCategoryChange()">
-                        <mat-option [value]="null">All</mat-option>
-                        <mat-option *ngFor="let category of categories" [value]="category.id">
-                            <span>{{category.name}}</span>
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
                 <mat-form-field appearance="outline" class="input-field">
                     <mat-label>Search By Name</mat-label>
                     <input matInput placeholder="Search By Name" [(ngModel)]="searchText" autocomplete="off">
@@ -25,8 +16,8 @@
                     <mat-icon>search</mat-icon> search
                 </button>
 
-                <button mat-raised-button color="primary" (click)="openSubCategoryDialog(null)">
-                    <mat-icon>add</mat-icon> Add Sub Category</button>
+                <button mat-raised-button color="primary" (click)="openCategoryDialog(null)">
+                    <mat-icon>add</mat-icon> Add Coupon</button>
             </div>
         </div>
 
@@ -35,15 +26,24 @@
                 <ng-container matColumnDef="Id">
                     <mat-header-cell *matHeaderCellDef> Id </mat-header-cell>
                 </ng-container>
-
-                <ng-container matColumnDef="Name">
-                    <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+                <ng-container matColumnDef="Code">
+                    <mat-header-cell *matHeaderCellDef> Code </mat-header-cell>
                 </ng-container>
-
+                <ng-container matColumnDef="Description">
+                    <mat-header-cell *matHeaderCellDef> Description </mat-header-cell>
+                </ng-container>
+                <ng-container matColumnDef="ValidFrom">
+                    <mat-header-cell *matHeaderCellDef> Valid From </mat-header-cell>
+                </ng-container>
+                <ng-container matColumnDef="ValidTo">
+                    <mat-header-cell *matHeaderCellDef> Valid To </mat-header-cell>
+                </ng-container>                
                 <ng-container matColumnDef="Status">
                     <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
                 </ng-container>
-
+                <ng-container matColumnDef="CreatedBy">
+                    <mat-header-cell *matHeaderCellDef> Created By </mat-header-cell>
+                </ng-container>
                 <ng-container matColumnDef="Actions">
                     <mat-header-cell *matHeaderCellDef></mat-header-cell>
                 </ng-container>
@@ -51,27 +51,39 @@
                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                 <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
             </mat-table>
+
             <div class="example-container">
                 <mat-table #table [dataSource]="tableDataSource">
                     <ng-container matColumnDef="Id">
-                        <mat-cell *matCellDef="let element"> {{ element.subCategoryId }} </mat-cell>
+                        <mat-cell *matCellDef="let element"> {{ element.couponId }} </mat-cell>
                     </ng-container>
 
-                    <ng-container matColumnDef="Name">
-                        <mat-cell *matCellDef="let element"> {{ element.subCategoryName }} </mat-cell>
+                    <ng-container matColumnDef="Code">
+                        <mat-cell *matCellDef="let element"> {{ element.couponCode }} </mat-cell>
                     </ng-container>
-
+                    <ng-container matColumnDef="Description">
+                        <mat-cell *matCellDef="let element"> {{ element.description }} </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="ValidFrom">
+                        <mat-cell *matCellDef="let element"> {{ element.validFrom }} </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="ValidTo">
+                        <mat-cell *matCellDef="let element"> {{ element.validTo }} </mat-cell>
+                    </ng-container>
                     <ng-container matColumnDef="Status">
                         <mat-cell *matCellDef="let element">
                             <mat-slide-toggle [checked]="element.status" (change)="updateStatus(element)">
                             </mat-slide-toggle>
                         </mat-cell>
                     </ng-container>
+                    <ng-container matColumnDef="CreatedBy">
+                        <mat-cell *matCellDef="let element"> {{ element.createdBy }} </mat-cell>
+                    </ng-container>
 
                     <ng-container matColumnDef="Actions">
                         <mat-cell *matCellDef="let element">
                             <button mat-icon-button matTooltip="Click to Edit" class="iconbutton" color="primary"
-                                (click)="edit(element.subCategoryId)">
+                                (click)="edit(element.couponId)">
                                 <mat-icon>edit</mat-icon>
                             </button>
                             <button mat-icon-button matTooltip="Click to Delete" class="iconbutton"
@@ -96,5 +108,4 @@
         </div>
         <div style="height: 0px;"><br></div>
     </mat-card>
-
 </div>

@@ -31,6 +31,7 @@ export class ProductDetailComponent implements OnInit {
       'images': null,
       'isNewArrival':false,
       'isBundle':false,
+      'isOutOfStock':false,
       'isVatEnabled':false,
       'categoryId':null,
       'subCategoryId':null,
