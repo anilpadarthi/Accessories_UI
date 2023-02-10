@@ -61,7 +61,7 @@
                     <ng-container matColumnDef="Actions">
                         <mat-cell *matCellDef="let element">
                             <button mat-icon-button matTooltip="Click to Edit" class="iconbutton" color="primary"
-                                (click)="edit(element.categoryId)">
+                                (click)="openCategoryDialog(element.categoryId)">
                                 <mat-icon>edit</mat-icon>
                             </button>
                             <button mat-icon-button matTooltip="Click to Delete" class="iconbutton"

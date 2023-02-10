@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from 'src/app/shared/confirm-dialog/confirm-dialog.component';
+import { CategoryDialogComponent } from '../category-dialog/category-dialog.component';
 import { AppSettings, Settings } from 'src/app/app.settings';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CategoryService } from '../../../../shared/services/category.service'
@@ -53,7 +54,7 @@ export class CategoryComponent implements OnInit {
     this.categoryService.getAll(request).subscribe((res) => {
       this.tableDataSource = res.data.results;
       this.totalCount = res.data.totalRecords;
-    });
+  });
   }
 
   handlePageEvent(event: PageEvent): void {
@@ -74,17 +75,24 @@ export class CategoryComponent implements OnInit {
     this.loadData();
   }
 
-  public openCategoryDialog(data: any): void {
-    this.router.navigate(['create'], { relativeTo: this.activatedRoute });
-  }
-
-  edit(id: any): void {
-    this.router.navigateByUrl(`/category/edit/${id}`);
-  }
-
   updateStatus(element) {
     element.status = !element.status;
+  }
 
+  public openCategoryDialog(categoryId: any){
+    const dialogRef = this.dialog.open(CategoryDialogComponent, {
+        data: {
+          id:categoryId
+        },
+        panelClass: ['theme-dialog'],
+        autoFocus: false,
+        direction: (this.settings.rtl) ? 'rtl' : 'ltr'
+      });
+      dialogRef.afterClosed().subscribe(dialogResult => { 
+        if(dialogResult){    
+          this.loadData();        
+        }
+      });
   }
 
   public remove(category: any): void {

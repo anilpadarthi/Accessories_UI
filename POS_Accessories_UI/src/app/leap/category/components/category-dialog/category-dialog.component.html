@@ -1,9 +1,5 @@
-<div class="p-1">
-    <mat-card>
-<mat-card-header>
-    <mat-card-title>{{(categoryId) ? 'Edit' : 'Add New'}} Category</mat-card-title>
-</mat-card-header>
-<mat-card-content>
+<h1 mat-dialog-title>Category</h1>
+<mat-error class="form-error" *ngIf="errorMessage != ''">{{errorMessage}}</mat-error> 
 <form [formGroup]="form" (ngSubmit)="onSubmit()" autocomplete="off" fxLayout="row wrap">
             <div fxFlex="100">
                 <mat-form-field appearance="outline" class="w-100">
@@ -17,11 +13,7 @@
                 <input-file formControlName="images" fileLimit="1" fileAccept="image/*"></input-file>  
             </div>
         <div fxLayout="row" fxLayoutAlign="space-between center" class="w-100"> 
-            <button mat-raised-button color="warn" type="button" (click)="navigateToCateogryList()">Cancel</button>
+            <button mat-raised-button color="warn" type="button" mat-dialog-close>Close</button>
             <button mat-raised-button color="primary" type="submit">Submit</button>
         </div>
-
 </form>
-</mat-card-content>
-</mat-card>
-</div>

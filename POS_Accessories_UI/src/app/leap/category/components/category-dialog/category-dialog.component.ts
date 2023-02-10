@@ -5,19 +5,21 @@ import { CategoryService } from '../../../../shared/services/category.service'
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Response } from 'src/app/shared/models/response';
 import { MessageService } from 'src/app/shared/services/message.service';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
-  selector: 'app-add-category',
-  templateUrl: './add-category.component.html',
-  styleUrls: ['./add-category.component.scss']
+  selector: 'app-category-dialog',
+  templateUrl: './category-dialog.component.html',
+  styleUrls: ['./category-dialog.component.scss']
 })
 
-export class AddCategoryComponent implements OnInit {
+export class CategoryDialogComponent implements OnInit {
   public form: UntypedFormGroup;
   private sub: any;
   public categoryId: number = 0;
-
-  constructor(public router: Router, public fb: UntypedFormBuilder, private activatedRoute: ActivatedRoute, private categoryService: CategoryService, public snackBar: MatSnackBar, private messageService: MessageService) { }
+  public errorMessage:string = '';
+  constructor(public dialogRef: MatDialogRef<CategoryDialogComponent>, 
+    @Inject(MAT_DIALOG_DATA) public data: any,public router: Router, public fb: UntypedFormBuilder, private activatedRoute: ActivatedRoute, private categoryService: CategoryService, public snackBar: MatSnackBar, private messageService: MessageService) { }
 
   ngOnInit(): void {
     this.form = this.fb.group({
@@ -27,8 +29,8 @@ export class AddCategoryComponent implements OnInit {
     });
 
     this.sub = this.activatedRoute.params.subscribe(params => {
-      if (params['id']) {
-        this.categoryId = parseInt(params['id']);
+      if (this.data.id) {
+        this.categoryId = parseInt(this.data.id);
         this.getCategoryById();
       }
     });
@@ -40,25 +42,23 @@ export class AddCategoryComponent implements OnInit {
     });
   }
 
-  public navigateToCateogryList() {
-    this.router.navigate(['/category']);
-  }
   public onSubmit() {
+    this.errorMessage='';
     if (this.form.valid) {
       if (this.categoryId === 0) {
         this.categoryService.addCategory(this.form.value).subscribe({
           next: (res: Response) => {
             if (res.status) {
-              this.navigateToCateogryList();
+              this.dialogRef.close(this.form.value);
               this.messageService.showSuccess(res.data);
             }
             else {
-              this.messageService.showError(res.data);
+              this.errorMessage=res.data;
             }
           },
           error: (e) => {
             console.log(e);
-            this.messageService.showError('Unable to create Category');
+            this.errorMessage='Unable to create Category';
           }
         })
       }
@@ -66,24 +66,22 @@ export class AddCategoryComponent implements OnInit {
         this.categoryService.updateCategory(this.form.value).subscribe({
           next: (res: Response) => {
             if (res.status) {
-              this.navigateToCateogryList();
+              this.dialogRef.close(this.form.value);
               this.messageService.showSuccess(res.data);
             }
             else {
-              this.messageService.showError(res.data);
+              this.errorMessage=res.data;
             }
           },
           error: (e) => {
             console.log(e);
-            this.messageService.showError('Unable to update Category');
+            this.errorMessage='Unable to update Category';
           }
         })
       }
-
     }
   }
   ngOnDestroy() {
     this.sub.unsubscribe();
   }
-
 }

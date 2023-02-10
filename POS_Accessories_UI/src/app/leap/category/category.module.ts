@@ -7,19 +7,17 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { SwiperModule } from 'ngx-swiper-wrapper';
 import { InputFileModule } from 'ngx-input-file';
 import { CategoryComponent } from './components/category/category.component';
-import { AddCategoryComponent } from './components/add-category/add-category.component';
+import { CategoryDialogComponent } from './components/category-dialog/category-dialog.component';
 import { FormsModule } from '@angular/forms';
 
 export const routes: Routes = [ 
-  { path: '', component: CategoryComponent, pathMatch: 'full' },
-  { path: 'create', component: AddCategoryComponent },
-  { path: 'edit/:id', component: AddCategoryComponent, data: { breadcrumb: 'Edit Category' } }, 
+  { path: '', component: CategoryComponent, pathMatch: 'full' }, 
 ];
 
 @NgModule({
   declarations: [
     CategoryComponent,
-    AddCategoryComponent
+    CategoryDialogComponent
   ],
   imports: [
     CommonModule,
