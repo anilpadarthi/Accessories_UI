@@ -24,8 +24,11 @@
             <mat-form-field appearance="outline" class="w-100">
                 <mat-label>Category</mat-label>
                 <mat-select formControlName="categoryId" (selectionChange)="onCategorySelectionChange($event)">
+                    <mat-option>
+                        <ngx-mat-select-search [formControl]="categoryFilterCtrl"></ngx-mat-select-search>
+                      </mat-option>
                     <mat-option [value]="">-</mat-option>
-                    <mat-option *ngFor="let category of categories" [value]="category.id">
+                    <mat-option *ngFor="let category of filteredCategories | async" [value]="category.id">
                         <span>{{category.name}}</span>
                     </mat-option>
                 </mat-select> 
@@ -35,8 +38,11 @@
             <mat-form-field appearance="outline" class="w-100">
                 <mat-label>Sub-Category</mat-label>
                 <mat-select formControlName="subCategoryId">
+                    <mat-option>
+                        <ngx-mat-select-search [formControl]="subCategoryFilterCtrl"></ngx-mat-select-search>
+                      </mat-option>
                     <mat-option [value]="">-</mat-option>
-                    <mat-option *ngFor="let subCategory of subCategories" [value]="subCategory.id">
+                    <mat-option *ngFor="let subCategory of filteredSubCategories | async" [value]="subCategory.id">
                         <span>{{subCategory.name}}</span>
                     </mat-option>
                 </mat-select> 
@@ -45,8 +51,11 @@
         <div fxFlex="100" fxFlex.gt-md="50" class="px-1">
             <mat-form-field appearance="outline" class="w-100">
                 <mat-label>Colour</mat-label>
-                <mat-select formControlName="colours" multiple> 
-                    <mat-option *ngFor="let colour of colours" [value]="colour.id">
+                <mat-select formControlName="colours" multiple>
+                    <mat-option>
+                        <ngx-mat-select-search [formControl]="colourFilterCtrl"></ngx-mat-select-search>
+                      </mat-option> 
+                    <mat-option *ngFor="let colour of filteredColours | async" [value]="colour.id">
                         <span>{{colour.name}}</span>
                     </mat-option>
                 </mat-select>
@@ -56,7 +65,10 @@
             <mat-form-field appearance="outline" class="w-100">
                 <mat-label>Size</mat-label>
                 <mat-select formControlName="sizes" multiple> 
-                    <mat-option *ngFor="let size of sizes" [value]="size.id">
+                    <mat-option>
+                        <ngx-mat-select-search [formControl]="sizeFilterCtrl"></ngx-mat-select-search>
+                      </mat-option> 
+                    <mat-option *ngFor="let size of filteredSizes | async" [value]="size.id">
                         <span>{{size.name}}</span>
                     </mat-option>
                 </mat-select>

@@ -1,12 +1,13 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormControl, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ProductService } from '../../../../shared/services/product.service'
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Response } from 'src/app/shared/models/response';
 import { MessageService } from 'src/app/shared/services/message.service';
 import { LookupService } from 'src/app/shared/services/lookup.service';
-
+import { ReplaySubject, Subject, takeUntil } from 'rxjs';
+import { Lookup } from 'src/app/shared/models/lookup';
 @Component({
   selector: 'app-product-detail',
   templateUrl: './product-detail.component.html',
@@ -17,10 +18,19 @@ export class ProductDetailComponent implements OnInit {
   public form: UntypedFormGroup;
   private sub: any;
   public productId: number = 0;
-  public categories :[];
-  public subCategories :[];
+  public categories :Lookup[];
+  public filteredCategories:ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
+  public filteredSubCategories:ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
+  public filteredColours:ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
+  public filteredSizes:ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
+  public subCategories :Lookup[];
   public sizes:[];
-  public colours:[]
+  public colours:[];
+  public categoryFilterCtrl: FormControl<string> = new FormControl<string>('');
+  public subCategoryFilterCtrl: FormControl<string> = new FormControl<string>('');
+  public colourFilterCtrl: FormControl<string> = new FormControl<string>('');
+  public sizeFilterCtrl: FormControl<string> = new FormControl<string>('');
+  protected _onDestroy = new Subject<void>();
   constructor(public router: Router, public fb: UntypedFormBuilder, private activatedRoute: ActivatedRoute, private productService: ProductService, public snackBar: MatSnackBar, private messageService: MessageService,private lookupService:LookupService) { }
 
   ngOnInit(): void {
@@ -50,29 +60,57 @@ export class ProductDetailComponent implements OnInit {
     this.getCategories();
     this.getColours();
     this.getSizes();
+    
+    this.categoryFilterCtrl.valueChanges
+      .pipe(takeUntil(this._onDestroy))
+      .subscribe(() => {
+        this.filter('category');
+      });
+
+      this.subCategoryFilterCtrl.valueChanges
+      .pipe(takeUntil(this._onDestroy))
+      .subscribe(() => {
+        this.filter('subCategory');
+      });
+
+      this.colourFilterCtrl.valueChanges
+      .pipe(takeUntil(this._onDestroy))
+      .subscribe(() => {
+        this.filter('colour');
+      });
+
+      this.sizeFilterCtrl.valueChanges
+      .pipe(takeUntil(this._onDestroy))
+      .subscribe(() => {
+        this.filter('size');
+      });
   }
 
   getCategories(){
     this.lookupService.getCategories().subscribe(res => {
       this.categories = res.data;
+      this.filteredCategories.next(this.categories.slice());
     });
   }
 
   getSubCategories(categoryId:number){
     this.lookupService.getSubCategories(categoryId).subscribe(res => {
       this.subCategories = res.data;
+      this.filteredSubCategories.next(this.subCategories.slice());
     });
   }
 
   getColours(){
     this.lookupService.getColours().subscribe(res => {
       this.colours = res.data;
+      this.filteredColours.next(this.colours.slice());
     });
   }
 
   getSizes(){
     this.lookupService.getSizes().subscribe(res => {
       this.sizes = res.data;
+      this.filteredSizes.next(this.sizes.slice());
     });
   }
 
@@ -122,7 +160,6 @@ export class ProductDetailComponent implements OnInit {
           }
         })
       }
-
     }
   }
 
@@ -130,9 +167,53 @@ export class ProductDetailComponent implements OnInit {
     if(event.value){
       this.getSubCategories(event.value);
     } 
-  }  
+  } 
+  
+  protected filter(control:string) {
+    let list :Lookup[];
+    let filteredList:ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
+    let filterCtrl: FormControl<string>;
+debugger;
+    switch(control){
+      case 'category':
+        list = this.categories;
+        filteredList = this.filteredCategories;
+        filterCtrl = this.categoryFilterCtrl;
+        break;
+      case 'subCategory':
+        list = this.subCategories;
+        filteredList = this.filteredSubCategories;
+        filterCtrl = this.subCategoryFilterCtrl;
+        break;
+      case 'colour':
+        list = this.colours;
+        filteredList = this.filteredColours;
+        filterCtrl = this.colourFilterCtrl;
+        break;
+      case 'size':
+        list = this.sizes;
+        filteredList = this.filteredSizes;
+        filterCtrl = this.sizeFilterCtrl;
+        break;
+    }
+    if (!list) {
+      return;
+    }
+    
+    let search = filterCtrl.value;
+    if (!search) {
+      filteredList.next(list.slice());
+      return;
+    } else {
+      search = search.toLowerCase();
+    }
+
+    filteredList.next(
+        list.filter(item => item.name.toLowerCase().indexOf(search) > -1)
+    );
+  }
+  
   ngOnDestroy() {
     this.sub.unsubscribe();
   }
-
 }

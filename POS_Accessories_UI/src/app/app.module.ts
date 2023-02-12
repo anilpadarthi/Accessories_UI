@@ -14,6 +14,7 @@ import { environment } from 'src/environments/environment';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader'; 
 import { FormsModule } from '@angular/forms';
+import { MAT_SELECTSEARCH_DEFAULT_OPTIONS, MatSelectSearchOptions } from 'ngx-mat-select-search';
 
 
 export function HttpLoaderFactory(httpClient: HttpClient) { 
@@ -75,7 +76,14 @@ import { AccountService } from './shared/services/account.service';
     AccountService,
     { provide: OverlayContainer, useClass: CustomOverlayContainer },
     { provide: MAT_MENU_SCROLL_STRATEGY, useFactory: menuScrollStrategy, deps: [Overlay] },
-    { provide: HTTP_INTERCEPTORS, useClass: AppInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: AppInterceptor, multi: true },
+    {
+      provide: MAT_SELECTSEARCH_DEFAULT_OPTIONS,
+      useValue: <MatSelectSearchOptions>{
+        placeholderLabel: 'Search',
+        noEntriesFoundLabel: 'No options found',
+      }
+    }
   ],
   bootstrap: [AppComponent]
 })

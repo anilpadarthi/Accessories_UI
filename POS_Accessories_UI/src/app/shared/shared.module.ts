@@ -38,6 +38,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   wheelPropagation: true,
   suppressScrollX: true               
@@ -94,6 +96,7 @@ import { LangComponent } from './lang/lang.component';
     MatTooltipModule,
     MatStepperModule,
     PerfectScrollbarModule,
+    NgxMatSelectSearchModule,
     PipesModule
   ],
   exports: [
@@ -133,6 +136,7 @@ import { LangComponent } from './lang/lang.component';
     MatTooltipModule,
     MatStepperModule,
     PerfectScrollbarModule,
+    NgxMatSelectSearchModule,
     PipesModule,
     RatingComponent,
     ControlsComponent,
