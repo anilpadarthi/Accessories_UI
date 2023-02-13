@@ -1,0 +1,38 @@
+.form-input {
+    padding-right: 10px;
+  }
+
+  .btn-edit {
+    text-align: right;
+  }
+
+  @media (min-width: 960px) {
+    .wrapper {
+        width:70%;
+      }
+  }
+  .wrapper {
+    // display: inline-block;
+    padding-bottom: 10px;
+  }
+  ::ng-deep .mat-form-field-infix {
+    width: 100% !important;
+  }
+  .form-cell{
+    width:100%;
+  }
+  .header-width{
+    width:27% !important;
+  }
+//   .element1 {display:inline-block;margin-right:1px;} 
+//   .element2 {display:inline-block;} 
+//   .icon-button{
+//     min-width: 40px;
+//     width: 40px;
+//   }
+.btn-edit {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  

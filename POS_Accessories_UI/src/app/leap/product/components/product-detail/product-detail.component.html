@@ -74,7 +74,7 @@
                 </mat-select>
             </mat-form-field>
         </div> 
-        <div fxFlex="100" fxFlex.gt-md="19" class="px-1">
+        <div fxFlex="100" fxFlex.gt-md="13" class="px-1">
             <div class="py-1">
                 <mat-checkbox formControlName="isNewArrival" color="primary"> 
                     <div fxLayout="row" fxLayoutAlign="start center">
@@ -83,7 +83,7 @@
                 </mat-checkbox> 
             </div>
         </div>
-        <div fxFlex="100" fxFlex.gt-md="19" class="px-1">
+        <div fxFlex="100" fxFlex.gt-md="13" class="px-1">
             <div class="py-1">
                 <mat-checkbox formControlName="isBundle" color="primary"> 
                     <div fxLayout="row" fxLayoutAlign="start center">
@@ -92,7 +92,7 @@
                 </mat-checkbox> 
             </div>
         </div>
-        <div fxFlex="100" fxFlex.gt-md="19" class="px-1">
+        <div fxFlex="100" fxFlex.gt-md="13" class="px-1">
             <div class="py-1">
                 <mat-checkbox formControlName="isOutOfStock" color="primary"> 
                     <div fxLayout="row" fxLayoutAlign="start center">
@@ -101,7 +101,7 @@
                 </mat-checkbox> 
             </div>
         </div>
-        <div fxFlex="100" fxFlex.gt-md="19" class="px-1">
+        <div fxFlex="100" fxFlex.gt-md="13" class="px-1">
             <div class="py-1">
                 <mat-checkbox formControlName="isVatEnabled" color="primary"> 
                     <div fxLayout="row" fxLayoutAlign="start center">
@@ -122,9 +122,12 @@
                 <textarea matInput formControlName="specification"></textarea>
             </mat-form-field>
         </div> 
+        <app-product-image></app-product-image>
+        <div fxFlex="100" fxFlex.gt-md="100" class="px-1">
+             <app-product-pricing></app-product-pricing>
+        </div>
     </div>  
-    <app-product-image></app-product-image>
-    <app-product-pricing></app-product-pricing>
+    
     <div fxLayout="row" fxLayoutAlign="space-between center" class="w-100"> 
         <button mat-raised-button color="warn" type="button" (click)="navigateToCateogryList()">Cancel</button>
         <button mat-raised-button color="primary" type="submit">Submit</button>

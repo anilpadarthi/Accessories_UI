@@ -173,7 +173,6 @@ export class ProductDetailComponent implements OnInit {
     let list :Lookup[];
     let filteredList:ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
     let filterCtrl: FormControl<string>;
-debugger;
     switch(control){
       case 'category':
         list = this.categories;
