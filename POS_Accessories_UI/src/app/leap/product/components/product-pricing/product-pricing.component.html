@@ -1,9 +1,9 @@
 <div class="wrapper">
     <p class="mt-1"><span class="uppercase fw-500">Pricing</span></p>  
     <article class="text-right">
-        <button mat-raised-button color="primary" mat-button (click)="addRow()">Add Row</button>
+        <button mat-raised-button color="primary" type="button" mat-button (click)="addRow()">Add Row</button>
     </article>
-    <table mat-table [dataSource]="dataSource">
+    <table mat-table [dataSource]="priceList">
         <ng-container [matColumnDef]="col.key" *ngFor="let col of columnsSchema">
             <th class="header-width" mat-header-cell *matHeaderCellDef [ngSwitch]="col.key">
                 <span *ngSwitchDefault>{{ col.label }}</span>

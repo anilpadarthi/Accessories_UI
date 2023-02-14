@@ -8,6 +8,7 @@ import { MessageService } from 'src/app/shared/services/message.service';
 import { LookupService } from 'src/app/shared/services/lookup.service';
 import { ReplaySubject, Subject, takeUntil } from 'rxjs';
 import { Lookup } from 'src/app/shared/models/lookup';
+import { ProductPriceList } from 'src/app/shared/models/productPriceRequest';
 @Component({
   selector: 'app-product-detail',
   templateUrl: './product-detail.component.html',
@@ -31,6 +32,7 @@ export class ProductDetailComponent implements OnInit {
   public colourFilterCtrl: FormControl<string> = new FormControl<string>('');
   public sizeFilterCtrl: FormControl<string> = new FormControl<string>('');
   protected _onDestroy = new Subject<void>();
+  public priceList: ProductPriceList[];
   constructor(public router: Router, public fb: UntypedFormBuilder, private activatedRoute: ActivatedRoute, private productService: ProductService, public snackBar: MatSnackBar, private messageService: MessageService,private lookupService:LookupService) { }
 
   ngOnInit(): void {
@@ -47,8 +49,8 @@ export class ProductDetailComponent implements OnInit {
       'subCategoryId':null,
       'description': null,
       'specification':null, 
-      'colours': [[]],
-      'sizes':[[]]
+      'colourList': [[]],
+      'sizeList':[[]]
     });
 
     this.sub = this.activatedRoute.params.subscribe(params => {
@@ -125,6 +127,7 @@ export class ProductDetailComponent implements OnInit {
   }
   public onSubmit() {
     console.log(this.form.value);
+    this.form.value.priceList = this.priceList;
     if (this.form.valid) {
       if (this.productId === 0) {
         this.productService.addProduct(this.form.value).subscribe({

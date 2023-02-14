@@ -1,18 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { ProductPriceList } from 'src/app/shared/models/productPriceRequest';
 
 const COLUMNS_SCHEMA = [
   {
-    key: 'from',
+    key: 'fromQty',
     type: 'number',
     label: 'From',
   },
   {
-    key: 'to',
+    key: 'toQty',
     type: 'number',
     label: 'To',
   },
   {
-    key: 'price',
+    key: 'salePrice',
     type: 'number',
     label: 'Price',
   },
@@ -29,38 +30,43 @@ const COLUMNS_SCHEMA = [
   styleUrls: ['./product-pricing.component.scss']
 })
 export class ProductPricingComponent implements OnInit {
+
+  priceList:ProductPriceList[]=[];
   newRow = {
-    id: Date.now(),
-    from: '',
-    to: '',
-    price: '',
+    productPriceMapId: Date.now(),
+    fromQty: '',
+    toQty: '',
+    salePrice: '',
     isEdit: true,
   }
-  dataSource = [this.newRow];
   columnsSchema: any = COLUMNS_SCHEMA;
   displayedColumns: string[] = COLUMNS_SCHEMA.map((col) => col.key);
-  constructor() { }
+  constructor() { 
+    if(this.priceList.length == 0){
+      this.priceList = [this.newRow];
+    }
+  }
 
   ngOnInit(): void {
+    
   }
 
   addRow() {
     let newRow = {
-      id: Date.now(),
-      from: '',
-      to: '',
-      price: '',
+      productPriceMapId: Date.now(),
+      fromQty: '',
+      toQty: '',
+      salePrice: '',
       isEdit: true,
     }
-    this.dataSource = [newRow, ...this.dataSource];
+    this.priceList = [newRow,...this.priceList];
   }
 
   removeRow(id) {
-    this.dataSource = this.dataSource.filter((u) => u.id !== id);
-    if(this.dataSource.length == 0){
+    this.priceList = this.priceList.filter((u) => u.productPriceMapId !== id);
+    if(this.priceList.length == 0){
       this.addRow();
     }
   } 
-
 }
 
