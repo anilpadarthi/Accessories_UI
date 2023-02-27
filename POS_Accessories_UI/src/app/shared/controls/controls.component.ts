@@ -67,8 +67,6 @@ export class ControlsComponent implements OnInit {
   }
 
   public addToCart(product:Product){
-    debugger;
-    // console.log(product)
     let currentProduct = this.cartService.Data.cartList.filter(item=>item.productId == product.productId)[0];
     if(currentProduct){
       if((currentProduct.cartCount + this.count) <= this.product.availibilityCount){
