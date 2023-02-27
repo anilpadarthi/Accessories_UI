@@ -2,14 +2,14 @@
     <a *ngIf="menu.routerLink && !menu.hasSubMenu" mat-button 
         fxLayout="row" fxLayoutAlign="start center"
         [routerLink]="[menu.routerLink]" routerLinkActive="active-link" [routerLinkActiveOptions]="(menu.parentId != 0) ? { exact:false } : {exact:true}"
-        (click)="onClick(menu.id)" [id]="'menu-item-'+menu.id">
+        (click)="onClick(menu.id)" [id]="'menu-item-'+menu.id" target="{{menu.target ? menu.target : '_self'}}">
         <mat-icon class="menu-icon">{{menu.icon}}</mat-icon>
         <span class="menu-title">{{ menu.title | translate }}</span>
     </a>
     <a *ngIf="menu.href && !menu.subMenu" mat-button 
         fxLayout="row" fxLayoutAlign="start center"
-        [attr.href]="menu.href || ''" [attr.target]="menu.target || ''"
-        (click)="onClick(menu.id)" [id]="'menu-item-'+menu.id">
+        [attr.href]="menu.href || ''" [attr.target]="menu.menu.target || ''"
+        (click)="onClick(menu.id)" [id]="'menu-item-'+menu.id" >
         <mat-icon class="menu-icon">{{menu.icon}}</mat-icon>
         <span class="menu-title">{{ menu.title | translate }}</span>
     </a>

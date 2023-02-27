@@ -16,7 +16,7 @@ export class SubCategoryService {
   public url = environment.url + 'https://localhost:7159/api/SubCategory';
 
   getSubCategoryList(): Observable<any> {
-    return this.http.get<any>(this.url + '/GetByPaging');
+    return this.http.get<any>(this.url);
   }
 
   getAll(requestBody: any): Observable<any> {

@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
 import { AppSettings, Settings } from '../app.settings';
 import { Router, NavigationEnd } from '@angular/router'; 
 import { MenuService } from './components/menu/menu.service';
+import { CartService } from '../shared/services/cart.service';
 
 @Component({
   selector: 'app-leap',
@@ -14,9 +15,11 @@ export class LeapComponent implements OnInit {
   public settings:Settings;
   public menuItems:Array<any>;
   public toggleSearchBar:boolean = false;
+  public hideSideNavUrl=['/products-view'];
   constructor(public appSettings:AppSettings, 
               public router:Router,
-              private menuService: MenuService){        
+              private menuService: MenuService,
+              public cartService: CartService){        
     this.settings = this.appSettings.settings;
   }
 
@@ -67,6 +70,18 @@ export class LeapComponent implements OnInit {
       });
     }
   }
+
+  isHideSideBar() {
+		if (!this.router.url) {
+			return false;
+		}
+		const index = this.hideSideNavUrl.indexOf(this.router.url);
+		if (index >= 0) {
+			return true; 
+		} else {
+			return false;
+		}
+	}
 
   @HostListener('window:resize')
   public onWindowResize():void {

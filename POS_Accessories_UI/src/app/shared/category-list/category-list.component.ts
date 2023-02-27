@@ -14,11 +14,11 @@ export class CategoryListComponent {
 
   constructor() { }
 
-  public ngDoCheck() {
-    if(this.categories && !this.mainCategories) {
-      this.mainCategories = this.categories.filter(category => category.parentId == this.categoryParentId); 
-    }
-  }
+  // public ngDoCheck() {
+  //   if(this.categories && !this.mainCategories) {
+  //     this.mainCategories = this.categories.filter(category => category.parentId == this.categoryParentId); 
+  //   }
+  // }
 
   public stopClickPropagate(event: any){
     if(window.innerWidth < 960){

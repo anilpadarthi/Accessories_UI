@@ -16,7 +16,7 @@ export class ProductService {
   public url = environment.url + 'https://localhost:7159/api/Product';
 
   getProductList(): Observable<any> {
-    return this.http.get<any>(this.url + '/GetByPaging');
+    return this.http.get<any>(this.url + '/GetAll');
   }
 
   getAll(requestBody: any): Observable<any> {

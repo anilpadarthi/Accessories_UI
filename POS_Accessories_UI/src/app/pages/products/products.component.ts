@@ -92,7 +92,7 @@ export class ProductsComponent implements OnInit {
 
   public getAllProducts(){
     this.appService.getProducts("featured").subscribe(data=>{
-      this.products = data; 
+      // this.products = data; 
       //for show more product  
       for (var index = 0; index < 3; index++) {
         this.products = this.products.concat(this.products);        
@@ -103,12 +103,12 @@ export class ProductsComponent implements OnInit {
   public getCategories(){  
     if(this.appService.Data.categories.length == 0) { 
       this.appService.getCategories().subscribe(data => {
-        this.categories = data;
+        // this.categories = data;
         this.appService.Data.categories = data;
       });
     }
     else{
-      this.categories = this.appService.Data.categories;
+      // this.categories = this.appService.Data.categories;
     }
   }
 

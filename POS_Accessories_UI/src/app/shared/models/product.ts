@@ -16,5 +16,7 @@ export class Product {
               public isVatEnabled?:boolean,
               public status?:string,
               public images?: string,
-              public priceList?:ProductPriceList[]){ }
+              public priceList?:ProductPriceList[],
+              public cartCount?:number,
+              public availibilityCount?:number){ }
 }

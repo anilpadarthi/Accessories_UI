@@ -16,13 +16,14 @@ export class CategoryService {
   public url = environment.url + 'https://localhost:7159/api/Category';
 
   getCategoryList(): Observable<any> {
-    return this.http.get<any>(this.url + '/GetByPaging');
+    return this.http.get<any>(this.url);
   }
 
   getAll(requestBody: any): Observable<any> {
     return this.http.post<any>(this.url + '/GetByPaging', requestBody);
   }
 
+  
   getCategory(id: number): Observable<Response> {
     return this.http.get<Response>(this.url + '/' + id);
   }

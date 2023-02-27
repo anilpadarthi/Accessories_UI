@@ -15,7 +15,6 @@ import { FullScreenComponent } from './components/fullscreen/fullscreen.componen
 import { MessagesComponent } from './components/messages/messages.component';
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component'; 
 import { ErrorComponent } from './error/components/error.component';
-
 export const routes = [ 
   { 
     path: '', 
@@ -28,6 +27,9 @@ export const routes = [
       { path: 'configuration', loadChildren: () => import('./configuration/configuration.module').then(m => m.ConfigurationModule) },
       { path: 'order', loadChildren: () => import('./order/order.module').then(m => m.OrderModule) },
       { path: 'accountability', loadChildren: () => import('./accountability/accountability.module').then(m => m.AccountabilityModule) },
+      { path: 'products-view', loadChildren: () => import('./products-view/products-view.module').then(m => m.ProductsViewModule) },
+      { path: 'checkout', loadChildren: () => import('./checkout/checkout.module').then(m => m.CheckoutModule) },
+      { path: 'cart', loadChildren: () => import('./cart/cart.module').then(m => m.CartModule) },
     ]
   },
   { path: 'error', component: ErrorComponent}

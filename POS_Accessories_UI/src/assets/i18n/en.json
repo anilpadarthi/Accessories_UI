@@ -57,6 +57,8 @@
     "COUPON":"Coupon",
     "CONFIGURATION":"Configuration",
     "Accountability":"Accountability",
+    "CREATE_ORDER":"Create Order",
+    "ORDER_LIST":"Order List",
     "THEME": "Theme"
   },
   "BTN": {
