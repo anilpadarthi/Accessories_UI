@@ -1,8 +1,6 @@
 import { Component, OnInit, ViewChild, HostListener, Inject, PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-// import { ProductDialogComponent } from '../../shared/products-carousel/product-dialog/product-dialog.component';
-// import { AppService } from '../../app.service';
 import { ProductService } from 'src/app/shared/services/product.service';
 import { CategoryService } from 'src/app/shared/services/category.service';
 import { Category } from "../../../shared/models/category";
@@ -12,6 +10,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { SubCategory } from 'src/app/shared/models/subCategory';
 import { SubCategoryService } from 'src/app/shared/services/subCategory.service';
 import { LookupService } from 'src/app/shared/services/lookup.service';
+import { ProductDialogComponent } from './product-dialog/product-dialog.component';
 
 @Component({
   selector: 'app-products-view',
@@ -126,18 +125,18 @@ export class ProductsComponent implements OnInit {
     this.viewCol = viewCol;
   }
 
-  // public openProductDialog(product){   
-  //   let dialogRef = this.dialog.open(ProductDialogComponent, {
-  //       data: product,
-  //       panelClass: 'product-dialog',
-  //       direction: (this.settings.rtl) ? 'rtl' : 'ltr'
-  //   });
-  //   dialogRef.afterClosed().subscribe(product => {
-  //     if(product){
-  //       this.router.navigate(['/products', product.id, product.name]); 
-  //     }
-  //   });
-  // }
+  public openProductDialog(product){   
+    let dialogRef = this.dialog.open(ProductDialogComponent, {
+        data: product,
+        panelClass: 'product-dialog',
+        direction: (this.settings.rtl) ? 'rtl' : 'ltr'
+    });
+    dialogRef.afterClosed().subscribe(product => {
+      if(product){
+        this.router.navigate(['/products', product.id, product.name]); 
+      }
+    });
+  }
 
   public onPageChanged(event){
     this.page = event;

@@ -51,7 +51,7 @@ import { ControlsComponent } from './controls/controls.component';
 import { MainCarouselComponent } from './main-carousel/main-carousel.component';
 import { BrandsCarouselComponent } from './brands-carousel/brands-carousel.component';
 import { ProductsCarouselComponent } from './products-carousel/products-carousel.component';
-import { ProductDialogComponent } from './products-carousel/product-dialog/product-dialog.component';
+import { ProductDialogComponent } from '../leap/products-view/components/product-dialog/product-dialog.component';
 import { BannersComponent } from './banners/banners.component';
 import { CategoryListComponent } from './category-list/category-list.component';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
