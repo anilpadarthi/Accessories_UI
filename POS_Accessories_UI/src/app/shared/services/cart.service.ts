@@ -29,7 +29,6 @@ export class CartService {
     constructor(public http:HttpClient, public snackBar: MatSnackBar) { }
     
     public addToCart(product:Product){
-        debugger;
         let message, status;        
        
         this.Data.totalPrice = null;

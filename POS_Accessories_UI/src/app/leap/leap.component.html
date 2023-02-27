@@ -36,7 +36,7 @@
             <div fxLayoutAlign="center center" [@.disabled]="true">
                 <button mat-button [matMenuTriggerFor]="cartMenu" #cartMenuTrigger="matMenuTrigger" class="flex-row-button">
                     <mat-icon>shopping_cart</mat-icon>
-                    <!-- <span *ngIf="cartService.Data.totalCartCount > 0" class="cart-items-count">{{cartService.Data.totalCartCount}}</span> -->
+                    <span *ngIf="cartService.Data.totalCartCount > 0" class="cart-items-count">{{cartService.Data.totalCartCount}}</span>
                     <div fxLayout="column" fxLayoutAlign="center center" fxShow="false" fxShow.gt-xs class="top-cart">
                         <!-- <span *ngIf="cartService.Data.totalCartCount > 0">
                             <bdi>{{cartService.Data.totalCartCount}} item<span *ngIf="cartService.Data.totalCartCount > 1">s</span> - 
