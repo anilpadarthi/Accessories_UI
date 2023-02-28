@@ -41,14 +41,12 @@
       <div class="mat-cell text-right">
         <div fxLayout="column" fxLayoutAlign="center end" class="grand-total px-2">
           <span>SubTotal:</span>
-          <span class="text-muted">Discount:</span>
           <span class="new-price">Grand total:</span>
         </div>        
       </div>
       <div class="mat-cell">
         <div fxLayout="column" fxLayoutAlign="center start" class="grand-total">
           <span>${{ grandTotal | number : '1.2-2'}}</span>
-          <span class="text-muted">15%</span>
           <span class="new-price">${{ (grandTotal - (grandTotal*0.15)) | number : '1.2-2'}}</span>
         </div>
       </div>

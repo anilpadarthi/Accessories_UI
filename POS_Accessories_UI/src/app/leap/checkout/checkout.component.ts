@@ -22,6 +22,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   deliveryMethods = [];
   grandTotal = 0;
   watcher: Subscription;
+  isOrderPlaced:boolean=false;
 
   constructor(public appService:AppService, public formBuilder: UntypedFormBuilder, public mediaObserver: MediaObserver) {
     this.watcher = mediaObserver.asObservable()

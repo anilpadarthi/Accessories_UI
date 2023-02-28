@@ -1,75 +1,56 @@
-   <div>    
-    <div fxLayout="row wrap">
-      <div fxFlex="100" class="p-1">
+<mat-card>
+  <mat-card-header>
+      <mat-card-title class="header-title">Checkout</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <div>
+      <div *ngIf="!isOrderPlaced" fxLayout="row wrap">
+      </div>
+      <div fxLayout="row">
+        <div fxFlex="100" class="p-1">
+          <h3 class="text-muted mt-2">Delivery Address</h3>
+          <div class="divider"></div>
+          <span>Charter House</span><br>
+          <span>25 High street</span><br>
+          <span>Bourne Mouth</span><br>
+          <span>UK</span><br>
+        </div>
+      </div>
+      <div fxLayout="row">
+        <div fxFlex="100" fxFlex.gt-sm="50" class="px-1">
+      <br>
+          <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Payment Mode</mat-label>
+              <mat-select formControlName="categoryId" required>
+                  <mat-option value="cash">
+                      <span>Cash</span>
+                  </mat-option>
+                  <mat-option value="card">
+                    <span>Card</span>
+                </mat-option>
+              </mat-select>
+              <!-- <mat-error *ngIf="form.controls.categoryId.errors?.required">Category is required</mat-error> -->
+          </mat-form-field>
       </div> 
+      </div>
+      <div fxLayout="row" fxLayoutAlign="center center" class="p-1"> 
+         <h2><span class="text-muted mr-1">Total Price:</span><span>${{grandTotal | number : '1.2-2'}}</span></h2>    
+      </div>
+      
+      <div fxLayout="row" fxLayoutAlign="space-between center" class="w-100"> 
+        <a [routerLink]="['/cart']" mat-raised-button color="primary">Return to Cart</a>       
+        <button mat-raised-button  color="primary" (click)="placeOrder()">Place order now</button>       
+      </div>     
     </div>
-    <div fxLayout="row wrap">
-      <div fxFlex="100" class="p-1">
-        <h3 class="text-muted mt-2">Billing information</h3>
-        <div class="divider"></div>
+    <div *ngIf="isOrderPlaced" label="Confirmation">
+      <div fxLayout="column" fxLayoutAlign="center center" class="p-2 text-center"> 
+        <button mat-fab color="primary"><mat-icon>check</mat-icon></button>
+        <h2 class="py-2">Congratulation! Your order has been placed</h2>
       </div>
-      <div fxLayout="column" fxFlex="100" fxFlex.gt-sm="25" class="p-1">
-        <p class="text-muted">Name:</p>
-        <p>{{billingForm.controls.firstName.value}} {{billingForm.controls.lastName.value}}</p>
+      <div fxLayout="row" fxLayoutAlign="center center" class="mt-2 p-1"> 
+        <a [routerLink]="['/products-view']" mat-raised-button color="primary">Return to Shop</a>       
       </div>
-      <div fxLayout="column" fxFlex="100" fxFlex.gt-sm="25" class="p-1">
-        <p class="text-muted">Email:</p>
-        <p>{{billingForm.controls.email.value}}</p>
-      </div>
-      <div fxLayout="column" fxFlex="100" fxFlex.gt-sm="25" class="p-1">
-        <p class="text-muted">Phone:</p>
-        <p>{{billingForm.controls.phone.value}}</p>
-      </div>
-      <div fxLayout="column" fxFlex="100" fxFlex.gt-sm="25" class="p-1">
-        <p class="text-muted">Country:</p>
-        <p>{{billingForm.controls.country.value['name']}}</p>
-      </div>
-      <div fxLayout="column" fxFlex="100" fxFlex.gt-sm="25" class="p-1">
-        <p class="text-muted">City:</p>
-        <p>{{billingForm.controls.city.value}}</p>
-      </div>
-      <div fxLayout="column" fxFlex="100" fxFlex.gt-sm="25" class="p-1">
-        <p class="text-muted">State:</p>
-        <p>{{billingForm.controls.state.value}}</p>
-      </div>
-      <div fxLayout="column" fxFlex="100" fxFlex.gt-sm="25" class="p-1">
-        <p class="text-muted">Zip/PostalCode:</p>
-        <p>{{billingForm.controls.zip.value}}</p>
-      </div>
-      <div fxLayout="column" fxFlex="100" fxFlex.gt-sm="25" class="p-1">
-        <p class="text-muted">Address:</p>
-        <p>{{billingForm.controls.address.value}}</p>
-      </div>
-    </div>
-    <div fxLayout="row">
-      <div fxFlex="100" class="p-1">
-        <h3 class="text-muted mt-2">Delivery information</h3>
-        <div class="divider"></div>
-        <p class="py-1">{{deliveryForm.controls.deliveryMethod.value['name']}} <span class="text-muted">{{deliveryForm.controls.deliveryMethod.value['desc']}}</span></p>
-      </div>
-    </div>
-    <div fxLayout="row">
-      <div fxFlex="100" class="p-1">
-        <h3 class="text-muted mt-2">Payment information</h3>
-        <div class="divider"></div>
-        <p class="py-1"><span class="text-muted mr-1">Card number:</span><span>XXX-XXX-XXX-7224</span></p>
-      </div>
-    </div>
-    <div fxLayout="row" fxLayoutAlign="center center" class="p-1"> 
-       <h2><span class="text-muted mr-1">Total Price:</span><span>${{grandTotal | number : '1.2-2'}}</span></h2>    
-    </div>
-    <div fxLayout="row" fxLayoutAlign="center center" class="mt-2 p-1"> 
-      <button mat-mini-fab  color="primary" matTooltip="Back" matTooltipPosition="before" class="mr-1"><mat-icon>navigate_before</mat-icon></button>
-      <button mat-raised-button  color="primary" (click)="placeOrder()">Place order now</button>       
-    </div>     
-  </div>
-  <div label="Confirmation">
-    <div fxLayout="column" fxLayoutAlign="center center" class="p-2 text-center"> 
-      <button mat-fab color="primary"><mat-icon>check</mat-icon></button>
-      <h2 class="py-2">Congratulation! Your order has been placed</h2>
-      <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tempus dolor ante, ut luctus mi faucibus a. Ut eu tincidunt neque. Proin porttitor id ligula id placerat. Integer nec nulla varius, dapibus libero quis, semper eros. Aliquam erat volutpat. Proin volutpat tellus vel purus interdum euismod.</p>
-    </div>
-    <div fxLayout="row" fxLayoutAlign="center center" class="mt-2 p-1"> 
-      <a [routerLink]="['/products-view']" mat-raised-button color="primary">Return to Shop</a>       
-    </div>
-  </div>
+    </div>  
+  </mat-card-content>
+</mat-card>
+ 
