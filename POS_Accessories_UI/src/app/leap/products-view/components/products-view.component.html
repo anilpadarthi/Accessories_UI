@@ -109,13 +109,12 @@
                         {{product.productName}}
                     </a>
                     {{product.productCode}}
-                    <!-- <div fxLayout="row" fxLayoutAlign="space-between center" class="prices">
+                    <div fxLayout="row" fxLayoutAlign="space-between center" class="prices">
                         <div fxLayout="column" fxLayoutAlign="center start">
-                            <p class="old-price text-muted"><span *ngIf="product.oldPrice">${{product.oldPrice | number : '1.2-2'}}</span></p>
-                            <p class="new-price">${{product.newPrice | number : '1.2-2'}}</p>
+                            <!-- <p class="old-price text-muted"><span *ngIf="product.oldPrice">${{product.oldPrice | number : '1.2-2'}}</span></p> -->
+                            <p class="new-price">€{{product.newPrice | number : '1.2-2'}}</p>
                         </div>
-                        <app-rating [ratingsCount]="product.ratingsCount" [ratingsValue]="product.ratingsValue" [direction]="'column'"></app-rating>
-                    </div>                             -->
+                    </div>                            
                     <div class="divider mt-2"></div>
                     <div class="icons">
                         <app-controls [product]="product" (onOpenProductDialog)="openProductDialog(product)"></app-controls>
@@ -142,7 +141,7 @@
                             <p class="py-1 text-muted lh">{{product.description}}</p>
                             <div fxLayout="row" fxLayoutAlign="space-between center" class="prices">
                                 <div fxLayout="column" fxLayoutAlign="center start">
-                                    <p class="old-price text-muted"><span *ngIf="product.oldPrice">€{{product.oldPrice | number : '1.2-2'}}</span></p>
+                                    <!-- <p class="old-price text-muted"><span *ngIf="product.oldPrice">€{{product.oldPrice | number : '1.2-2'}}</span></p> -->
                                     <p class="new-price">€{{product.newPrice | number : '1.2-2'}}</p>
                                 </div>
                             </div>                            

@@ -59,9 +59,9 @@
                                 <mat-list-item *ngFor="let product of cartService.Data.cartList">                                   
                                     <h3 matLine class="text-muted"> {{product.name}} </h3>
                                     <p matLine class="text-muted">
-                                        <bdi>{{product.cartCount}} x ${{product.newPrice | number : '1.2-2'}}</bdi>
+                                        <bdi>{{product.cartCount}} x €{{product.newPrice | number : '1.2-2'}}</bdi>
                                     </p>
-                                    <!-- <img  [src]="product.images[0].small" alt="image"> -->
+                                    <!-- <img  [src]="" alt="image"> -->
                                     <button mat-icon-button color="warn" class="remove" (click)="remove(product);stopClickPropagate($event)" matTooltip="Remove" matTooltipPosition="before">
                                         <mat-icon class="mat-icon-sm">close</mat-icon>
                                     </button>
@@ -71,7 +71,7 @@
                                 <div class="divider mt-1"></div>
                                 <div fxLayout="row" fxLayoutAlign="space-between center" class="text-muted mt-1">
                                     <b>TOTAL:</b>
-                                    <b class="new-price">${{cartService.Data.totalPrice | number : '1.2-2'}}</b>
+                                    <b class="new-price">€{{cartService.Data.totalPrice | number : '1.2-2'}}</b>
                                 </div>
                                 <div class="divider mt-1"></div>
                                 <div fxLayout="row" fxLayoutAlign="space-between center" class="mt-1">

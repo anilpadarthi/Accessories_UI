@@ -74,6 +74,12 @@ export class ProductsComponent implements OnInit {
   public getAllProducts(){
     this.productService.getProductList().subscribe(res=>{
       this.products = res.data; 
+      //TODO:remove this hardcodings
+      this.products.forEach(a => {
+        a.availibilityCount = 10;
+        a.newPrice = a.productId *10;
+        a.oldPrice = a.productId *10;
+      })
       //for show more product  
       // for (var index = 0; index < 3; index++) {
       //   this.products = this.products.concat(this.products);        

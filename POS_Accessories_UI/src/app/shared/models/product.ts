@@ -18,5 +18,7 @@ export class Product {
               public images?: string,
               public priceList?:ProductPriceList[],
               public cartCount?:number,
-              public availibilityCount?:number){ }
+              public availibilityCount?:number,
+              public newPrice?:number,
+              public oldPrice?:number){ }
 }
