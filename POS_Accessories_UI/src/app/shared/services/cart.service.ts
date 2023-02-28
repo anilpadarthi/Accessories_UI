@@ -42,7 +42,7 @@ export class CartService {
             this.Data.cartList.push(product);
         }        
         this.Data.cartList.forEach(product=>{
-            // this.Data.totalPrice = this.Data.totalPrice + (product.cartCount * product.newPrice);
+            this.Data.totalPrice = this.Data.totalPrice + (product.cartCount * product.newPrice);
             this.Data.totalCartCount = this.Data.totalCartCount + product.cartCount;
         });
 

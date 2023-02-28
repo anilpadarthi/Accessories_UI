@@ -45,7 +45,7 @@ export class ControlsComponent implements OnInit {
       let obj = {
         productId: this.product.productId,
         soldQuantity: this.count,
-        // total: this.count * this.product.newPrice
+        total: this.count * this.product.newPrice
       }
       this.changeQuantity(obj);
     }
@@ -60,7 +60,7 @@ export class ControlsComponent implements OnInit {
       let obj = {
         productId: this.product.productId,
         soldQuantity: this.count,
-        // total: this.count * this.product.newPrice
+        total: this.count * this.product.newPrice
       }
       this.changeQuantity(obj);
     }
