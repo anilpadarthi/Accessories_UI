@@ -72,14 +72,4 @@ export class CartComponent implements OnInit {
       this.cartService.resetProductCartCount(product);
     }     
   }
-
-  public clear(){
-    this.cartService.Data.cartList.forEach(product=>{
-      this.cartService.resetProductCartCount(product);
-    });
-    this.cartService.Data.cartList.length = 0;
-    this.cartService.Data.totalPrice = 0;
-    this.cartService.Data.totalCartCount = 0;
-  } 
-
 }

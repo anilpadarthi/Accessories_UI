@@ -16,11 +16,6 @@
       <div class="mat-header-cell">Price</div>      
       <div class="mat-header-cell">Quantity</div>
       <div class="mat-header-cell">Total</div>
-      <div class="mat-header-cell text-center">
-        <div class="px-1">
-          <button mat-raised-button color="warn" (click)="clear()">Clear All</button>
-        </div>
-      </div>
     </div>
     <div *ngFor="let product of cartService.Data.cartList" class="mat-row">
       <!-- <div class="mat-cell"><img [src]="product.images[0].small"></div> -->

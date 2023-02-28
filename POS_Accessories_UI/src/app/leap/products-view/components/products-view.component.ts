@@ -37,6 +37,7 @@ export class ProductsComponent implements OnInit {
   public sizes = []; 
   public page:any;
   public settings: Settings;
+  public showExtraFilter:boolean = false;
   constructor(public appSettings:AppSettings, 
               private activatedRoute: ActivatedRoute, 
               private lookupService:LookupService,
@@ -64,8 +65,10 @@ export class ProductsComponent implements OnInit {
 
    this.getCategories();
    this.getAllProducts();  
-   this.getColours();
-   this.getSizes(); 
+   if(this.showExtraFilter){
+      this.getColours();
+      this.getSizes(); 
+   }
   }
 
   public getAllProducts(){
@@ -151,5 +154,4 @@ export class ProductsComponent implements OnInit {
       this.router.navigate(['/products', event.target.innerText.toLowerCase()]); 
     }   
   }
-
 }

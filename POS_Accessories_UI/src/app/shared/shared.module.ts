@@ -39,7 +39,7 @@ import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
-
+import {IsEllipsisActive } from './directives/isEllipsisActive'
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   wheelPropagation: true,
   suppressScrollX: true               
@@ -147,7 +147,8 @@ import { LangComponent } from './lang/lang.component';
     BannersComponent,
     CategoryListComponent,
     ConfirmDialogComponent,
-    LangComponent
+    LangComponent,
+    IsEllipsisActive
   ],
   declarations: [
     RatingComponent,
@@ -159,7 +160,8 @@ import { LangComponent } from './lang/lang.component';
     BannersComponent,
     CategoryListComponent,
     ConfirmDialogComponent,
-    LangComponent
+    LangComponent,
+    IsEllipsisActive
   ], 
   providers:[
     { provide: PERFECT_SCROLLBAR_CONFIG, useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG }

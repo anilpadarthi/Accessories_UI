@@ -3,11 +3,10 @@ import { ActivatedRoute } from '@angular/router';
 import { UntypedFormBuilder, UntypedFormGroup, FormControl, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { SwiperConfigInterface, SwiperDirective } from 'ngx-swiper-wrapper';
-// import { Data, AppService } from '../../../app.service';
-// import { Product } from "../../../app.models";
-// import { emailValidator } from '../../../theme/utils/app-validators';
+import { Data, CartService } from 'src/app/shared/services/cart.service';
+import { Product } from 'src/app/shared/models/product'
 import { ProductZoomComponent } from './product-zoom/product-zoom.component';
-
+import { emailValidator } from 'src/app/theme/utils/app-validators';
 @Component({
   selector: 'app-product',
   templateUrl: './product.component.html',
@@ -17,14 +16,14 @@ export class ProductComponent implements OnInit {
   @ViewChild('zoomViewer', { static: true }) zoomViewer;
   @ViewChild(SwiperDirective, { static: true }) directiveRef: SwiperDirective;
   public config: SwiperConfigInterface={};
-  // public product: Product;
+  public product: Product;
   public image: any;
   public zoomImage: any;
   private sub: any;
   public form: UntypedFormGroup;
   // public relatedProducts: Array<Product>;
 
-  constructor(/*public appService:AppService,*/ private activatedRoute: ActivatedRoute, public dialog: MatDialog, public formBuilder: UntypedFormBuilder) {  }
+  constructor(public cartService:CartService, private activatedRoute: ActivatedRoute, public dialog: MatDialog, public formBuilder: UntypedFormBuilder) {  }
 
   ngOnInit() {      
     this.sub = this.activatedRoute.params.subscribe(params => { 
@@ -33,7 +32,7 @@ export class ProductComponent implements OnInit {
     this.form = this.formBuilder.group({ 
       'review': [null, Validators.required],            
       'name': [null, Validators.compose([Validators.required, Validators.minLength(4)])],
-      // 'email': [null, Validators.compose([Validators.required, emailValidator])]
+      'email': [null, Validators.compose([Validators.required, emailValidator])]
     }); 
     // this.getRelatedProducts();    
   }

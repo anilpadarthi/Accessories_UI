@@ -8,12 +8,12 @@
                         <h4>Categories</h4>
                     </mat-panel-title>
                 </mat-expansion-panel-header>
-                <div class="categories-wrapper categories-dropdown" perfectScrollbar>
+                <div class="categories-dropdown" perfectScrollbar>
                     <app-category-list [categories]="categories" [categoryParentId]="0" (change)="onChangeCategory($event)"></app-category-list>
                 </div>
             </mat-expansion-panel>
 
-            <mat-expansion-panel expanded>
+            <mat-expansion-panel expanded *ngIf="showExtraFilter">
                 <mat-expansion-panel-header>
                     <mat-panel-title>
                         <h4>Price</h4>
@@ -29,7 +29,7 @@
                 </div>
             </mat-expansion-panel>
 
-            <mat-expansion-panel expanded>
+            <mat-expansion-panel expanded *ngIf="showExtraFilter">
                 <mat-expansion-panel-header>
                     <mat-panel-title>
                         <h4>Color</h4>
@@ -43,7 +43,7 @@
                 </div>
             </mat-expansion-panel>
 
-            <mat-expansion-panel expanded>
+            <mat-expansion-panel expanded *ngIf="showExtraFilter">
                 <mat-expansion-panel-header>
                     <mat-panel-title>
                         <h4>Size</h4>
@@ -101,13 +101,14 @@
         <div *ngIf="viewType == 'grid'" fxLayout="row wrap" class="products-wrapper">
             <div *ngFor="let product of products | paginate: { itemsPerPage: count, currentPage: page }" fxFlex="100" [fxFlex.gt-sm]="viewCol" fxFlex.sm="50" class="col">
                 <mat-card class="product-item text-center">
-                    <a [routerLink]="['/products', product.productId,product.productName]" class="image-link">
+                    <a [routerLink]="['/products-view', product.productId,product.productName]" class="image-link">
                         <img [src]="" alt="">
                     </a>
                     <!-- <h4 class="category text-muted">{{ ( appService.Data.categories | filterById : product.categoryId )?.name }}</h4>                                                                      -->
-                    <a [routerLink]="['/products', product.productId, product.productName]" class="title text-truncate">
+                    <a [routerLink]="['/products-view', product.productId, product.productName]" isEllipsisActive class="title text-truncate">
                         {{product.productName}}
                     </a>
+                    {{product.productCode}}
                     <!-- <div fxLayout="row" fxLayoutAlign="space-between center" class="prices">
                         <div fxLayout="column" fxLayoutAlign="center start">
                             <p class="old-price text-muted"><span *ngIf="product.oldPrice">${{product.oldPrice | number : '1.2-2'}}</span></p>
@@ -128,15 +129,16 @@
                 <mat-card class="product-item">
                     <div fxLayout="row wrap">
                         <div fxFlex="100" fxFlex.gt-xs="40" class="p-2">
-                            <a [routerLink]="['/products', product.productId, product.productName]" class="image-link">
+                            <a [routerLink]="['/products-view', product.productId, product.productName]" class="image-link">
                                 <img [src]="" alt="">
                             </a>
                         </div>
                         <div fxFlex="100" fxFlex.gt-xs="60" class="p-2">
                             <!-- <h4 class="category text-muted">{{ ( cartService.Data.categories | filterById : product.categoryId )?.name }}</h4>                                                                      -->
-                            <a [routerLink]="['/products', product.productId, product.productName]" class="title">
+                            <a [routerLink]="['/products-view', product.productId, product.productName]" class="title">
                                 {{product.productName}}
                             </a>
+                            {{product.productCode}}
                             <p class="py-1 text-muted lh">{{product.description}}</p>
                             <div fxLayout="row" fxLayoutAlign="space-between center" class="prices">
                                 <div fxLayout="column" fxLayoutAlign="center start">
