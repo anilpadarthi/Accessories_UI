@@ -37,13 +37,6 @@
                 <button mat-button [matMenuTriggerFor]="cartMenu" #cartMenuTrigger="matMenuTrigger" class="flex-row-button">
                     <mat-icon>shopping_cart</mat-icon>
                     <span *ngIf="cartService.Data.totalCartCount > 0" class="cart-items-count">{{cartService.Data.totalCartCount}}</span>
-                    <div fxLayout="column" fxLayoutAlign="center center" fxShow="false" fxShow.gt-xs class="top-cart">
-                        <!-- <span *ngIf="cartService.Data.totalCartCount > 0">
-                            <bdi>{{cartService.Data.totalCartCount}} item<span *ngIf="cartService.Data.totalCartCount > 1">s</span> - 
-                                $<span>{{cartService.Data.totalPrice | number : '1.2-2'}}</span>
-                            </bdi>
-                        </span> -->
-                    </div>
                     <mat-icon class="mat-icon-sm">arrow_drop_down</mat-icon>
                 </button>
                 <mat-menu #cartMenu="matMenu" [overlapTrigger]="false" xPosition="before" class="top-menu-dropdown cart-dropdown">
@@ -57,7 +50,7 @@
                             <div *ngIf="cartService.Data.totalCartCount == 0" class="py-1 text-muted text-center">You have no items in your shopping cart.</div>
                             <mat-list>
                                 <mat-list-item *ngFor="let product of cartService.Data.cartList">                                   
-                                    <h3 matLine class="text-muted"> {{product.name}} </h3>
+                                    <h3 matLine class="text-muted"> {{product.productName}} </h3>
                                     <p matLine class="text-muted">
                                         <bdi>{{product.cartCount}} x €{{product.newPrice | number : '1.2-2'}}</bdi>
                                     </p>
