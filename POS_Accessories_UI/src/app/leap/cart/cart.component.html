@@ -20,7 +20,7 @@
       <div class="mat-header-cell"></div>
     </div>
     <div *ngFor="let product of cartService.Data.cartList" class="mat-row">
-      <div class="mat-cell"><img [src]=""></div>
+      <div class="mat-cell"><img [src]="'assets/images/products/keyboard/1-medium.png'"></div>
       <div class="mat-cell"><a [routerLink]="['/products-view', product.productId, product.productName]" class="product-name">{{product.productName}}</a></div>
       <div class="mat-cell">{{product.productCode}}</div>
       <div class="mat-cell">€{{product.newPrice | number : '1.2-2'}}</div>      

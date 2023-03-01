@@ -102,13 +102,13 @@
             <div *ngFor="let product of products | paginate: { itemsPerPage: count, currentPage: page }" fxFlex="100" [fxFlex.gt-sm]="viewCol" fxFlex.sm="50" class="col">
                 <mat-card class="product-item text-center">
                     <a [routerLink]="['/products-view', product.productId,product.productName]" class="image-link">
-                        <img [src]="" alt="">
+                        <img [src]="'assets/images/products/keyboard/1-medium.png'" alt="">
                     </a>
                     <!-- <h4 class="category text-muted">{{ ( appService.Data.categories | filterById : product.categoryId )?.name }}</h4>                                                                      -->
                     <a [routerLink]="['/products-view', product.productId, product.productName]" isEllipsisActive class="title text-truncate">
                         {{product.productName}}
                     </a>
-                    {{product.productCode}}
+                    <span class="productCodeColor">{{product.productCode}}</span>
                     <div fxLayout="row" fxLayoutAlign="space-between center" class="prices">
                         <div fxLayout="column" fxLayoutAlign="center start">
                             <!-- <p class="old-price text-muted"><span *ngIf="product.oldPrice">${{product.oldPrice | number : '1.2-2'}}</span></p> -->
@@ -137,7 +137,7 @@
                             <a [routerLink]="['/products-view', product.productId, product.productName]" class="title">
                                 {{product.productName}}
                             </a>
-                            {{product.productCode}}
+                            <span class="productCodeColor">{{product.productCode}}</span>
                             <p class="py-1 text-muted lh">{{product.description}}</p>
                             <div fxLayout="row" fxLayoutAlign="space-between center" class="prices">
                                 <div fxLayout="column" fxLayoutAlign="center start">

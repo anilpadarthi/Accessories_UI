@@ -11,7 +11,6 @@ import { CartService } from 'src/app/shared/services/cart.service'
   styleUrls: ['./checkout.component.scss']
 })
 export class CheckoutComponent implements OnInit, OnDestroy {
-  @ViewChild('horizontalStepper') horizontalStepper: MatStepper;
   stepperOrientation: 'horizontal' | 'vertical' = "horizontal";
   billingForm: UntypedFormGroup;
   deliveryForm: UntypedFormGroup;
@@ -47,37 +46,13 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     this.cartService.Data.cartList.forEach(product=>{
       this.grandTotal += product.cartCount*product.newPrice;
     });
-    this.billingForm = this.formBuilder.group({
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      middleName: '',
-      company: '',
-      email: ['', Validators.required],
-      phone: ['', Validators.required],
-      country: ['', Validators.required],
-      city: ['', Validators.required],
-      state: '',
-      zip: ['', Validators.required],
-      address: ['', Validators.required]
-    });
-    this.deliveryForm = this.formBuilder.group({
-      deliveryMethod: [this.deliveryMethods[0], Validators.required]
-    });
-    this.paymentForm = this.formBuilder.group({
-      cardHolderName: ['', Validators.required],
-      cardNumber: ['', Validators.required],
-      expiredMonth: ['', Validators.required],
-      expiredYear: ['', Validators.required],
-      cvv: ['', Validators.required]
-    });
   }
 
   ngOnDestroy() { 
     this.watcher.unsubscribe();
   } 
 
-  public placeOrder(){
-    this.horizontalStepper._steps.forEach(step => step.editable = false);
+  public placeOrder(){  
     this.cartService.Data.cartList.length = 0;    
     this.cartService.Data.totalPrice = 0;
     this.cartService.Data.totalCartCount = 0;
