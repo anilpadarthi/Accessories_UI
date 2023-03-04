@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Product } from 'src/app/shared/models/product';
 import { Data, CartService } from '../../shared/services/cart.service';
 
 
@@ -23,10 +24,11 @@ export class CartComponent implements OnInit {
     })
   }
 
-  public updateCart(value){
-    if(value){
-      this.total[value.productId] = value.total;
-      this.cartItemCount[value.productId] = value.soldQuantity;
+  public updateCart(updatedQuantity:any, updatedProduct:Product){
+    updatedQuantity = parseInt(updatedQuantity)
+    if(updatedQuantity){
+      this.total[updatedProduct.productId] = updatedQuantity*updatedProduct.newPrice;
+      this.cartItemCount[updatedProduct.productId] = updatedQuantity;
       this.grandTotal = 0;
       this.total.forEach(price=>{
         this.grandTotal += price;

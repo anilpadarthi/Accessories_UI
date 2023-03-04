@@ -114,11 +114,10 @@
                             <!-- <p class="old-price text-muted"><span *ngIf="product.oldPrice">${{product.oldPrice | number : '1.2-2'}}</span></p> -->
                             <p class="new-price">€{{product.newPrice | number : '1.2-2'}}</p>
                         </div>
-                    </div>                            
-                    <div class="divider mt-2"></div>
-                    <div class="icons">
-                        <app-controls [product]="product" (onOpenProductDialog)="openProductDialog(product)"></app-controls>
-                    </div>
+                        <div>
+                            <app-controls [product]="product" (onOpenProductDialog)="openProductDialog(product)"></app-controls>
+                        </div>
+                    </div>                        
                 </mat-card>
             </div>
         </div>
