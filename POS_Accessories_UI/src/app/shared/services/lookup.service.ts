@@ -34,4 +34,8 @@ export class LookupService {
   getConfigurationTypes(): Observable<any> {
     return this.http.get<any>(this.url+'ConfigurationTypes');
   }
+
+  getProducts(): Observable<any> {
+    return this.http.get<any>(this.url+'Products');
+  }
 }

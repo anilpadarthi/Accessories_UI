@@ -30,6 +30,7 @@ export const routes = [
       { path: 'products-view', loadChildren: () => import('./products-view/products-view.module').then(m => m.ProductsViewModule) },
       { path: 'checkout', loadChildren: () => import('./checkout/checkout.module').then(m => m.CheckoutModule) },
       { path: 'cart', loadChildren: () => import('./cart/cart.module').then(m => m.CartModule) },
+      { path: 'stock-inventory', loadChildren: () => import('./stock-inventory/stock-inventory.module').then(m => m.StockInventoryModule) },
     ]
   },
   { path: 'error', component: ErrorComponent}

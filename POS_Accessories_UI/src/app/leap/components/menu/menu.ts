@@ -10,6 +10,7 @@ export const menuItems = [
     new Menu (70, 'LEAP_NAV.CREATE_ORDER', '/products-view', null, 'border_outer', "_blank", false, 50), 
     new Menu (80, 'LEAP_NAV.COUPON', '/coupon', null, 'card_giftcard', null, false, 0),  
     new Menu (90, 'LEAP_NAV.CONFIGURATION', '/configuration', null, 'settings', null, false, 0),  
-    new Menu (100, 'LEAP_NAV.Accountability', '/accountability', null, 'inventory', null, false, 0),  
-    new Menu (110, 'LEAP_NAV.THEME', '/admin', null, 'admin', null, false, 0),  
+    new Menu (100, 'LEAP_NAV.Accountability', '/accountability', null, 'assignment', null, false, 0),  
+    new Menu (110, 'LEAP_NAV.INVENTORY', '/stock-inventory', null, 'inventory', null, false, 0),  
+    new Menu (120, 'LEAP_NAV.THEME', '/admin', null, 'admin', null, false, 0),  
 ]

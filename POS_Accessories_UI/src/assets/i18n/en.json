@@ -58,6 +58,7 @@
     "CONFIGURATION":"Configuration",
     "Accountability":"Accountability",
     "CREATE_ORDER":"Create Order",
+    "INVENTORY":"Inventory",
     "ORDER_LIST":"Order List",
     "THEME": "Theme"
   },
