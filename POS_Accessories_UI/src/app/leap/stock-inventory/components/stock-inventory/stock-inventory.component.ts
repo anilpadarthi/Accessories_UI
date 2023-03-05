@@ -49,22 +49,7 @@ export class StockInventoryComponent implements OnInit {
   }
 
   loadData(): void {
-    const request = {
-      pageNo: this.pageIndex,
-      pageSize: this.pageSize,
-      searchText: this.searchText
-    };
-
-  this.getProducts();
-
-  
-      this.stockInventoryService.getAll(request).subscribe((res) => {
-        res.data.results.forEach(element => {
-          element.productName = this.products.find(a => a.id == element.productId).name;
-        });
-        this.tableDataSource = res.data.results;
-        this.totalCount = res.data.totalRecords;
-    });
+     this.getProducts();
   }
 
   handlePageEvent(event: PageEvent): void {
@@ -92,6 +77,18 @@ export class StockInventoryComponent implements OnInit {
   getProducts(){
     this.lookupService.getProducts().subscribe(res => {
       this.products = res.data;
+      const request = {
+        pageNo: this.pageIndex,
+        pageSize: this.pageSize,
+        searchText: this.searchText
+      };
+      this.stockInventoryService.getAll(request).subscribe((res) => {
+        res.data.results.forEach(element => {
+          element.productName = this.products.find(a => a.id == element.productId).name;
+        });
+        this.tableDataSource = res.data.results;
+        this.totalCount = res.data.totalRecords;
+    });
     });
   }
 
