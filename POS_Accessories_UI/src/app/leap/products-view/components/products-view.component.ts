@@ -11,6 +11,9 @@ import { SubCategory } from 'src/app/shared/models/subCategory';
 import { SubCategoryService } from 'src/app/shared/services/subCategory.service';
 import { LookupService } from 'src/app/shared/services/lookup.service';
 import { ProductDialogComponent } from './product-dialog/product-dialog.component';
+import { PaginatorConstants } from 'src/app/shared/models/paginator-constants';
+import { parseTemplate } from '@angular/compiler';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-products-view',
@@ -23,7 +26,6 @@ export class ProductsComponent implements OnInit {
   private sub: any;
   public viewType: string = 'grid';
   public viewCol: number = 25;
-  public counts = [12, 24, 36];
   public count:any;
   public sortings = ['Sort by Default', 'Best match', 'Lowest first', 'Highest first'];
   public sort:any;
@@ -38,6 +40,14 @@ export class ProductsComponent implements OnInit {
   public page:any;
   public settings: Settings;
   public showExtraFilter:boolean = false;
+  pageSize = 20;
+  pageOptions = PaginatorConstants.LEAP_STANDARD_PAGE_OPTIONS;
+  pageIndex = 1;
+  pageEvent: PageEvent | undefined;
+  totalCount!: number;
+  categoryId:number;
+  subCategoryId:number;
+  
   constructor(public appSettings:AppSettings, 
               private activatedRoute: ActivatedRoute, 
               private lookupService:LookupService,
@@ -51,20 +61,36 @@ export class ProductsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.count = this.counts[0];
     this.sort = this.sortings[0];
-    this.sub = this.activatedRoute.params.subscribe(params => {
-      //console.log(params['name']);
-    });
+    
     if(window.innerWidth < 960){
       this.sidenavOpen = false;
     };
     if(window.innerWidth < 1280){
       this.viewCol = 33.3;
     };
-
-   this.getCategories();
-   this.getAllProducts();  
+    
+    this.getCategories();
+    this.sub = this.activatedRoute.params.subscribe(params => {
+      if(params['name'])
+      {
+          this.categories.forEach(a =>{
+            if(a.categoryName.toLowerCase() == params['name'])
+            {
+              this.categoryId = a.categoryId;
+            }
+            if(a.subCategories)
+              {
+                  a.subCategories.forEach(s => {
+                    if(s.subCategoryName.toLowerCase() == params['name']){
+                      this.subCategoryId = s.subCategoryId;
+                    }
+                  })
+              }
+          });
+      }
+      this.getAllProducts();  
+    });
    if(this.showExtraFilter){
       this.getColours();
       this.getSizes(); 
@@ -72,18 +98,21 @@ export class ProductsComponent implements OnInit {
   }
 
   public getAllProducts(){
-    this.productService.getProductList().subscribe(res=>{
-      this.products = res.data; 
+    let request = {
+      pageNo: this.pageIndex,
+      pageSize: this.pageSize,
+      categoryId: this.categoryId,
+      subCategoryId:this.subCategoryId
+    };
+    this.productService.getAll(request).subscribe(res=>{
+      this.products = res.data.results; 
+      this.totalCount = res.data.totalRecords;
       //TODO:remove this hardcodings
       this.products.forEach(a => {
         a.availibilityCount = 10;
         a.newPrice = a.productId *10;
         a.oldPrice = a.productId *10;
       })
-      //for show more product  
-      // for (var index = 0; index < 3; index++) {
-      //   this.products = this.products.concat(this.products);        
-      // }
     });
   }
 
@@ -147,9 +176,11 @@ export class ProductsComponent implements OnInit {
     });
   }
 
-  public onPageChanged(event){
-    this.page = event;
-    this.getAllProducts(); 
+  handlePageEvent(event: PageEvent): void {
+    this.pageEvent = event;
+    this.pageIndex = event.pageIndex + 1;
+    this.pageSize = event.pageSize;
+    this.getAllProducts();
     if (isPlatformBrowser(this.platformId)) {
       window.scrollTo(0,0);
     } 
@@ -157,7 +188,7 @@ export class ProductsComponent implements OnInit {
 
   public onChangeCategory(event){
     if(event.target){
-      this.router.navigate(['/products', event.target.innerText.toLowerCase()]); 
+      this.router.navigate(['/products-view', event.target.innerText.toLowerCase()]); 
     }   
   }
 }

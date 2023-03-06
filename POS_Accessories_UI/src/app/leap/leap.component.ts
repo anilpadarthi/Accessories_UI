@@ -15,7 +15,7 @@ export class LeapComponent implements OnInit {
   public settings:Settings;
   public menuItems:Array<any>;
   public toggleSearchBar:boolean = false;
-  public hideSideNavUrl=['/products-view'];
+  public hideSideNavUrl='/products-view';
   constructor(public appSettings:AppSettings, 
               public router:Router,
               private menuService: MenuService,
@@ -75,7 +75,7 @@ export class LeapComponent implements OnInit {
 		if (!this.router.url) {
 			return false;
 		}
-		const index = this.hideSideNavUrl.indexOf(this.router.url);
+		const index = this.router.url.indexOf(this.hideSideNavUrl);
 		if (index >= 0) {
 			return true; 
 		} else {

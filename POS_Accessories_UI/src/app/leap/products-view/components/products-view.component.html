@@ -76,16 +76,6 @@
                 </mat-menu>
             </div>
             <div>
-                <a mat-button [matMenuTriggerFor]="countsMenu" #countsMenuTrigger="matMenuTrigger">
-                    Show {{count}}<mat-icon class="mat-icon-sm caret">arrow_drop_down</mat-icon>
-                </a>
-                <mat-menu #countsMenu="matMenu" xPosition="before" class="app-dropdown" overlapTrigger="true">
-                    <span (mouseleave)="countsMenuTrigger.closeMenu()">
-                        <button mat-menu-item *ngFor="let count of counts" (click)="changeCount(count)">
-                            <span>{{count}}</span>
-                        </button>
-                    </span>
-                </mat-menu>
                 <button mat-icon-button (click)="changeViewType('list', 100)">
                     <mat-icon>view_list</mat-icon>
                 </button>
@@ -156,9 +146,12 @@
 
         <div *ngIf="products.length > 0" fxLayout="row wrap">
             <div fxFlex="100"> 
-                <mat-card class="p-0 text-center">           
-                    <pagination-controls class="product-pagination" autoHide="true" maxSize="5" (pageChange)="onPageChanged($event)"></pagination-controls>
+                <mat-card class="p-0 text-center">          
+                    <mat-paginator #paginator [length]="totalCount" [pageSize]="pageSize" [pageSizeOptions]="pageOptions"
+                [showFirstLastButtons]="true" (page)="handlePageEvent($event)">
+                    </mat-paginator> 
                 </mat-card>
+                
             </div>
         </div>
         
