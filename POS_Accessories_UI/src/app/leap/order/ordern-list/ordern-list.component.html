@@ -1,7 +1,7 @@
 <div class="p-1">
     <mat-card class="p-0">
         <div fxLayout="row wrap" fxLayoutAlign="space-between center" class="w-100 p-2">
-            <h2>Category List</h2>
+            <h2>Order List</h2>
         </div>
         <div class="filter-controls">
             <div class="row wrap">
@@ -16,21 +16,34 @@
                     <mat-icon>search</mat-icon> search
                 </button>
 
-                <button mat-raised-button color="primary" (click)="openCategoryDialog(null)">
-                    <mat-icon>add</mat-icon> Add Category</button>
+                <button mat-raised-button color="primary" (click)="openOrderDialog(null)">
+                    <mat-icon>add</mat-icon> Add Order</button>
             </div>
         </div>
 
         <div class="results mat-elevation-z8">
             <mat-table #table [dataSource]="bogusDataSource">
-                <ng-container matColumnDef="Id">
+                <ng-container matColumnDef="OrderId">
                     <mat-header-cell *matHeaderCellDef> Id </mat-header-cell>
                 </ng-container>
-                <ng-container matColumnDef="Name">
-                    <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+                <ng-container matColumnDef="CreatedDate">
+                    <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
                 </ng-container>
-                <ng-container matColumnDef="Status">
+                <ng-container matColumnDef="User">
+                    <mat-header-cell *matHeaderCellDef> User </mat-header-cell>
+                </ng-container>
+               
+                <ng-container matColumnDef="Shop">
+                    <mat-header-cell *matHeaderCellDef> Shop </mat-header-cell>
+                </ng-container>
+                <ng-container matColumnDef="NetAmount">
+                    <mat-header-cell *matHeaderCellDef> NetAmount </mat-header-cell>
+                </ng-container>
+                <ng-container matColumnDef="OrderStatus">
                     <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
+                </ng-container>
+                <ng-container matColumnDef="PaymenthMethod">
+                    <mat-header-cell *matHeaderCellDef> Pay. Method </mat-header-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="Actions">
@@ -43,20 +56,29 @@
 
             <div class="example-container">
                 <mat-table #table [dataSource]="tableDataSource">
-                    <ng-container matColumnDef="Id">
-                        <mat-cell *matCellDef="let element"> {{ element.categoryId }} </mat-cell>
+                    <ng-container matColumnDef="OrderId">
+                        <mat-cell *matCellDef="let element"> {{ element.orderId }} </mat-cell>
                     </ng-container>
 
-                    <ng-container matColumnDef="Name">
-                        <mat-cell *matCellDef="let element"> {{ element.categoryName }} </mat-cell>
+                    <ng-container matColumnDef="CreatedDate">
+                        <mat-cell *matCellDef="let element"> {{ element.createdDate }} </mat-cell>
                     </ng-container>
-
-                    <ng-container matColumnDef="Status">
-                        <mat-cell *matCellDef="let element">
-                            <mat-slide-toggle [checked]="element.status" (change)="updateStatus(element)">
-                            </mat-slide-toggle>
-                        </mat-cell>
+                    <ng-container matColumnDef="User">
+                        <mat-cell *matCellDef="let element"> {{ element.userId }} </mat-cell>
                     </ng-container>
+                    <ng-container matColumnDef="Shop">
+                        <mat-cell *matCellDef="let element"> {{ element.shopId }} </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="NetAmount">
+                        <mat-cell *matCellDef="let element"> {{ element.netAmount }} </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="OrderStatus">
+                        <mat-cell *matCellDef="let element"> {{ element.orderStatus }} </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="PaymenthMethod">
+                        <mat-cell *matCellDef="let element"> {{ element.paymentMethod }} </mat-cell>
+                    </ng-container>
+                   
 
                     <ng-container matColumnDef="Actions">
                         <mat-cell *matCellDef="let element">

@@ -17,9 +17,18 @@ export class CategoryDialogComponent implements OnInit {
   public form: UntypedFormGroup;
   private sub: any;
   public categoryId: number = 0;
-  public errorMessage:string = '';
-  constructor(public dialogRef: MatDialogRef<CategoryDialogComponent>, 
-    @Inject(MAT_DIALOG_DATA) public data: any,public router: Router, public fb: UntypedFormBuilder, private activatedRoute: ActivatedRoute, private categoryService: CategoryService, public snackBar: MatSnackBar, private messageService: MessageService) { }
+  public errorMessage: string = '';
+
+  constructor(
+    public dialogRef: MatDialogRef<CategoryDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public router: Router,
+    public fb: UntypedFormBuilder,
+    private activatedRoute: ActivatedRoute,
+    private categoryService: CategoryService,
+    public snackBar: MatSnackBar,
+    private messageService: MessageService
+  ) { }
 
   ngOnInit(): void {
     this.form = this.fb.group({
@@ -43,7 +52,7 @@ export class CategoryDialogComponent implements OnInit {
   }
 
   public onSubmit() {
-    this.errorMessage='';
+    this.errorMessage = '';
     if (this.form.valid) {
       if (this.categoryId === 0) {
         this.categoryService.addCategory(this.form.value).subscribe({
@@ -53,12 +62,12 @@ export class CategoryDialogComponent implements OnInit {
               this.messageService.showSuccess(res.data);
             }
             else {
-              this.errorMessage=res.data;
+              this.errorMessage = res.data;
             }
           },
           error: (e) => {
             console.log(e);
-            this.errorMessage='Unable to create Category';
+            this.errorMessage = 'Unable to create Category';
           }
         })
       }
@@ -70,12 +79,12 @@ export class CategoryDialogComponent implements OnInit {
               this.messageService.showSuccess(res.data);
             }
             else {
-              this.errorMessage=res.data;
+              this.errorMessage = res.data;
             }
           },
           error: (e) => {
             console.log(e);
-            this.errorMessage='Unable to update Category';
+            this.errorMessage = 'Unable to update Category';
           }
         })
       }

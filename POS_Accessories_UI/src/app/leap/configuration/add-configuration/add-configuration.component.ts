@@ -31,7 +31,7 @@ export class AddConfigurationComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = this.fb.group({
-      'configurationId': 0,
+      'configId': 0,
       'configurationTypeId': 0,
       'amount': [0, Validators.required],
       'fromDate': [null, Validators.required],

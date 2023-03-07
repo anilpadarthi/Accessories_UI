@@ -5,18 +5,7 @@
         </div>
         <div class="filter-controls">
             <div class="row wrap">
-                <mat-form-field appearance="outline" class="input-field">
-                    <mat-label>Search By Name</mat-label>
-                    <input matInput placeholder="Search By Name" [(ngModel)]="searchText" autocomplete="off">
-                </mat-form-field>
-                <button mat-flat-button color="primary" (click)="onReset()">
-                    <mat-icon>refresh</mat-icon> Reset
-                </button>
-                <button mat-raised-button color="primary" (click)="search()">
-                    <mat-icon>search</mat-icon> search
-                </button>
-
-                <button mat-raised-button color="primary" (click)="openCategoryDialog(null)">
+                <button mat-raised-button color="primary" (click)="openConfigurationDialog(null)">
                     <mat-icon>add</mat-icon> Add Configuration</button>
             </div>
         </div>
@@ -53,23 +42,23 @@
             <div class="example-container">
                 <mat-table #table [dataSource]="tableDataSource">
                     <ng-container matColumnDef="Id">
-                        <mat-cell *matCellDef="let element"> {{ element.ConfigId }} </mat-cell>
+                        <mat-cell *matCellDef="let element"> {{ element.configId }} </mat-cell>
                     </ng-container>
 
                     <ng-container matColumnDef="ConfigurationType">
-                        <mat-cell *matCellDef="let element"> {{ element.ConfigurationTypeId }} </mat-cell>
+                        <mat-cell *matCellDef="let element"> {{ element.configurationTypeId }} </mat-cell>
                     </ng-container>
 
                     <ng-container matColumnDef="Amount">
-                        <mat-cell *matCellDef="let element"> {{ element.Amount }} </mat-cell>
+                        <mat-cell *matCellDef="let element"> {{ element.amount }} </mat-cell>
                     </ng-container>
 
                     <ng-container matColumnDef="FromDate">
-                        <mat-cell *matCellDef="let element"> {{ element.FromDate }} </mat-cell>
+                        <mat-cell *matCellDef="let element"> {{ element.fromDate | date:'MM/dd/yyyy' }} </mat-cell>
                     </ng-container>
 
                     <ng-container matColumnDef="ToDate">
-                        <mat-cell *matCellDef="let element"> {{ element.ToDate }} </mat-cell>
+                        <mat-cell *matCellDef="let element"> {{ element.toDate | date:'MM/dd/yyyy' }} </mat-cell>
                     </ng-container>
 
                     <ng-container matColumnDef="Status">
@@ -82,7 +71,7 @@
                     <ng-container matColumnDef="Actions">
                         <mat-cell *matCellDef="let element">
                             <button mat-icon-button matTooltip="Click to Edit" class="iconbutton" color="primary"
-                                (click)="edit(element.categoryId)">
+                                (click)="edit(element.configId)">
                                 <mat-icon>edit</mat-icon>
                             </button>
                             <button mat-icon-button matTooltip="Click to Delete" class="iconbutton"

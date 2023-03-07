@@ -5,7 +5,7 @@
         </div>
         <div class="filter-controls">
             <div class="row wrap">
-                <mat-form-field appearance="outline">
+                <mat-form-field appearance="outline" class="input-field">
                     <mat-label>Category</mat-label>
                     <mat-select [(ngModel)]="categoryId" (selectionChange)="onCategoryChange()">
                         <mat-option [value]="null">All</mat-option>
@@ -71,10 +71,10 @@
                     <ng-container matColumnDef="Actions">
                         <mat-cell *matCellDef="let element">
                             <button mat-icon-button matTooltip="Click to Edit" class="iconbutton" color="primary"
-                                (click)="edit(element.subCategoryId)">
+                                (click)="openSubCategoryDialog(element.subCategoryId)">
                                 <mat-icon>edit</mat-icon>
                             </button>
-                            <button mat-icon-button matTooltip="Click to Delete" class="iconbutton"
+                            <button mat-icon-button matTooltip=" Click to Delete" class="iconbutton"
                                 (click)="remove(element)" color="warn">
                                 <mat-icon>delete</mat-icon>
                             </button>

@@ -6,6 +6,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Response } from 'src/app/shared/models/response';
 import { MessageService } from 'src/app/shared/services/message.service';
 import { LookupService } from 'src/app/shared/services/lookup.service';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+
 
 @Component({
   selector: 'app-add-sub-category',
@@ -18,15 +20,17 @@ export class AddSubCategoryComponent implements OnInit {
   private sub: any;
   subCategoryId: number = 0;
   categories: any[];
+  errorMessage: string = '';
 
-  constructor(
+  constructor(public dialogRef: MatDialogRef<AddSubCategoryComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     public router: Router,
     public fb: UntypedFormBuilder,
     private activatedRoute: ActivatedRoute,
     private subCategoryService: SubCategoryService,
     public snackBar: MatSnackBar,
-    private lookupService: LookupService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private lookupService: LookupService
   ) { }
 
   ngOnInit(): void {
@@ -38,8 +42,8 @@ export class AddSubCategoryComponent implements OnInit {
     });
 
     this.sub = this.activatedRoute.params.subscribe(params => {
-      if (params['id']) {
-        this.subCategoryId = parseInt(params['id']);
+      if (this.data.id) {
+        this.subCategoryId = parseInt(this.data.id);
         this.loadData();
       }
     });
@@ -70,11 +74,11 @@ export class AddSubCategoryComponent implements OnInit {
         this.subCategoryService.addSubCategory(this.form.value).subscribe({
           next: (res: Response) => {
             if (res.status) {
-              this.navigateToCateogryList();
+              this.dialogRef.close(this.form.value);
               this.messageService.showSuccess(res.data);
             }
             else {
-              this.messageService.showError(res.data);
+              this.errorMessage = res.data;
             }
           },
           error: (e) => {
@@ -87,11 +91,11 @@ export class AddSubCategoryComponent implements OnInit {
         this.subCategoryService.updateSubCategory(this.form.value).subscribe({
           next: (res: Response) => {
             if (res.status) {
-              this.navigateToCateogryList();
+              this.dialogRef.close(this.form.value);
               this.messageService.showSuccess(res.data);
             }
             else {
-              this.messageService.showError(res.data);
+              this.errorMessage = res.data;
             }
           },
           error: (e) => {

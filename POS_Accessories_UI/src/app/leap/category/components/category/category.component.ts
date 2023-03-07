@@ -54,7 +54,7 @@ export class CategoryComponent implements OnInit {
     this.categoryService.getAll(request).subscribe((res) => {
       this.tableDataSource = res.data.results;
       this.totalCount = res.data.totalRecords;
-  });
+    });
   }
 
   handlePageEvent(event: PageEvent): void {
@@ -79,20 +79,20 @@ export class CategoryComponent implements OnInit {
     element.status = !element.status;
   }
 
-  public openCategoryDialog(categoryId: any){
+  openCategoryDialog(categoryId: any): void {
     const dialogRef = this.dialog.open(CategoryDialogComponent, {
-        data: {
-          id:categoryId
-        },
-        panelClass: ['theme-dialog'],
-        autoFocus: false,
-        direction: (this.settings.rtl) ? 'rtl' : 'ltr'
-      });
-      dialogRef.afterClosed().subscribe(dialogResult => { 
-        if(dialogResult){    
-          this.loadData();        
-        }
-      });
+      data: {
+        id: categoryId
+      },
+      panelClass: ['theme-dialog'],
+      autoFocus: false,
+      direction: (this.settings.rtl) ? 'rtl' : 'ltr'
+    });
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      if (dialogResult) {
+        this.loadData();
+      }
+    });
   }
 
   public remove(category: any): void {

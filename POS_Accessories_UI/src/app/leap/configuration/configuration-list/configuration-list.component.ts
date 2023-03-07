@@ -74,7 +74,7 @@ export class ConfigurationListComponent implements OnInit {
     this.loadData();
   }
 
-  public openCategoryDialog(data: any): void {
+  public openConfigurationDialog(data: any): void {
     this.router.navigate(['create'], { relativeTo: this.activatedRoute });
   }
 

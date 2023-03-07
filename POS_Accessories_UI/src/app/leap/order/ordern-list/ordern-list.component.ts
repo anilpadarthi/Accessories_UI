@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from 'src/app/shared/confirm-dialog/confirm-dialog.component';
 import { AppSettings, Settings } from 'src/app/app.settings';
 import { Router, ActivatedRoute } from '@angular/router';
-import { CategoryService } from 'src/app/shared/services/category.service'
+import { OrderService } from 'src/app/shared/services/order.service'
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -20,7 +20,7 @@ export class OrdernListComponent implements OnInit {
 
   public settings: Settings;
   searchText!: string | null;
-  displayedColumns = ['Id', 'Name', 'Status', 'Actions'];
+  displayedColumns = ['OrderId', 'CreatedDate', 'User','Shop','NetAmount','OrderStatus','PaymenthMethod', 'Actions'];
   bogusDataSource = new MatTableDataSource<any>();
   pageEvent: PageEvent | undefined;
   tableDataSource: any[] = [];
@@ -35,7 +35,7 @@ export class OrdernListComponent implements OnInit {
     public activatedRoute: ActivatedRoute,
     public dialog: MatDialog,
     public appSettings: AppSettings,
-    private categoryService: CategoryService,
+    private orderService: OrderService,
     private messageService: MessageService
   ) {
     this.settings = this.appSettings.settings;
@@ -52,7 +52,7 @@ export class OrdernListComponent implements OnInit {
       searchText: this.searchText
     };
 
-    this.categoryService.getAll(request).subscribe((res) => {
+    this.orderService.getAll(request).subscribe((res) => {
       this.tableDataSource = res.data.results;
       this.totalCount = res.data.totalRecords;
     });
@@ -76,12 +76,12 @@ export class OrdernListComponent implements OnInit {
     this.loadData();
   }
 
-  public openCategoryDialog(data: any): void {
+  public openOrderDialog(data: any): void {
     this.router.navigate(['create'], { relativeTo: this.activatedRoute });
   }
 
   edit(id: any): void {
-    this.router.navigateByUrl(`/category/edit/${id}`);
+    this.router.navigateByUrl(`/Order/edit/${id}`);
   }
 
   updateStatus(element) {
@@ -94,7 +94,7 @@ export class OrdernListComponent implements OnInit {
       maxWidth: "400px",
       data: {
         title: "Confirm",
-        message: "Are you sure you want remove this category?"
+        message: "Are you sure you want remove this order?"
       }
     });
     dialogRef.afterClosed().subscribe(dialogResult => {
@@ -102,7 +102,7 @@ export class OrdernListComponent implements OnInit {
         const index: number = this.tableDataSource.indexOf(category);
         if (index !== -1) {
           category.status = "D";
-          this.categoryService.deleteCategory(category).subscribe({
+          this.orderService.delete(category).subscribe({
             next: (res) => {
               if (res.status) {
                 this.loadData();
@@ -114,7 +114,7 @@ export class OrdernListComponent implements OnInit {
             },
             error: (e) => {
               console.log(e);
-              this.messageService.showError('Unable to delete Category');
+              this.messageService.showError('Unable to delete Order');
             }
           })
         }

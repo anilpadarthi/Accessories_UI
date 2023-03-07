@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from 'src/app/shared/confirm-dialog/confirm-dialog.component';
+import { AddSubCategoryComponent } from 'src/app/leap/sub-category/components/add-sub-category/add-sub-category.component';
 import { AppSettings, Settings } from 'src/app/app.settings';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SubCategoryService } from '../../../../shared/services/subCategory.service'
@@ -90,8 +91,20 @@ export class SubCategoryComponent implements OnInit {
     await this.loadData();
   }
 
-  public openSubCategoryDialog(data: any): void {
-    this.router.navigate(['create'], { relativeTo: this.activatedRoute });
+  openSubCategoryDialog(subCategoryId: any): void {
+    const dialogRef = this.dialog.open(AddSubCategoryComponent, {
+      data: {
+        id: subCategoryId
+      },
+      panelClass: ['theme-dialog'],
+      autoFocus: false,
+      direction: (this.settings.rtl) ? 'rtl' : 'ltr'
+    });
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      if (dialogResult) {
+        this.loadData();
+      }
+    });
   }
 
   edit(id: any): void {

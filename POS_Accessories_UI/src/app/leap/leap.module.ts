@@ -20,8 +20,10 @@ export const routes = [
     path: '', 
     component: LeapComponent, children: [
       { path: '', loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule) }, 
+      { path: 'supplier', loadChildren: () => import('./category/category.module').then(m => m.CategoryModule), data: { breadcrumb: 'Categories' } },
       { path: 'category', loadChildren: () => import('./category/category.module').then(m => m.CategoryModule), data: { breadcrumb: 'Categories' } },
       { path: 'product', loadChildren: () => import('./product/product.module').then(m => m.ProductModule) },
+      { path: 'bulkproduct', loadChildren: () => import('./product/product.module').then(m => m.ProductModule) },
       { path: 'sub-category', loadChildren: () => import('./sub-category/sub-category.module').then(m => m.SubCategoryModule) },
       { path: 'coupon', loadChildren: () => import('./coupon/coupon.module').then(m => m.CouponModule) },
       { path: 'configuration', loadChildren: () => import('./configuration/configuration.module').then(m => m.ConfigurationModule) },
@@ -31,6 +33,7 @@ export const routes = [
       { path: 'checkout', loadChildren: () => import('./checkout/checkout.module').then(m => m.CheckoutModule) },
       { path: 'cart', loadChildren: () => import('./cart/cart.module').then(m => m.CartModule) },
       { path: 'stock-inventory', loadChildren: () => import('./stock-inventory/stock-inventory.module').then(m => m.StockInventoryModule) },
+      { path: 'warehouse', loadChildren: () => import('./stock-inventory/stock-inventory.module').then(m => m.StockInventoryModule) },
     ]
   },
   { path: 'error', component: ErrorComponent}
