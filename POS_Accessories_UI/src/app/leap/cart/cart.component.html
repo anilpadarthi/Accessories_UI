@@ -23,11 +23,11 @@
       <div class="mat-cell"><img [src]="'assets/images/products/keyboard/1-medium.png'"></div>
       <div class="mat-cell"><a [routerLink]="['/products-view', product.productId, product.productName]" class="product-name">{{product.productName}}</a></div>
       <div class="mat-cell">{{product.productCode}}</div>
-      <div class="mat-cell">€{{product.newPrice | number : '1.2-2'}}</div>      
+      <div class="mat-cell">€{{product.price | number : '1.2-2'}}</div>      
       <div class="mat-cell text-muted py-1" >
         <div fxFlex="100" fxFlex.gt-sm="50" class="px-1 py-1">
         <mat-form-field appearance="outline" class="w-100">
-          <input type="number" matInput class="form-control" value="{{product.cartCount}}" (change)="updateCart($event.target.value,product)">
+          <input type="number" matInput class="form-control" value="{{product.quantity}}" (change)="updateCart($event.target.value,product)">
         </mat-form-field>
     </div>
       </div>

@@ -52,7 +52,7 @@
                                 <mat-list-item *ngFor="let product of cartService.Data.cartList">                                   
                                     <h3 matLine class="text-muted"> {{product.productName}} </h3>
                                     <p matLine class="text-muted">
-                                        <bdi>{{product.cartCount}} x €{{product.newPrice | number : '1.2-2'}}</bdi>
+                                        <bdi>{{product.quantity}} x €{{product.price | number : '1.2-2'}}</bdi>
                                     </p>
                                     <!-- <img  [src]="" alt="image"> -->
                                     <button mat-icon-button color="warn" class="remove" (click)="remove(product);stopClickPropagate($event)" matTooltip="Remove" matTooltipPosition="before">

@@ -1,19 +1,18 @@
+
 <mat-card>
   <mat-card-header>
       <mat-card-title class="header-title">Checkout</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div>
-      <div *ngIf="!isOrderPlaced" fxLayout="row wrap">
-      </div>
+    <form [formGroup]="form" (ngSubmit)="placeOrder()" autocomplete="off">
+    <div *ngIf="!isOrderPlaced">
       <div fxLayout="row">
         <div fxFlex="100" class="p-1">
           <h3 class="text-muted mt-2">Delivery Address</h3>
           <div class="divider"></div>
-          <span>Charter House</span><br>
-          <span>25 High street</span><br>
-          <span>Bourne Mouth</span><br>
-          <span>UK</span><br>
+          <div *ngFor="let item of deliveryAddress.split(',')">
+            <span>{{ item }}</span><br>
+         </div>
         </div>
       </div>
       <div fxLayout="row">
@@ -21,7 +20,7 @@
       <br>
           <mat-form-field appearance="outline" class="w-100">
               <mat-label>Payment Mode</mat-label>
-              <mat-select formControlName="categoryId" required>
+              <mat-select formControlName="paymentMode" required>
                   <mat-option value="cash">
                       <span>Cash</span>
                   </mat-option>
@@ -39,7 +38,7 @@
       
       <div fxLayout="row" fxLayoutAlign="space-between center" class="w-100"> 
         <a [routerLink]="['/cart']" mat-raised-button color="primary">Return to Cart</a>       
-        <button mat-raised-button  color="primary" (click)="placeOrder()">Place order now</button>       
+        <button type="submit" mat-raised-button  color="primary">Place order now</button>       
       </div>     
     </div>
     <div *ngIf="isOrderPlaced" label="Confirmation">
@@ -51,6 +50,7 @@
         <a [routerLink]="['/products-view']" mat-raised-button color="primary">Return to Shop</a>       
       </div>
     </div>  
+  </form>
+ 
   </mat-card-content>
 </mat-card>
- 
