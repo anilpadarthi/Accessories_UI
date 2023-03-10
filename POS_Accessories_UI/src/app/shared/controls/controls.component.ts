@@ -20,8 +20,8 @@ export class ControlsComponent implements OnInit {
 
   ngOnInit() {
     if (this.product) {
-      if (this.product.quantity > 0) {
-        this.count = this.product.quantity;
+      if (this.product.qty > 0) {
+        this.count = this.product.qty;
       }
     }
     this.layoutAlign();
@@ -42,14 +42,14 @@ export class ControlsComponent implements OnInit {
       (item) => item.productId == product.productId
     )[0];
     if (currentProduct) {
-      if (currentProduct.quantity + this.count <= 10) {
-        currentProduct.quantity = currentProduct.quantity + this.count;
+      if (currentProduct.qty + this.count <= 10) {
+        currentProduct.qty = currentProduct.qty + this.count;
       } else {
         this.snackBar.open(
           "You can not add more items than available. In stock " +
             10 +
             " items and you already added " +
-            currentProduct.quantity +
+            currentProduct.qty +
             " item to your cart",
           "×",
           { panelClass: "error", verticalPosition: "top", duration: 5000 }

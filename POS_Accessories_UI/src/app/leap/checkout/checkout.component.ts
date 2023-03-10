@@ -57,7 +57,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.cartService.Data.cartList.forEach((product) => {
-      this.grandTotal += product.quantity * product.price;
+      this.grandTotal += product.qty * product.salePrice;
     });
 
     this.form = this.fb.group({

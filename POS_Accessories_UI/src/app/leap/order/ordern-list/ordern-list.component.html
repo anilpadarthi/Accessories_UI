@@ -57,7 +57,7 @@
             <div class="example-container">
                 <mat-table #table [dataSource]="tableDataSource">
                     <ng-container matColumnDef="OrderId">
-                        <mat-cell *matCellDef="let element"> {{ element.orderId }} </mat-cell>
+                        <mat-cell *matCellDef="let element"><a [routerLink]="[]" (click)="getOrderById(element.orderId)">{{element.orderId}}</a></mat-cell>
                     </ng-container>
 
                     <ng-container matColumnDef="CreatedDate">
@@ -82,10 +82,6 @@
 
                     <ng-container matColumnDef="Actions">
                         <mat-cell *matCellDef="let element">
-                            <button mat-icon-button matTooltip="Click to Edit" class="iconbutton" color="primary"
-                                (click)="edit(element.categoryId)">
-                                <mat-icon>edit</mat-icon>
-                            </button>
                             <button mat-icon-button matTooltip="Click to Delete" class="iconbutton"
                                 (click)="remove(element)" color="warn">
                                 <mat-icon>delete</mat-icon>

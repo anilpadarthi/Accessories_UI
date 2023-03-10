@@ -1,26 +1,36 @@
-import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { ConfirmDialogComponent } from 'src/app/shared/confirm-dialog/confirm-dialog.component';
-import { AppSettings, Settings } from 'src/app/app.settings';
-import { Router, ActivatedRoute } from '@angular/router';
-import { OrderService } from 'src/app/shared/services/order.service'
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
-import { PaginatorConstants } from 'src/app/shared/models/paginator-constants';
-import { MessageService } from 'src/app/shared/services/message.service';
+import { Component, OnInit, Input, ChangeDetectorRef } from "@angular/core";
+import { MatDialog } from "@angular/material/dialog";
+import { ConfirmDialogComponent } from "src/app/shared/confirm-dialog/confirm-dialog.component";
+import { AppSettings, Settings } from "src/app/app.settings";
+import { Router, ActivatedRoute } from "@angular/router";
+import { OrderService } from "src/app/shared/services/order.service";
+import { MatPaginator, PageEvent } from "@angular/material/paginator";
+import { MatSort } from "@angular/material/sort";
+import { MatTableDataSource } from "@angular/material/table";
+import { PaginatorConstants } from "src/app/shared/models/paginator-constants";
+import { MessageService } from "src/app/shared/services/message.service";
+import { OrderDialogComponent } from "../order-dialog/order-dialog.component";
+import { Product } from "src/app/shared/models/product";
+import { ProductService } from "src/app/shared/services/product.service";
 
 @Component({
-  selector: 'app-ordern-list',
-  templateUrl: './ordern-list.component.html',
-  styleUrls: ['./ordern-list.component.scss']
+  selector: "app-ordern-list",
+  templateUrl: "./ordern-list.component.html",
+  styleUrls: ["./ordern-list.component.scss"],
 })
 export class OrdernListComponent implements OnInit {
-
-
   public settings: Settings;
   searchText!: string | null;
-  displayedColumns = ['OrderId', 'CreatedDate', 'User','Shop','NetAmount','OrderStatus','PaymenthMethod', 'Actions'];
+  displayedColumns = [
+    "OrderId",
+    "CreatedDate",
+    "User",
+    "Shop",
+    "NetAmount",
+    "OrderStatus",
+    "PaymenthMethod",
+    "Actions",
+  ];
   bogusDataSource = new MatTableDataSource<any>();
   pageEvent: PageEvent | undefined;
   tableDataSource: any[] = [];
@@ -28,6 +38,7 @@ export class OrdernListComponent implements OnInit {
   pageOptions = PaginatorConstants.LEAP_STANDARD_PAGE_OPTIONS;
   pageIndex = 1;
   totalCount!: number;
+  products: Product[];
 
   constructor(
     public changeDetectorRefs: ChangeDetectorRef,
@@ -36,25 +47,39 @@ export class OrdernListComponent implements OnInit {
     public dialog: MatDialog,
     public appSettings: AppSettings,
     private orderService: OrderService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private productService: ProductService
   ) {
     this.settings = this.appSettings.settings;
   }
 
   async ngOnInit(): Promise<void> {
     this.loadData();
+    this.getAllProducts();
   }
 
   loadData(): void {
     const request = {
       pageNo: this.pageIndex,
       pageSize: this.pageSize,
-      searchText: this.searchText
+      searchText: this.searchText,
     };
 
     this.orderService.getAll(request).subscribe((res) => {
       this.tableDataSource = res.data.results;
       this.totalCount = res.data.totalRecords;
+    });
+  }
+
+  public getAllProducts() {
+    this.productService.getProductList().subscribe((res) => {
+      this.products = res.data;
+      // //TODO:remove this hardcodings
+      // this.products.forEach((a) => {
+      //   a.availibilityCount = 10;
+      //   a.newPrice = a.productId * 10;
+      //   a.oldPrice = a.productId * 10;
+      // });
     });
   }
 
@@ -77,16 +102,44 @@ export class OrdernListComponent implements OnInit {
   }
 
   public openOrderDialog(data: any): void {
-    this.router.navigate(['create'], { relativeTo: this.activatedRoute });
+    this.router.navigate(["create"], { relativeTo: this.activatedRoute });
   }
 
-  edit(id: any): void {
-    this.router.navigateByUrl(`/Order/edit/${id}`);
+  edit(orderDetails: any): void {
+    const dialogRef = this.dialog.open(OrderDialogComponent, {
+      data: {
+        orderDetails: orderDetails,
+      },
+      panelClass: ["theme-dialog"],
+      autoFocus: false,
+      direction: this.settings.rtl ? "rtl" : "ltr",
+    });
+    dialogRef.afterClosed().subscribe((dialogResult) => {
+      if (dialogResult) {
+        this.loadData();
+      }
+    });
+  }
+
+  public getOrderById(orderId: any) {
+    this.orderService.getById(orderId).subscribe((res: any) => {
+      let orderDetails = res.data;
+      if (orderDetails.items.length > 0) {
+        orderDetails.items.forEach((element) => {
+          let filteredProduct = this.products.find(
+            (a) => a.productId == element.productId
+          );
+
+          element.productName = filteredProduct.productName;
+          element.productCode = filteredProduct.productCode;
+        });
+      }
+      this.edit(orderDetails);
+    });
   }
 
   updateStatus(element) {
     element.status = !element.status;
-
   }
 
   public remove(category: any): void {
@@ -94,10 +147,10 @@ export class OrdernListComponent implements OnInit {
       maxWidth: "400px",
       data: {
         title: "Confirm",
-        message: "Are you sure you want remove this order?"
-      }
+        message: "Are you sure you want remove this order?",
+      },
     });
-    dialogRef.afterClosed().subscribe(dialogResult => {
+    dialogRef.afterClosed().subscribe((dialogResult) => {
       if (dialogResult) {
         const index: number = this.tableDataSource.indexOf(category);
         if (index !== -1) {
@@ -107,16 +160,15 @@ export class OrdernListComponent implements OnInit {
               if (res.status) {
                 this.loadData();
                 this.messageService.showSuccess("Deleted successfully.");
-              }
-              else {
+              } else {
                 this.messageService.showError(res.data);
               }
             },
             error: (e) => {
               console.log(e);
-              this.messageService.showError('Unable to delete Order');
-            }
-          })
+              this.messageService.showError("Unable to delete Order");
+            },
+          });
         }
       }
     });

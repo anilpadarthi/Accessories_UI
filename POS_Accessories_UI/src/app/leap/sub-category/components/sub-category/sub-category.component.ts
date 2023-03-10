@@ -1,27 +1,26 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { ConfirmDialogComponent } from 'src/app/shared/confirm-dialog/confirm-dialog.component';
-import { AddSubCategoryComponent } from 'src/app/leap/sub-category/components/add-sub-category/add-sub-category.component';
-import { AppSettings, Settings } from 'src/app/app.settings';
-import { Router, ActivatedRoute } from '@angular/router';
-import { SubCategoryService } from '../../../../shared/services/subCategory.service'
-import { MatTableDataSource } from '@angular/material/table';
-import { PaginatorConstants } from 'src/app/shared/models/paginator-constants';
-import { PageEvent } from '@angular/material/paginator';
-import { LookupService } from 'src/app/shared/services/lookup.service';
-import { MessageService } from 'src/app/shared/services/message.service';
+import { Component, OnInit, Input } from "@angular/core";
+import { MatDialog } from "@angular/material/dialog";
+import { ConfirmDialogComponent } from "src/app/shared/confirm-dialog/confirm-dialog.component";
+import { AddSubCategoryComponent } from "src/app/leap/sub-category/components/add-sub-category/add-sub-category.component";
+import { AppSettings, Settings } from "src/app/app.settings";
+import { Router, ActivatedRoute } from "@angular/router";
+import { SubCategoryService } from "../../../../shared/services/subCategory.service";
+import { MatTableDataSource } from "@angular/material/table";
+import { PaginatorConstants } from "src/app/shared/models/paginator-constants";
+import { PageEvent } from "@angular/material/paginator";
+import { LookupService } from "src/app/shared/services/lookup.service";
+import { MessageService } from "src/app/shared/services/message.service";
 
 @Component({
-  selector: 'app-sub-category',
-  templateUrl: './sub-category.component.html',
-  styleUrls: ['./sub-category.component.scss']
+  selector: "app-sub-category",
+  templateUrl: "./sub-category.component.html",
+  styleUrls: ["./sub-category.component.scss"],
 })
 export class SubCategoryComponent implements OnInit {
-
   public settings: Settings;
   searchText!: string | null;
   categoryId!: number | null;
-  displayedColumns = ['Id', 'Name', 'Status', 'Actions'];
+  displayedColumns = ["Id", "Name", "Status", "Actions"];
   bogusDataSource = new MatTableDataSource<any>();
   tableDataSource: any[] = [];
   pageSize = PaginatorConstants.STANDARD_PAGE_SIZE;
@@ -44,12 +43,17 @@ export class SubCategoryComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
+    let selectedCategory =
+      this.activatedRoute.snapshot.queryParamMap.get("categoryId");
+    if (selectedCategory) {
+      this.categoryId = parseInt(selectedCategory);
+    }
     await this.loadData();
     this.getCategoryLookup();
   }
 
   getCategoryLookup() {
-    this.lookupService.getCategories().subscribe(res => {
+    this.lookupService.getCategories().subscribe((res) => {
       this.categories = res.data;
     });
   }
@@ -63,7 +67,7 @@ export class SubCategoryComponent implements OnInit {
       pageNo: this.pageIndex,
       pageSize: this.pageSize,
       searchText: this.searchText,
-      categoryId: this.categoryId
+      categoryId: this.categoryId,
     };
 
     this.subCategroyService.getAll(request).subscribe((res) => {
@@ -94,13 +98,14 @@ export class SubCategoryComponent implements OnInit {
   openSubCategoryDialog(subCategoryId: any): void {
     const dialogRef = this.dialog.open(AddSubCategoryComponent, {
       data: {
-        id: subCategoryId
+        id: subCategoryId,
+        categoryId: this.categoryId,
       },
-      panelClass: ['theme-dialog'],
+      panelClass: ["theme-dialog"],
       autoFocus: false,
-      direction: (this.settings.rtl) ? 'rtl' : 'ltr'
+      direction: this.settings.rtl ? "rtl" : "ltr",
     });
-    dialogRef.afterClosed().subscribe(dialogResult => {
+    dialogRef.afterClosed().subscribe((dialogResult) => {
       if (dialogResult) {
         this.loadData();
       }
@@ -113,7 +118,6 @@ export class SubCategoryComponent implements OnInit {
 
   updateStatus(element) {
     element.status = !element.status;
-
   }
 
   public remove(subCategroy: any): void {
@@ -121,10 +125,10 @@ export class SubCategoryComponent implements OnInit {
       maxWidth: "400px",
       data: {
         title: "Confirm",
-        message: "Are you sure you want remove this Sub-Category?"
-      }
+        message: "Are you sure you want remove this Sub-Category?",
+      },
     });
-    dialogRef.afterClosed().subscribe(dialogResult => {
+    dialogRef.afterClosed().subscribe((dialogResult) => {
       if (dialogResult) {
         const index: number = this.tableDataSource.indexOf(subCategroy);
         if (index !== -1) {
@@ -134,19 +138,17 @@ export class SubCategoryComponent implements OnInit {
               if (res.status) {
                 this.loadData();
                 this.messageService.showSuccess("Deleted successfully.");
-              }
-              else {
+              } else {
                 this.messageService.showError(res.data);
               }
             },
             error: (e) => {
               console.log(e);
-              this.messageService.showError('Unable to delete Sub-Category');
-            }
-          })
+              this.messageService.showError("Unable to delete Sub-Category");
+            },
+          });
         }
       }
     });
   }
-
 }

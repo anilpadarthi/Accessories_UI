@@ -20,7 +20,7 @@ export class OrderService {
   }
 
   getById(id: number): Observable<Response> {
-    return this.http.get<Response>(this.url + "/" + id);
+    return this.http.get<Response>(this.url + "/GetById/" + id);
   }
 
   create(orderDetails: OrderDetails): Observable<Response> {

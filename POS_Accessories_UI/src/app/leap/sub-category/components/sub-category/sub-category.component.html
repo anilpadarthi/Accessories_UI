@@ -54,7 +54,7 @@
             <div class="example-container">
                 <mat-table #table [dataSource]="tableDataSource">
                     <ng-container matColumnDef="Id">
-                        <mat-cell *matCellDef="let element"> {{ element.subCategoryId }} </mat-cell>
+                        <mat-cell *matCellDef="let element"><a [routerLink]="['/products-view',element.subCategoryName]"> {{ element.subCategoryId }}</a> </mat-cell>
                     </ng-container>
 
                     <ng-container matColumnDef="Name">

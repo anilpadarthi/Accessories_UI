@@ -43,14 +43,14 @@ export class CartService {
       let item = this.Data.cartList.filter(
         (item) => item.productId == product.productId
       )[0];
-      item.quantity = product.quantity;
+      item.qty = product.qty;
     } else {
       this.Data.cartList.push(product);
     }
     this.Data.cartList.forEach((product) => {
       this.Data.totalPrice =
-        this.Data.totalPrice + product.quantity * product.price;
-      this.Data.totalCartCount = this.Data.totalCartCount + product.quantity;
+        this.Data.totalPrice + product.qty * product.salePrice;
+      this.Data.totalCartCount = this.Data.totalCartCount + product.qty;
     });
 
     message = "The product " + product.productName + " has been added to cart.";
@@ -58,11 +58,11 @@ export class CartService {
     this.snackBar.open(message, "×", {
       panelClass: [status],
       verticalPosition: "top",
-      duration: 3000,
+      duration: 1000,
     });
   }
 
   public resetProductCartCount(product: OrderProduct) {
-    product.quantity = 0;
+    product.qty = 0;
   }
 }

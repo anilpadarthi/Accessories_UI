@@ -17,10 +17,10 @@ export class CartComponent implements OnInit {
 
   ngOnInit() {
     this.cartService.Data.cartList.forEach((product) => {
-      this.total[product.productId] = product.quantity * product.price;
-      this.grandTotal += product.quantity * product.price;
-      this.cartItemCount[product.productId] = product.quantity;
-      this.cartItemCountTotal += product.quantity;
+      this.total[product.productId] = product.qty * product.salePrice;
+      this.grandTotal += product.qty * product.salePrice;
+      this.cartItemCount[product.productId] = product.qty;
+      this.cartItemCountTotal += product.qty;
     });
   }
 
@@ -28,7 +28,7 @@ export class CartComponent implements OnInit {
     updatedQuantity = parseInt(updatedQuantity);
     if (updatedQuantity) {
       this.total[updatedProduct.productId] =
-        updatedQuantity * updatedProduct.price;
+        updatedQuantity * updatedProduct.salePrice;
       this.cartItemCount[updatedProduct.productId] = updatedQuantity;
       this.grandTotal = 0;
       this.total.forEach((price) => {
@@ -45,7 +45,7 @@ export class CartComponent implements OnInit {
       this.cartService.Data.cartList.forEach((product) => {
         this.cartItemCount.forEach((count, index) => {
           if (product.productId == index) {
-            product.quantity = count;
+            product.qty = count;
           }
         });
       });
