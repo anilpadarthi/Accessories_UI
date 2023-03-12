@@ -10,7 +10,10 @@ export class Data {
     public categories: Category[],
     public cartList: OrderProduct[],
     public totalPrice: number,
-    public totalCartCount: number
+    public totalCartCount: number,
+    public discount?: number,
+    public vat?: number,
+    public deliveryCharges?: number
   ) {}
 }
 

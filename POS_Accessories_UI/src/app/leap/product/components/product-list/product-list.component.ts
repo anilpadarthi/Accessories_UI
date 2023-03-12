@@ -1,28 +1,27 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { Product } from 'src/app/shared/models/product';
-import { MatDialog } from '@angular/material/dialog';
-import { ConfirmDialogComponent } from 'src/app/shared/confirm-dialog/confirm-dialog.component';
-import { AppSettings, Settings } from 'src/app/app.settings';
-import { Router, ActivatedRoute } from '@angular/router';
-import { ProductService } from '../../../../shared/services/product.service'
-import { PageEvent } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
-import { PaginatorConstants } from 'src/app/shared/models/paginator-constants';
-import { LookupService } from 'src/app/shared/services/lookup.service';
-import { MessageService } from 'src/app/shared/services/message.service';
+import { Component, OnInit, Input } from "@angular/core";
+import { Product } from "src/app/shared/models/product";
+import { MatDialog } from "@angular/material/dialog";
+import { ConfirmDialogComponent } from "src/app/shared/confirm-dialog/confirm-dialog.component";
+import { AppSettings, Settings } from "src/app/app.settings";
+import { Router, ActivatedRoute, NavigationExtras } from "@angular/router";
+import { ProductService } from "../../../../shared/services/product.service";
+import { PageEvent } from "@angular/material/paginator";
+import { MatTableDataSource } from "@angular/material/table";
+import { PaginatorConstants } from "src/app/shared/models/paginator-constants";
+import { LookupService } from "src/app/shared/services/lookup.service";
+import { MessageService } from "src/app/shared/services/message.service";
 
 @Component({
-  selector: 'app-product-list',
-  templateUrl: './product-list.component.html',
-  styleUrls: ['./product-list.component.scss']
+  selector: "app-product-list",
+  templateUrl: "./product-list.component.html",
+  styleUrls: ["./product-list.component.scss"],
 })
 export class ProductListComponent implements OnInit {
-
   public page: any;
   public count = 0;
   public settings: Settings;
   searchText!: string | null;
-  displayedColumns = ['Id', 'Name', 'Code', 'Status', 'Actions'];
+  displayedColumns = ["Id", "Name", "Code", "Status", "Actions"];
   bogusDataSource = new MatTableDataSource<any>();
   pageEvent: PageEvent | undefined;
   tableDataSource: any[] = [];
@@ -47,18 +46,17 @@ export class ProductListComponent implements OnInit {
     this.settings = this.appSettings.settings;
   }
 
-  async ngOnInit(): Promise<void> {
-    await this.loadData();
+  ngOnInit() {
     this.getCategoryLookup();
   }
 
-  async loadData(): Promise<void> {
+  loadData() {
     const request = {
       pageNo: this.pageIndex,
       pageSize: this.pageSize,
       searchText: this.searchText,
       categoryId: this.categoryId,
-      subCategoryId: this.subCategoryId
+      subCategoryId: this.subCategoryId,
     };
 
     this.productService.getAll(request).subscribe((res) => {
@@ -68,14 +66,28 @@ export class ProductListComponent implements OnInit {
   }
 
   getCategoryLookup() {
-    this.lookupService.getCategories().subscribe(res => {
+    this.lookupService.getCategories().subscribe((res) => {
       this.categories = res.data;
+      let selectedCategoryId =
+        this.activatedRoute.snapshot.queryParamMap.get("categoryId");
+      if (selectedCategoryId) {
+        this.categoryId = parseInt(selectedCategoryId);
+        this.getSubCategoryLookup(this.categoryId);
+      } else {
+        this.loadData();
+      }
     });
   }
 
   getSubCategoryLookup(categoryId: number) {
-    this.lookupService.getSubCategories(categoryId).subscribe(res => {
+    this.lookupService.getSubCategories(categoryId).subscribe((res) => {
       this.subCategories = res.data;
+      let selectedSubCategoryId =
+        this.activatedRoute.snapshot.queryParamMap.get("subCategoryId");
+      if (selectedSubCategoryId) {
+        this.subCategoryId = parseInt(selectedSubCategoryId);
+        this.loadData();
+      }
     });
   }
 
@@ -83,8 +95,7 @@ export class ProductListComponent implements OnInit {
     this.loadData();
     if (event.value) {
       this.getSubCategoryLookup(event.value);
-    }
-    else {
+    } else {
       this.subCategories = [];
     }
   }
@@ -115,7 +126,14 @@ export class ProductListComponent implements OnInit {
   }
 
   public openProductDialog(data: any): void {
-    this.router.navigate(['create'], { relativeTo: this.activatedRoute });
+    const queryParams = {
+      categoryId: this.categoryId,
+      subCategoryId: this.subCategoryId,
+    };
+    this.router.navigate(["create"], {
+      queryParams,
+      relativeTo: this.activatedRoute,
+    });
   }
 
   edit(id: any): void {
@@ -124,7 +142,6 @@ export class ProductListComponent implements OnInit {
 
   updateStatus(element) {
     element.status = !element.status;
-
   }
 
   public remove(product: any): void {
@@ -132,10 +149,10 @@ export class ProductListComponent implements OnInit {
       maxWidth: "400px",
       data: {
         title: "Confirm",
-        message: "Are you sure you want remove this product?"
-      }
+        message: "Are you sure you want remove this product?",
+      },
     });
-    dialogRef.afterClosed().subscribe(dialogResult => {
+    dialogRef.afterClosed().subscribe((dialogResult) => {
       if (dialogResult) {
         const index: number = this.tableDataSource.indexOf(product);
         if (index !== -1) {
@@ -145,15 +162,14 @@ export class ProductListComponent implements OnInit {
               if (res.status) {
                 this.loadData();
                 this.messageService.showSuccess("Deleted successfully.");
-              }
-              else {
+              } else {
                 this.messageService.showError(res.data);
               }
             },
             error: (e) => {
               console.log(e);
-            }
-          })
+            },
+          });
           this.loadData();
         }
       }

@@ -75,4 +75,18 @@ export class CartComponent implements OnInit {
       this.cartService.resetProductCartCount(product);
     }
   }
+
+  public updateValue(updatedValue: any, control: string) {
+    switch (control) {
+      case "discount":
+        this.cartService.Data.discount = updatedValue;
+        return;
+      case "delivery":
+        this.cartService.Data.deliveryCharges = updatedValue;
+        return;
+      case "vat":
+        this.cartService.Data.vat = updatedValue;
+        return;
+    }
+  }
 }

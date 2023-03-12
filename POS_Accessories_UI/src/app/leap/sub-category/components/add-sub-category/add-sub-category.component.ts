@@ -45,7 +45,6 @@ export class AddSubCategoryComponent implements OnInit {
     });
 
     this.sub = this.activatedRoute.params.subscribe((params) => {
-      debugger;
       if (this.data.id) {
         this.subCategoryId = parseInt(this.data.id);
         this.loadData();

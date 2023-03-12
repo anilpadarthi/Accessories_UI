@@ -12,6 +12,7 @@ import { MessageService } from "src/app/shared/services/message.service";
 import { OrderDialogComponent } from "../order-dialog/order-dialog.component";
 import { Product } from "src/app/shared/models/product";
 import { ProductService } from "src/app/shared/services/product.service";
+import { MatSelect } from "@angular/material/select";
 
 @Component({
   selector: "app-ordern-list",
@@ -172,5 +173,16 @@ export class OrdernListComponent implements OnInit {
         }
       }
     });
+  }
+
+  actionsResetSelect(select: MatSelect): void {
+    select.value = null;
+    select.close;
+  }
+  actionsSelectOpen(select: MatSelect) {
+    select.placeholder = "";
+  }
+  actionsSelectClose(select: MatSelect) {
+    select.placeholder = "Select";
   }
 }

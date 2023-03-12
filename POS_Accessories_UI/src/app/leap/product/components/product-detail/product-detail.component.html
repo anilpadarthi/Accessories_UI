@@ -1,139 +1,181 @@
 <div class="p-1">
-    <mat-card>
-<mat-card-header>
-    <mat-card-title>{{(productId) ? 'Edit' : 'Add New'}} Product</mat-card-title>
-</mat-card-header>
-<mat-card-content>
-<form [formGroup]="form" (ngSubmit)="onSubmit()" autocomplete="off" fxLayout="row wrap">
-    <div fxLayout="row wrap" class="mt-2">
-        <div fxFlex="100" fxFlex.gt-md="50" class="px-1">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title
+        >{{ productId ? "Edit" : "Add New" }} Product</mat-card-title
+      >
+    </mat-card-header>
+    <mat-card-content>
+      <form
+        [formGroup]="form"
+        (ngSubmit)="onSubmit()"
+        autocomplete="off"
+        fxLayout="row wrap"
+      >
+        <div fxLayout="row wrap" class="mt-2">
+          <div fxFlex="100" fxFlex.gt-md="50" class="px-1">
             <mat-form-field appearance="outline" class="w-100">
-                <mat-label>Name</mat-label>
-                <input matInput formControlName="productName" required>
-                <mat-error *ngIf="form.controls.productName.errors?.required">Name is required</mat-error>   
+              <mat-label>Name</mat-label>
+              <input matInput formControlName="productName" required />
+              <mat-error *ngIf="form.controls.productName.errors?.required"
+                >Name is required</mat-error
+              >
             </mat-form-field>
-        </div> 
-        <div fxFlex="100" fxFlex.gt-md="50" class="px-1">
+          </div>
+          <div fxFlex="100" fxFlex.gt-md="50" class="px-1">
             <mat-form-field appearance="outline" class="w-100">
-                <mat-label>Code</mat-label>
-                <input matInput formControlName="productCode" required>
-                <mat-error *ngIf="form.controls.productCode.errors?.required">Code is required</mat-error>
+              <mat-label>Code</mat-label>
+              <input matInput formControlName="productCode" required />
+              <mat-error *ngIf="form.controls.productCode.errors?.required"
+                >Code is required</mat-error
+              >
             </mat-form-field>
-        </div> 
-        <div fxFlex="100" fxFlex.gt-md="50" class="px-1">
+          </div>
+          <div fxFlex="100" fxFlex.gt-md="50" class="px-1">
             <mat-form-field appearance="outline" class="w-100">
-                <mat-label>Category</mat-label>
-                <mat-select formControlName="categoryId" (selectionChange)="onCategorySelectionChange($event)">
-                    <mat-option>
-                        <ngx-mat-select-search [formControl]="categoryFilterCtrl"></ngx-mat-select-search>
-                      </mat-option>
-                    <mat-option [value]="">-</mat-option>
-                    <mat-option *ngFor="let category of filteredCategories | async" [value]="category.id">
-                        <span>{{category.name}}</span>
-                    </mat-option>
-                </mat-select> 
+              <mat-label>Category</mat-label>
+              <mat-select
+                formControlName="categoryId"
+                (selectionChange)="onCategorySelectionChange($event)"
+              >
+                <mat-option>
+                  <ngx-mat-select-search
+                    [formControl]="categoryFilterCtrl"
+                  ></ngx-mat-select-search>
+                </mat-option>
+                <mat-option [value]="">-</mat-option>
+                <mat-option
+                  *ngFor="let category of filteredCategories | async"
+                  [value]="category.id"
+                >
+                  <span>{{ category.name }}</span>
+                </mat-option>
+              </mat-select>
             </mat-form-field>
-        </div>
-        <div fxFlex="100" fxFlex.gt-md="50" class="px-1">
+          </div>
+          <div fxFlex="100" fxFlex.gt-md="50" class="px-1">
             <mat-form-field appearance="outline" class="w-100">
-                <mat-label>Sub-Category</mat-label>
-                <mat-select formControlName="subCategoryId">
-                    <mat-option>
-                        <ngx-mat-select-search [formControl]="subCategoryFilterCtrl"></ngx-mat-select-search>
-                      </mat-option>
-                    <mat-option [value]="">-</mat-option>
-                    <mat-option *ngFor="let subCategory of filteredSubCategories | async" [value]="subCategory.id">
-                        <span>{{subCategory.name}}</span>
-                    </mat-option>
-                </mat-select> 
+              <mat-label>Sub-Category</mat-label>
+              <mat-select formControlName="subCategoryId">
+                <mat-option>
+                  <ngx-mat-select-search
+                    [formControl]="subCategoryFilterCtrl"
+                  ></ngx-mat-select-search>
+                </mat-option>
+                <mat-option [value]="">-</mat-option>
+                <mat-option
+                  *ngFor="let subCategory of filteredSubCategories | async"
+                  [value]="subCategory.id"
+                >
+                  <span>{{ subCategory.name }}</span>
+                </mat-option>
+              </mat-select>
             </mat-form-field>
-        </div>
-        <div fxFlex="100" fxFlex.gt-md="50" class="px-1">
+          </div>
+          <div fxFlex="100" fxFlex.gt-md="50" class="px-1">
             <mat-form-field appearance="outline" class="w-100">
-                <mat-label>Colour</mat-label>
-                <mat-select formControlName="colourList" multiple>
-                    <mat-option>
-                        <ngx-mat-select-search [formControl]="colourFilterCtrl"></ngx-mat-select-search>
-                      </mat-option> 
-                    <mat-option *ngFor="let colour of filteredColours | async" [value]="colour.id">
-                        <span>{{colour.name}}</span>
-                    </mat-option>
-                </mat-select>
+              <mat-label>Colour</mat-label>
+              <mat-select formControlName="colourList" multiple>
+                <mat-option>
+                  <ngx-mat-select-search
+                    [formControl]="colourFilterCtrl"
+                  ></ngx-mat-select-search>
+                </mat-option>
+                <mat-option
+                  *ngFor="let colour of filteredColours | async"
+                  [value]="colour.id"
+                >
+                  <span>{{ colour.name }}</span>
+                </mat-option>
+              </mat-select>
             </mat-form-field>
-        </div>  
-        <div fxFlex="100" fxFlex.gt-md="50" class="px-1">
+          </div>
+          <div fxFlex="100" fxFlex.gt-md="50" class="px-1">
             <mat-form-field appearance="outline" class="w-100">
-                <mat-label>Size</mat-label>
-                <mat-select formControlName="sizeList" multiple> 
-                    <mat-option>
-                        <ngx-mat-select-search [formControl]="sizeFilterCtrl"></ngx-mat-select-search>
-                      </mat-option> 
-                    <mat-option *ngFor="let size of filteredSizes | async" [value]="size.id">
-                        <span>{{size.name}}</span>
-                    </mat-option>
-                </mat-select>
+              <mat-label>Size</mat-label>
+              <mat-select formControlName="sizeList" multiple>
+                <mat-option>
+                  <ngx-mat-select-search
+                    [formControl]="sizeFilterCtrl"
+                  ></ngx-mat-select-search>
+                </mat-option>
+                <mat-option
+                  *ngFor="let size of filteredSizes | async"
+                  [value]="size.id"
+                >
+                  <span>{{ size.name }}</span>
+                </mat-option>
+              </mat-select>
             </mat-form-field>
-        </div> 
-        <div fxFlex="100" fxFlex.gt-md="13" class="px-1">
+          </div>
+          <div fxFlex="100" fxFlex.gt-md="13" class="px-1">
             <div class="py-1">
-                <mat-checkbox formControlName="isNewArrival" color="primary"> 
-                    <div fxLayout="row" fxLayoutAlign="start center">
-                        <span class="mr-1">New Arrival</span>
-                    </div>
-                </mat-checkbox> 
+              <mat-checkbox formControlName="isNewArrival" color="primary">
+                <div fxLayout="row" fxLayoutAlign="start center">
+                  <span class="mr-1">New Arrival</span>
+                </div>
+              </mat-checkbox>
             </div>
-        </div>
-        <div fxFlex="100" fxFlex.gt-md="13" class="px-1">
+          </div>
+          <div fxFlex="100" fxFlex.gt-md="13" class="px-1">
             <div class="py-1">
-                <mat-checkbox formControlName="isBundle" color="primary"> 
-                    <div fxLayout="row" fxLayoutAlign="start center">
-                        <span class="mr-1">Bundle</span>
-                    </div>
-                </mat-checkbox> 
+              <mat-checkbox formControlName="isBundle" color="primary">
+                <div fxLayout="row" fxLayoutAlign="start center">
+                  <span class="mr-1">Bundle</span>
+                </div>
+              </mat-checkbox>
             </div>
-        </div>
-        <div fxFlex="100" fxFlex.gt-md="13" class="px-1">
+          </div>
+          <div fxFlex="100" fxFlex.gt-md="13" class="px-1">
             <div class="py-1">
-                <mat-checkbox formControlName="isOutOfStock" color="primary"> 
-                    <div fxLayout="row" fxLayoutAlign="start center">
-                        <span class="mr-1">Out Of Stock</span>
-                    </div>
-                </mat-checkbox> 
+              <mat-checkbox formControlName="isOutOfStock" color="primary">
+                <div fxLayout="row" fxLayoutAlign="start center">
+                  <span class="mr-1">Out Of Stock</span>
+                </div>
+              </mat-checkbox>
             </div>
-        </div>
-        <div fxFlex="100" fxFlex.gt-md="13" class="px-1">
+          </div>
+          <div fxFlex="100" fxFlex.gt-md="13" class="px-1">
             <div class="py-1">
-                <mat-checkbox formControlName="isVatEnabled" color="primary"> 
-                    <div fxLayout="row" fxLayoutAlign="start center">
-                        <span class="mr-1">Vat Enabled</span>
-                    </div>
-                </mat-checkbox> 
+              <mat-checkbox formControlName="isVatEnabled" color="primary">
+                <div fxLayout="row" fxLayoutAlign="start center">
+                  <span class="mr-1">Vat Enabled</span>
+                </div>
+              </mat-checkbox>
             </div>
-        </div> 
-        <div fxFlex="100" fxFlex.gt-md="50" class="px-1">
+          </div>
+          <div fxFlex="100" fxFlex.gt-md="50" class="px-1">
             <mat-form-field appearance="outline" class="w-100">
-                <mat-label>Description</mat-label>
-                <textarea matInput formControlName="description"></textarea>
+              <mat-label>Description</mat-label>
+              <textarea matInput formControlName="description"></textarea>
             </mat-form-field>
-        </div> 
-        <div fxFlex="100" fxFlex.gt-md="50" class="px-1">
+          </div>
+          <div fxFlex="100" fxFlex.gt-md="50" class="px-1">
             <mat-form-field appearance="outline" class="w-100">
-                <mat-label>Specification</mat-label>
-                <textarea matInput formControlName="specification"></textarea>
+              <mat-label>Specification</mat-label>
+              <textarea matInput formControlName="specification"></textarea>
             </mat-form-field>
-        </div> 
-        <app-product-image></app-product-image>
-        <div fxFlex="100" fxFlex.gt-md="100" class="px-1">
-             <app-product-pricing ></app-product-pricing>
+          </div>
+          <app-product-image></app-product-image>
+          <div fxFlex="100" fxFlex.gt-md="100" class="px-1">
+            <app-product-pricing></app-product-pricing>
+          </div>
         </div>
-    </div>  
-    
-    <div fxLayout="row" fxLayoutAlign="space-between center" class="w-100"> 
-        <button mat-raised-button color="warn" type="button" (click)="navigateToCateogryList()">Cancel</button>
-        <button mat-raised-button color="primary" type="submit">Submit</button>
-    </div>
 
-</form>
-</mat-card-content>
-</mat-card>
+        <div fxLayout="row" fxLayoutAlign="space-between center" class="w-100">
+          <button
+            mat-raised-button
+            color="warn"
+            type="button"
+            (click)="navigateToCateogryList()"
+          >
+            Cancel
+          </button>
+          <button mat-raised-button color="primary" type="submit">
+            Submit
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
 </div>

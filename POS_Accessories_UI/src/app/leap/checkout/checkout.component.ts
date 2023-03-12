@@ -75,18 +75,22 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     order.itemTotal = this.cartService.Data.totalPrice;
     order.shippingAddress = this.deliveryAddress;
     order.paymentMethod = this.form.value.paymentMode;
+    order.discountPercentage = this.cartService.Data.discount;
+    order.deliveryCharges = this.cartService.Data.deliveryCharges;
+    order.vatAmount = this.cartService.Data.vat;
     //TODO:Remove this hardcoding
-    order.deliveryCharges = 0;
     order.orderStatus = "Pending";
     order.shopId = 0;
     order.userId = 0;
-    order.vatAmount = 0;
     this.orderService.create(order).subscribe((res: any) => {
       if (res.status) {
         this.isOrderPlaced = true;
         this.cartService.Data.cartList.length = 0;
         this.cartService.Data.totalPrice = 0;
         this.cartService.Data.totalCartCount = 0;
+        this.cartService.Data.discount = null;
+        this.cartService.Data.deliveryCharges = null;
+        this.cartService.Data.vat = null;
       }
     });
   }
