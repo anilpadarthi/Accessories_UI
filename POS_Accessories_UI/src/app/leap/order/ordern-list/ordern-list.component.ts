@@ -102,10 +102,6 @@ export class OrdernListComponent implements OnInit {
     this.loadData();
   }
 
-  public openOrderDialog(data: any): void {
-    this.router.navigate(["create"], { relativeTo: this.activatedRoute });
-  }
-
   edit(orderDetails: any): void {
     const dialogRef = this.dialog.open(OrderDialogComponent, {
       data: {
@@ -177,7 +173,7 @@ export class OrdernListComponent implements OnInit {
 
   actionsResetSelect(select: MatSelect): void {
     select.value = null;
-    select.close;
+    select.close();
   }
   actionsSelectOpen(select: MatSelect) {
     select.placeholder = "";
