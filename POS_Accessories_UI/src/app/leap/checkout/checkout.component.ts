@@ -25,6 +25,8 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   years = [];
   deliveryMethods = [];
   grandTotal = 0;
+  vat = 0;
+  discountAmount = 0;
   watcher: Subscription;
   isOrderPlaced: boolean = false;
   deliveryAddress: string = "Charter House,25 High street,Bourne Mouth,UK";
@@ -59,6 +61,13 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     this.cartService.Data.cartList.forEach((product) => {
       this.grandTotal += product.qty * product.salePrice;
     });
+    if (this.cartService.Data.discount > 0) {
+      this.discountAmount =
+        (this.grandTotal * this.cartService.Data.discount) / 100;
+      this.grandTotal -= this.discountAmount;
+    }
+    this.vat = (this.grandTotal * this.cartService.Data.vat) / 100;
+    this.grandTotal += this.vat + this.cartService.Data.deliveryCharges;
 
     this.form = this.fb.group({
       paymentMode: "",
@@ -72,12 +81,15 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   public placeOrder() {
     let order = new OrderDetails();
     order.items = this.cartService.Data.cartList;
-    order.itemTotal = this.cartService.Data.totalPrice;
+    order.itemTotal = this.cartService.Data.totalCartCount;
     order.shippingAddress = this.deliveryAddress;
     order.paymentMethod = this.form.value.paymentMode;
     order.discountPercentage = this.cartService.Data.discount;
     order.deliveryCharges = this.cartService.Data.deliveryCharges;
-    order.vatAmount = this.cartService.Data.vat;
+    order.vatAmount = this.vat;
+    order.discountAmount = this.discountAmount;
+    order.totalWithVATAmount = this.grandTotal;
+    order.totalWithOutVATAmount = this.grandTotal - this.vat;
     //TODO:Remove this hardcoding
     order.orderStatus = "Pending";
     order.shopId = 0;

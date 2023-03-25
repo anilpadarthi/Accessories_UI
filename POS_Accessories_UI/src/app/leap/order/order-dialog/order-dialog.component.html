@@ -25,7 +25,7 @@
       >
     </div>
     <div class="mat-cell">{{ product.productCode }}</div>
-    <div class="mat-cell">€{{ product.salePrice | number : "1.2-2" }}</div>
+    <div class="mat-cell">£ {{ product.salePrice | number : "1.2-2" }}</div>
     <div class="mat-cell text-muted py-1">
       <div fxFlex="100" fxFlex.gt-sm="75" class="px-1 py-1">
         <mat-form-field appearance="outline" class="w-100">
@@ -40,7 +40,7 @@
       </div>
     </div>
     <div class="mat-cell">
-      €{{ product.qty * product.salePrice | number : "1.2-2" }}
+      £ {{ product.qty * product.salePrice | number : "1.2-2" }}
     </div>
     <div class="mat-cell text-center">
       <div class="p-1">
@@ -82,15 +82,10 @@
     </div>
   </div>
   <div class="mat-cell">
-    <div fxLayout="column" fxLayoutAlign="" class="noPadding">
-      <mat-form-field appearance="outline" class="w-100 noPadding">
-        <input
-          matInput
-          class="form-control"
-          value=""
-          [(ngModel)]="orderDetails.deliveryCharges"
-        />
-      </mat-form-field>
+    <div fxLayout="column" fxLayoutAlign="">
+      <!-- <mat-form-field appearance="outline" class="w-100 noPadding"> -->
+      £ {{ orderDetails.deliveryCharges | number : "1.2-2" }}
+      <!-- </mat-form-field> -->
     </div>
   </div>
 </div>
@@ -101,14 +96,10 @@
     </div>
   </div>
   <div class="mat-cell">
-    <div fxLayout="column" fxLayoutAlign="" class="p-0">
-      <mat-form-field appearance="outline" class="w-100">
-        <input
-          matInput
-          class="form-control"
-          [(ngModel)]="orderDetails.vatAmount"
-        />
-      </mat-form-field>
+    <div fxLayout="column" fxLayoutAlign="" class="py-1">
+      <!-- <mat-form-field appearance="outline" class="w-100"> -->
+      £ {{ orderDetails.vatAmount | number : "1.2-2" }}
+      <!-- </mat-form-field> -->
     </div>
   </div>
 </div>
@@ -124,7 +115,7 @@
   <div class="mat-cell">
     <div fxLayout="column" fxLayoutAlign="center start" class="grand-total">
       <span class="new-price"
-        >Grand total: €{{ orderDetails.itemTotal | number : "1.2-2" }}</span
+        >Grand total: £ {{ orderDetails.itemTotal | number : "1.2-2" }}</span
       >
     </div>
   </div>

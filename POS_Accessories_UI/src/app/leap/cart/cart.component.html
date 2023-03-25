@@ -49,7 +49,7 @@
         >
       </div>
       <div class="mat-cell">{{ product.productCode }}</div>
-      <div class="mat-cell">€{{ product.salePrice | number : "1.2-2" }}</div>
+      <div class="mat-cell">£ {{ product.salePrice | number : "1.2-2" }}</div>
       <div class="mat-cell text-muted py-1">
         <div fxFlex="100" fxFlex.gt-sm="50" class="px-1 py-1">
           <mat-form-field appearance="outline" class="w-100">
@@ -64,7 +64,7 @@
         </div>
       </div>
       <div class="mat-cell">
-        €{{ total[product.productId] | number : "1.2-2" }}
+        £ {{ total[product.productId] | number : "1.2-2" }}
       </div>
       <div class="mat-cell text-center">
         <div class="p-1">
@@ -101,7 +101,7 @@
               matInput
               class="form-control"
               value=""
-              (change)="updateValue($event.target.value, 'discount')"
+              (input)="updateValue($event.target.value, 'discount')"
             />
           </mat-form-field>
         </div>
@@ -123,15 +123,8 @@
         </div>
       </div>
       <div class="mat-cell">
-        <div fxLayout="column" fxLayoutAlign="" class="noPadding">
-          <mat-form-field appearance="outline" class="w-100 noPadding">
-            <input
-              matInput
-              class="form-control"
-              value=""
-              (change)="updateValue($event.target.value, 'delivery')"
-            />
-          </mat-form-field>
+        <div fxLayout="column" fxLayoutAlign="" class="py-1">
+          £ {{ deliveryCharges | number : "1.2-2" }}
         </div>
       </div>
     </div>
@@ -151,15 +144,8 @@
         </div>
       </div>
       <div class="mat-cell">
-        <div fxLayout="column" fxLayoutAlign="" class="p-0">
-          <mat-form-field appearance="outline" class="w-100">
-            <input
-              matInput
-              class="form-control"
-              value=""
-              (change)="updateValue($event.target.value, 'vat')"
-            />
-          </mat-form-field>
+        <div fxLayout="column" fxLayoutAlign="" class="py-1">
+          £ {{ vat | number : "1.2-2" }}
         </div>
       </div>
     </div>
@@ -182,7 +168,9 @@
       </div>
       <div class="mat-cell">
         <div fxLayout="column" fxLayoutAlign="center start" class="grand-total">
-          <span class="new-price">€{{ grandTotal | number : "1.2-2" }}</span>
+          <span class="new-price"
+            >£ {{ grandTotalWithCalculation | number : "1.2-2" }}</span
+          >
         </div>
       </div>
       <div class="mat-cell text-center">

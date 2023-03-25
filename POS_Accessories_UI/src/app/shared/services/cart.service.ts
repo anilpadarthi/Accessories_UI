@@ -4,6 +4,7 @@ import { MatSnackBar } from "@angular/material/snack-bar";
 import { Category } from "../models/category";
 import { environment } from "src/environments/environment";
 import { OrderProduct } from "../models/orderProduct";
+import { ConfigurationService } from "./configuration.service";
 
 export class Data {
   constructor(
@@ -25,12 +26,38 @@ export class CartService {
     [], // categories
     [], // cartList
     null, //totalPrice,
-    0 //totalCartCount
+    0, //totalCartCount,
+    0, //discount,
+    0, //vat,
+    0 //deliveryCharges
   );
 
   public url = environment.url + "/assets/data/";
 
-  constructor(public http: HttpClient, public snackBar: MatSnackBar) {}
+  constructor(
+    public http: HttpClient,
+    public snackBar: MatSnackBar,
+    public configurationService: ConfigurationService
+  ) {
+    this.configurationService.getActiveConfigurations().subscribe((res) => {
+      this.Data.vat = this.getConfiguration(res.data, 1);
+      this.Data.deliveryCharges = this.getConfiguration(res.data, 2);
+    });
+  }
+
+  getConfiguration(data: any, configurationType: Number): number {
+    let configValue = 0;
+    var value = data.filter(
+      (a) =>
+        a.configurationTypeId == configurationType &&
+        a.fromDate <= Date.now &&
+        (a.toDate == null || a.toDate >= Date.now)
+    )[0];
+    if (value) {
+      configValue = value.amount;
+    }
+    return configValue;
+  }
 
   public addToCart(product: OrderProduct) {
     let message, status;

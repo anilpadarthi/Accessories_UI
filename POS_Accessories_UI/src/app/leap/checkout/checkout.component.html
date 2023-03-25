@@ -1,56 +1,68 @@
-
 <mat-card>
   <mat-card-header>
-      <mat-card-title class="header-title">Checkout</mat-card-title>
+    <mat-card-title class="header-title">Checkout</mat-card-title>
   </mat-card-header>
   <mat-card-content>
     <form [formGroup]="form" (ngSubmit)="placeOrder()" autocomplete="off">
-    <div *ngIf="!isOrderPlaced">
-      <div fxLayout="row">
-        <div fxFlex="100" class="p-1">
-          <h3 class="text-muted mt-2">Delivery Address</h3>
-          <div class="divider"></div>
-          <div *ngFor="let item of deliveryAddress.split(',')">
-            <span>{{ item }}</span><br>
-         </div>
+      <div *ngIf="!isOrderPlaced">
+        <div fxLayout="row">
+          <div fxFlex="100" class="p-1">
+            <h3 class="text-muted mt-2">Delivery Address</h3>
+            <div class="divider"></div>
+            <div *ngFor="let item of deliveryAddress.split(',')">
+              <span>{{ item }}</span
+              ><br />
+            </div>
+          </div>
         </div>
-      </div>
-      <div fxLayout="row">
-        <div fxFlex="100" fxFlex.gt-sm="50" class="px-1">
-      <br>
-          <mat-form-field appearance="outline" class="w-100">
+        <div fxLayout="row">
+          <div fxFlex="100" fxFlex.gt-sm="50" class="px-1">
+            <br />
+            <mat-form-field appearance="outline" class="w-100">
               <mat-label>Payment Mode</mat-label>
               <mat-select formControlName="paymentMode" required>
-                  <mat-option value="cash">
-                      <span>Cash</span>
-                  </mat-option>
-                  <mat-option value="card">
-                    <span>Card</span>
+                <mat-option value="cash">
+                  <span>Cash</span>
+                </mat-option>
+                <mat-option value="card">
+                  <span>Card</span>
                 </mat-option>
               </mat-select>
               <!-- <mat-error *ngIf="form.controls.categoryId.errors?.required">Category is required</mat-error> -->
-          </mat-form-field>
-      </div> 
+            </mat-form-field>
+          </div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="center center" class="p-1">
+          <h2>
+            <span class="text-muted mr-1">Total Price:</span
+            ><span>£ {{ grandTotal | number : "1.2-2" }}</span>
+          </h2>
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="space-between center" class="w-100">
+          <a [routerLink]="['/cart']" mat-raised-button color="primary"
+            >Return to Cart</a
+          >
+          <button type="submit" mat-raised-button color="primary">
+            Place order now
+          </button>
+        </div>
       </div>
-      <div fxLayout="row" fxLayoutAlign="center center" class="p-1"> 
-         <h2><span class="text-muted mr-1">Total Price:</span><span>€{{grandTotal | number : '1.2-2'}}</span></h2>    
+      <div *ngIf="isOrderPlaced" label="Confirmation">
+        <div
+          fxLayout="column"
+          fxLayoutAlign="center center"
+          class="p-2 text-center"
+        >
+          <button mat-fab color="primary"><mat-icon>check</mat-icon></button>
+          <h2 class="py-2">Congratulation! Your order has been placed</h2>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="center center" class="mt-2 p-1">
+          <a [routerLink]="['/products-view']" mat-raised-button color="primary"
+            >Return to Shop</a
+          >
+        </div>
       </div>
-      
-      <div fxLayout="row" fxLayoutAlign="space-between center" class="w-100"> 
-        <a [routerLink]="['/cart']" mat-raised-button color="primary">Return to Cart</a>       
-        <button type="submit" mat-raised-button  color="primary">Place order now</button>       
-      </div>     
-    </div>
-    <div *ngIf="isOrderPlaced" label="Confirmation">
-      <div fxLayout="column" fxLayoutAlign="center center" class="p-2 text-center"> 
-        <button mat-fab color="primary"><mat-icon>check</mat-icon></button>
-        <h2 class="py-2">Congratulation! Your order has been placed</h2>
-      </div>
-      <div fxLayout="row" fxLayoutAlign="center center" class="mt-2 p-1"> 
-        <a [routerLink]="['/products-view']" mat-raised-button color="primary">Return to Shop</a>       
-      </div>
-    </div>  
-  </form>
- 
+    </form>
   </mat-card-content>
 </mat-card>

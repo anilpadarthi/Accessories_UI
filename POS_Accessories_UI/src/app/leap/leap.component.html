@@ -1,95 +1,211 @@
 <mat-toolbar color="primary" class="admin-toolbar mat-elevation-z2">
-    <div fxLayout="row" fxLayoutAlign="space-between center" class="w-100">  
-        <div fxLayout="row" fxLayoutAlign="center center"> 
-            <div class="logo-section" fxShow="false" fxShow.gt-xs> 
-                <a routerLink="" fxLayout="row" fxLayoutAlign="start center" class="logo"> 
-                    <span>Leap-Tel</span> 
-                </a>
-            </div>                    
-            <button mat-icon-button (click)="toggleSidenav()">
-                <mat-icon>menu</mat-icon>
-            </button>              
-        </div>  
-                
-        <div fxLayout="row" fxLayoutAlign="end center">   
-            <div fxLayout="row" fxLayoutAlign="start center" fxShow="false" fxShow.gt-xs class="search-bar">
-                <form method="get">
-                    <input type="text" placeholder="Type to search..." class="mat-elevation-z3"  [class.show]="toggleSearchBar">
-                    <button mat-icon-button (click)="toggleSearchBar = !toggleSearchBar" type="button">
-                        <mat-icon>search</mat-icon>
-                    </button> 
-                </form>
-            </div>    
-            <div fxLayoutAlign="center center" [@.disabled]="true">
-                <button mat-button [matMenuTriggerFor]="cartMenu" #cartMenuTrigger="matMenuTrigger" class="flex-row-button">
-                    <mat-icon>shopping_cart</mat-icon>
-                    <span *ngIf="cartService.Data.totalCartCount > 0" class="cart-items-count">{{cartService.Data.totalCartCount}}</span>
-                    <mat-icon class="mat-icon-sm">arrow_drop_down</mat-icon>
-                </button>
-                <mat-menu #cartMenu="matMenu" [overlapTrigger]="false" xPosition="before" class="top-menu-dropdown cart-dropdown">
-                    <ng-template matMenuContent>
-                        <span (mouseleave)="cartMenuTrigger.closeMenu()" class="d-block">
-                            <div fxLayout="row" fxLayoutAlign="space-between center" class="text-muted">
-                                <b><span>{{cartService.Data.totalCartCount}} ITEM<span *ngIf="cartService.Data.totalCartCount > 1">S</span></span></b>
-                                <b><a [routerLink]="['/cart']" class="text-muted">VIEW CART</a></b>
-                            </div>
-                            <div class="divider mt-1"></div>
-                            <div *ngIf="cartService.Data.totalCartCount == 0" class="py-1 text-muted text-center">You have no items in your shopping cart.</div>
-                            <mat-list>
-                                <mat-list-item *ngFor="let product of cartService.Data.cartList">                                   
-                                    <h3 matLine class="text-muted"> {{product.productName}} </h3>
-                                    <p matLine class="text-muted">
-                                        <bdi>{{product.qty}} x €{{product.salePrice | number : '1.2-2'}}</bdi>
-                                    </p>
-                                    <!-- <img  [src]="" alt="image"> -->
-                                    <button mat-icon-button color="warn" class="remove" (click)="remove(product);stopClickPropagate($event)" matTooltip="Remove" matTooltipPosition="before">
-                                        <mat-icon class="mat-icon-sm">close</mat-icon>
-                                    </button>
-                                </mat-list-item>
-                            </mat-list>
-                            <div *ngIf="cartService.Data.cartList.length > 0" class="cart-dropdown-footer">
-                                <div class="divider mt-1"></div>
-                                <div fxLayout="row" fxLayoutAlign="space-between center" class="text-muted mt-1">
-                                    <b>TOTAL:</b>
-                                    <b class="new-price">€{{cartService.Data.totalPrice | number : '1.2-2'}}</b>
-                                </div>
-                                <div class="divider mt-1"></div>
-                                <div fxLayout="row" fxLayoutAlign="space-between center" class="mt-1">
-                                    <button mat-mini-fab color="warn" (click)="clear();stopClickPropagate($event)" matTooltip="Clear All" matTooltipPosition="after">
-                                        <mat-icon>remove_shopping_cart</mat-icon>
-                                    </button>
-                                    <a [routerLink]="['/checkout']" mat-mini-fab color="primary" matTooltip="Checkout" matTooltipPosition="before">
-                                        <mat-icon>check</mat-icon>
-                                    </a>
-                                </div>
-                            </div>
-                        </span>
-                    </ng-template>
-                </mat-menu>
-            </div>            
-            <app-lang fxShow="false" fxShow.gt-xs></app-lang>
-            <app-fullscreen></app-fullscreen>  
-            <app-messages fxShow="false" fxShow.gt-xs></app-messages>
-            <app-user-menu></app-user-menu> 
-        </div>
+  <div fxLayout="row" fxLayoutAlign="space-between center" class="w-100">
+    <div fxLayout="row" fxLayoutAlign="center center">
+      <div class="logo-section" fxShow="false" fxShow.gt-xs>
+        <a
+          routerLink=""
+          fxLayout="row"
+          fxLayoutAlign="start center"
+          class="logo"
+        >
+          <span>Leap-Tel</span>
+        </a>
+      </div>
+      <button mat-icon-button (click)="toggleSidenav()">
+        <mat-icon>menu</mat-icon>
+      </button>
     </div>
-</mat-toolbar>
-<mat-drawer-container class="admin-container"> 
-    <mat-drawer *ngIf="!isHideSideBar()" #sidenav [opened]="settings.adminSidenavIsOpened" [mode]="(settings.adminSidenavIsPinned) ? 'side' : 'over'" class="admin-sidenav mat-elevation-z6" autoFocus="false">
-        <perfect-scrollbar>
-            <div fxLayout="column" fxLayoutAlign="center center" class="user-block transition-2" [class.show]="settings.adminSidenavUserBlock"> 
-                <div fxLayout="row" fxLayoutAlign="space-around center" class="user-info-wrapper">
-                    <img [src]="userImage" alt="user-image">
-                    <div class="user-info">
-                        <p class="name">Emilio Verdines</p>
-                        <p class="position">General Manager <br></p>
-                    </div>
+
+    <div fxLayout="row" fxLayoutAlign="end center">
+      <div
+        fxLayout="row"
+        fxLayoutAlign="start center"
+        fxShow="false"
+        fxShow.gt-xs
+        class="search-bar"
+      >
+        <form method="get">
+          <input
+            type="text"
+            placeholder="Type to search..."
+            class="mat-elevation-z3"
+            [class.show]="toggleSearchBar"
+          />
+          <button
+            mat-icon-button
+            (click)="toggleSearchBar = !toggleSearchBar"
+            type="button"
+          >
+            <mat-icon>search</mat-icon>
+          </button>
+        </form>
+      </div>
+      <div fxLayoutAlign="center center" [@.disabled]="true">
+        <button
+          mat-button
+          [matMenuTriggerFor]="cartMenu"
+          #cartMenuTrigger="matMenuTrigger"
+          class="flex-row-button"
+        >
+          <mat-icon>shopping_cart</mat-icon>
+          <span
+            *ngIf="cartService.Data.totalCartCount > 0"
+            class="cart-items-count"
+            >{{ cartService.Data.totalCartCount }}</span
+          >
+          <mat-icon class="mat-icon-sm">arrow_drop_down</mat-icon>
+        </button>
+        <mat-menu
+          #cartMenu="matMenu"
+          [overlapTrigger]="false"
+          xPosition="before"
+          class="top-menu-dropdown cart-dropdown"
+        >
+          <ng-template matMenuContent>
+            <span (mouseleave)="cartMenuTrigger.closeMenu()" class="d-block">
+              <div
+                fxLayout="row"
+                fxLayoutAlign="space-between center"
+                class="text-muted"
+              >
+                <b
+                  ><span
+                    >{{ cartService.Data.totalCartCount }} ITEM<span
+                      *ngIf="cartService.Data.totalCartCount > 1"
+                      >S</span
+                    ></span
+                  ></b
+                >
+                <b
+                  ><a [routerLink]="['/cart']" class="text-muted"
+                    >VIEW CART</a
+                  ></b
+                >
+              </div>
+              <div class="divider mt-1"></div>
+              <div
+                *ngIf="cartService.Data.totalCartCount == 0"
+                class="py-1 text-muted text-center"
+              >
+                You have no items in your shopping cart.
+              </div>
+              <mat-list>
+                <mat-list-item
+                  *ngFor="let product of cartService.Data.cartList"
+                >
+                  <h3 matLine class="text-muted">{{ product.productName }}</h3>
+                  <p matLine class="text-muted">
+                    <bdi
+                      >{{ product.qty }} x £
+                      {{ product.salePrice | number : "1.2-2" }}</bdi
+                    >
+                  </p>
+                  <!-- <img  [src]="" alt="image"> -->
+                  <button
+                    mat-icon-button
+                    color="warn"
+                    class="remove"
+                    (click)="remove(product); stopClickPropagate($event)"
+                    matTooltip="Remove"
+                    matTooltipPosition="before"
+                  >
+                    <mat-icon class="mat-icon-sm">close</mat-icon>
+                  </button>
+                </mat-list-item>
+              </mat-list>
+              <div
+                *ngIf="cartService.Data.cartList.length > 0"
+                class="cart-dropdown-footer"
+              >
+                <div class="divider mt-1"></div>
+                <div
+                  fxLayout="row"
+                  fxLayoutAlign="space-between center"
+                  class="text-muted mt-1"
+                >
+                  <b>TOTAL:</b>
+                  <b class="new-price"
+                    >£
+                    {{
+                      cartService.Data.totalPrice +
+                        cartService.Data.deliveryCharges +
+                        (cartService.Data.totalPrice * cartService.Data.vat) /
+                          100 | number : "1.2-2"
+                    }}</b
+                  >
                 </div>
-            </div> 
-            <app-admin-menu [menuItems]="menuItems" [menuParentId]="0"></app-admin-menu>
-        </perfect-scrollbar>
-    </mat-drawer> 
-    <mat-drawer-content>  
-        <router-outlet></router-outlet>  
-    </mat-drawer-content>    
+                <div class="divider mt-1"></div>
+                <div
+                  fxLayout="row"
+                  fxLayoutAlign="space-between center"
+                  class="mt-1"
+                >
+                  <button
+                    mat-mini-fab
+                    color="warn"
+                    (click)="clear(); stopClickPropagate($event)"
+                    matTooltip="Clear All"
+                    matTooltipPosition="after"
+                  >
+                    <mat-icon>remove_shopping_cart</mat-icon>
+                  </button>
+                  <a
+                    [routerLink]="['/checkout']"
+                    mat-mini-fab
+                    color="primary"
+                    matTooltip="Checkout"
+                    matTooltipPosition="before"
+                  >
+                    <mat-icon>check</mat-icon>
+                  </a>
+                </div>
+              </div>
+            </span>
+          </ng-template>
+        </mat-menu>
+      </div>
+      <app-lang fxShow="false" fxShow.gt-xs></app-lang>
+      <app-fullscreen></app-fullscreen>
+      <app-messages fxShow="false" fxShow.gt-xs></app-messages>
+      <app-user-menu></app-user-menu>
+    </div>
+  </div>
+</mat-toolbar>
+<mat-drawer-container class="admin-container">
+  <mat-drawer
+    *ngIf="!isHideSideBar()"
+    #sidenav
+    [opened]="settings.adminSidenavIsOpened"
+    [mode]="settings.adminSidenavIsPinned ? 'side' : 'over'"
+    class="admin-sidenav mat-elevation-z6"
+    autoFocus="false"
+  >
+    <perfect-scrollbar>
+      <div
+        fxLayout="column"
+        fxLayoutAlign="center center"
+        class="user-block transition-2"
+        [class.show]="settings.adminSidenavUserBlock"
+      >
+        <div
+          fxLayout="row"
+          fxLayoutAlign="space-around center"
+          class="user-info-wrapper"
+        >
+          <img [src]="userImage" alt="user-image" />
+          <div class="user-info">
+            <p class="name">Emilio Verdines</p>
+            <p class="position">General Manager <br /></p>
+          </div>
+        </div>
+      </div>
+      <app-admin-menu
+        [menuItems]="menuItems"
+        [menuParentId]="0"
+      ></app-admin-menu>
+    </perfect-scrollbar>
+  </mat-drawer>
+  <mat-drawer-content>
+    <router-outlet></router-outlet>
+  </mat-drawer-content>
 </mat-drawer-container>
