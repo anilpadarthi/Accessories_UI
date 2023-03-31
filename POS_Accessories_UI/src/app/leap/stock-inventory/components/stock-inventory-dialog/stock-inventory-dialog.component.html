@@ -29,8 +29,13 @@
             </div>
             <div fxFlex="100" fxFlex.gt-md="50" class="px-1">
                 <mat-form-field appearance="outline" class="w-100">
-                    <mat-label>Supplier Id</mat-label>
-                    <input matInput formControlName="supplierId">
+                    <mat-label>Supplier</mat-label>
+                    <mat-select formControlName="supplierId">
+                        <mat-option [value]="null">All</mat-option>
+                        <mat-option *ngFor="let supplier of suppliers" [value]="supplier.id">
+                            <span>{{supplier.name}}</span>
+                        </mat-option>
+                    </mat-select>
                 </mat-form-field>
             </div>
             <div fxFlex="100" fxFlex.gt-md="50" class="px-1">

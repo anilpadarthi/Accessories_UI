@@ -10,15 +10,14 @@
             <h3 class="text-muted mt-2">Delivery Address</h3>
             <div class="divider"></div>
             <div *ngFor="let item of deliveryAddress.split(',')">
-              <span>{{ item }}</span
-              ><br />
+              <span>{{ item }}</span><br />
             </div>
           </div>
         </div>
         <div fxLayout="row">
           <div fxFlex="100" fxFlex.gt-sm="50" class="px-1">
             <br />
-            <mat-form-field appearance="outline" class="w-100">
+            <mat-form-field appearance="outline" class="w-50">
               <mat-label>Payment Mode</mat-label>
               <mat-select formControlName="paymentMode" required>
                 <mat-option value="cash">
@@ -34,33 +33,24 @@
         </div>
         <div fxLayout="row" fxLayoutAlign="center center" class="p-1">
           <h2>
-            <span class="text-muted mr-1">Total Price:</span
-            ><span>£ {{ grandTotal | number : "1.2-2" }}</span>
+            <span class="text-muted mr-1">Total Price:</span><span>£ {{ grandTotal | number : "1.2-2" }}</span>
           </h2>
         </div>
 
         <div fxLayout="row" fxLayoutAlign="space-between center" class="w-100">
-          <a [routerLink]="['/cart']" mat-raised-button color="primary"
-            >Return to Cart</a
-          >
+          <a [routerLink]="['/cart']" mat-raised-button color="primary">Return to Cart</a>
           <button type="submit" mat-raised-button color="primary">
             Place order now
           </button>
         </div>
       </div>
       <div *ngIf="isOrderPlaced" label="Confirmation">
-        <div
-          fxLayout="column"
-          fxLayoutAlign="center center"
-          class="p-2 text-center"
-        >
+        <div fxLayout="column" fxLayoutAlign="center center" class="p-2 text-center">
           <button mat-fab color="primary"><mat-icon>check</mat-icon></button>
           <h2 class="py-2">Congratulation! Your order has been placed</h2>
         </div>
         <div fxLayout="row" fxLayoutAlign="center center" class="mt-2 p-1">
-          <a [routerLink]="['/products-view']" mat-raised-button color="primary"
-            >Return to Shop</a
-          >
+          <a [routerLink]="['/products-view']" mat-raised-button color="primary">Return to Shop</a>
         </div>
       </div>
     </form>

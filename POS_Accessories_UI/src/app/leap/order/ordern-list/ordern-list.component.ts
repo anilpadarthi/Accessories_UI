@@ -26,10 +26,10 @@ export class OrdernListComponent implements OnInit {
     "OrderId",
     "CreatedDate",
     "User",
-    "Shop",
-    "NetAmount",
+    "Shop",   
     "OrderStatus",
     "PaymenthMethod",
+    "Amount",
     "Actions",
   ];
   bogusDataSource = new MatTableDataSource<any>();
@@ -105,7 +105,7 @@ export class OrdernListComponent implements OnInit {
   edit(orderDetails: any): void {
     const dialogRef = this.dialog.open(OrderDialogComponent, {
       data: {
-        orderDetails: orderDetails,
+        orderId: orderDetails.orderId,
       },
       panelClass: ["theme-dialog"],
       autoFocus: false,

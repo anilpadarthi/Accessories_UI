@@ -1,4 +1,4 @@
-<h1 mat-dialog-title>Order</h1>
+<h1 mat-dialog-title>Edit Order</h1>
 <div mat-dialog-content class="mat-table cart-table">
   <div class="mat-header-row">
     <div class="mat-header-cell">Product</div>
@@ -14,28 +14,19 @@
       <img [src]="'assets/images/products/keyboard/1-medium.png'" />
     </div>
     <div class="mat-cell">
-      <a
-        [routerLink]="[
+      <a [routerLink]="[
           '/products-view',
           product.productId,
           product.productName
-        ]"
-        class="product-name"
-        >{{ product.productName }}</a
-      >
+        ]" class="product-name">{{ product.productName }}</a>
     </div>
     <div class="mat-cell">{{ product.productCode }}</div>
     <div class="mat-cell">£ {{ product.salePrice | number : "1.2-2" }}</div>
     <div class="mat-cell text-muted py-1">
       <div fxFlex="100" fxFlex.gt-sm="75" class="px-1 py-1">
         <mat-form-field appearance="outline" class="w-100">
-          <input
-            type="number"
-            matInput
-            class="form-control"
-            value="{{ product.qty }}"
-            (change)="updateCart($event.target.value, product)"
-          />
+          <input type="number" matInput class="form-control" value="{{ product.qty }}"
+            (change)="updateCartItem($event.target.value, product)" />
         </mat-form-field>
       </div>
     </div>
@@ -44,82 +35,132 @@
     </div>
     <div class="mat-cell text-center">
       <div class="p-1">
-        <button
-          mat-mini-fab
-          color="warn"
-          (click)="remove(product)"
-          matTooltip="Clear"
-        >
+        <button mat-mini-fab color="warn" (click)="removeCartItem(product)" matTooltip="remove">
           <mat-icon>delete</mat-icon>
         </button>
       </div>
     </div>
   </div>
-</div>
-<div fxLayout="row" fxLayoutAlign="end center" class="w-100">
-  <div class="mat-cell">
-    <div fxLayout="column" fxLayoutAlign="right" class="text-right px-1 py-2">
-      <span>Discount in % : </span>
+
+
+  <div class="mat-row additional-rows">
+    <div class="mat-cell"></div>
+    <div class="mat-cell"></div>
+    <div class="mat-cell"></div>
+    <div class="mat-cell"></div>
+    <div class="mat-cell">
+      <div fxLayout="column" fxLayoutAlign="right" class="text-right px-1 py-2">
+        <span>Item Total : </span>
+      </div>
     </div>
-  </div>
-  <div class="mat-cell">
-    <div fxLayout="column" fxLayoutAlign="end center" class="">
-      <mat-form-field appearance="outline" class="w-100">
-        <input
-          matInput
-          class="form-control"
-          value=""
-          [(ngModel)]="orderDetails.discountPercentage"
-        />
-      </mat-form-field>
+    <div class="mat-cell">
+      <div fxLayout="column" fxLayoutAlign="" class="py-1">
+        £ {{ itemTotal | number : "1.2-2" }}
+      </div>
     </div>
+    <div class="mat-cell"></div>
   </div>
-</div>
-<div fxLayout="row" fxLayoutAlign="end center" class="w-100">
-  <div class="mat-cell">
-    <div fxLayout="column" fxLayoutAlign="right" class="text-right px-1 py-2">
-      <span>Delivery Charges : </span>
+  <div class="mat-row additional-rows">
+    <div class="mat-cell"></div>
+    <div class="mat-cell"></div>
+    <div class="mat-cell"></div>
+    <div class="mat-cell"></div>
+    <div class="mat-cell">
+      <div fxLayout="column" fxLayoutAlign="right" class="text-right px-1 py-2">
+        <span>Discount in % : </span>
+      </div>
     </div>
-  </div>
-  <div class="mat-cell">
-    <div fxLayout="column" fxLayoutAlign="">
-      <!-- <mat-form-field appearance="outline" class="w-100 noPadding"> -->
-      £ {{ orderDetails.deliveryCharges | number : "1.2-2" }}
-      <!-- </mat-form-field> -->
+    <div class="mat-cell">
+      <div fxLayout="column" fxLayoutAlign="" class="">
+        <mat-form-field appearance="outline" class="w-50">
+          <input matInput class="form-control"  [(ngModel)]="discountPercentage" (change)="updateCalculations();" />
+        </mat-form-field>
+      </div>
     </div>
+    <div class="mat-cell"></div>
   </div>
-</div>
-<div fxLayout="row" fxLayoutAlign="end center" class="w-100">
-  <div class="mat-cell">
-    <div fxLayout="column" fxLayoutAlign="right" class="text-right px-1 py-2">
-      <span>VAT : </span>
+  <div class="mat-row additional-rows">
+    <div class="mat-cell"></div>
+    <div class="mat-cell"></div>
+    <div class="mat-cell"></div>
+    <div class="mat-cell"></div>
+    <div class="mat-cell">
+      <div fxLayout="column" fxLayoutAlign="right" class="text-right px-1 py-2">
+        <span>Net Total : </span>
+      </div>
     </div>
-  </div>
-  <div class="mat-cell">
-    <div fxLayout="column" fxLayoutAlign="" class="py-1">
-      <!-- <mat-form-field appearance="outline" class="w-100"> -->
-      £ {{ orderDetails.vatAmount | number : "1.2-2" }}
-      <!-- </mat-form-field> -->
+    <div class="mat-cell">
+      <div fxLayout="column" fxLayoutAlign="" class="py-1">
+        £ {{ netTotal | number : "1.2-2" }}
+      </div>
     </div>
+    <div class="mat-cell"></div>
   </div>
-</div>
-<div fxLayout="row" fxLayoutAlign="space-between center" class="w-100 py-1">
-  <button mat-raised-button color="warn" type="button" mat-dialog-close>
-    Close
-  </button>
-  <div class="mat-cell text-right">
-    <div fxLayout="column" fxLayoutAlign="center end" class="grand-total px-2">
-      <span class="new-price"></span>
+
+  <div class="mat-row additional-rows">
+    <div class="mat-cell"></div>
+    <div class="mat-cell"></div>
+    <div class="mat-cell"></div>
+    <div class="mat-cell"></div>
+    <div class="mat-cell">
+      <div fxLayout="column" fxLayoutAlign="right" class="text-right px-1 py-2">
+        <span>Delivery Chgs. : </span>
+      </div>
     </div>
-  </div>
-  <div class="mat-cell">
-    <div fxLayout="column" fxLayoutAlign="center start" class="grand-total">
-      <span class="new-price"
-        >Grand total: £ {{ orderDetails.itemTotal | number : "1.2-2" }}</span
-      >
+    <div class="mat-cell">
+      <div fxLayout="column" fxLayoutAlign="" class="py-1">
+        £ {{ deliveryCharges | number : "1.2-2" }}
+      </div>
     </div>
+    <div class="mat-cell"></div>
+
   </div>
-  <button mat-raised-button color="primary" type="button" (click)="onSubmit()">
-    Submit
-  </button>
+  <div class="mat-row additional-rows">
+    <div class="mat-cell"></div>
+    <div class="mat-cell"></div>
+    <div class="mat-cell"></div>
+    <div class="mat-cell"></div>
+    <div class="mat-cell">
+      <div fxLayout="column" fxLayoutAlign="right" class="text-right px-1 py-2">
+        <span>VAT ({{vatPercentage}}%) : </span>
+      </div>
+    </div>
+    <div class="mat-cell">
+      <div fxLayout="column" fxLayoutAlign="" class="py-1">
+        £ {{ vatAmount | number : "1.2-2" }}
+      </div>
+    </div>
+    <div class="mat-cell"></div>
+  </div>
+
+  <div class="mat-row additional-rows">
+    <div class="mat-cell"></div>
+    <div class="mat-cell"></div>
+    <div class="mat-cell"></div>
+    <div class="mat-cell"></div>
+    <div class="mat-cell">
+      <div fxLayout="column" fxLayoutAlign="right" class="text-right px-1 py-2 grand-total">
+        <span>Grand Total : </span>
+      </div>
+    </div>
+    <div class="mat-cell">
+      <div fxLayout="column" fxLayoutAlign="center start" class="grand-total">
+        <span class="new-price">£ {{ grandTotalWithVAT | number : "1.2-2" }}</span>
+      </div>
+    </div>
+
+    <div class="mat-cell"></div>
+
+  </div>
+
+
+  <div fxLayout="row" fxLayoutAlign="space-between center" class="w-100 py-1">
+    <button mat-raised-button color="warn" type="button" mat-dialog-close>
+      Close
+    </button>
+
+    <button mat-raised-button color="primary" type="button" (click)="onSubmit()">
+      Submit
+    </button>
+  </div>
 </div>

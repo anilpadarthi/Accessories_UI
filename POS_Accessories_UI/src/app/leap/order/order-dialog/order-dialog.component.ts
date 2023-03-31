@@ -8,16 +8,28 @@ import { MessageService } from "src/app/shared/services/message.service";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { OrderDetails } from "src/app/shared/models/orderDetails";
 import { OrderProduct } from "src/app/shared/models/orderProduct";
+
 @Component({
   selector: "app-order-dialog",
   templateUrl: "./order-dialog.component.html",
   styleUrls: ["./order-dialog.component.scss"],
 })
+
 export class OrderDialogComponent implements OnInit {
   private sub: any;
   public orderId: number = 0;
   public errorMessage: string = "";
-  public orderDetails: OrderDetails;
+  orderDetails: any = null;
+  itemTotal: any = null;
+  netTotal: any = null;
+  deliveryCharges: any = null;
+  vatAmount: any = null;
+  discountAmount: any = null;
+  discountPercentage: any = null;
+  vatPercentage: any = null;
+  grandTotalWithVAT: any = null;
+  grandTotalWithOutVAT: any = null;
+
   constructor(
     public dialogRef: MatDialogRef<OrderDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -26,40 +38,72 @@ export class OrderDialogComponent implements OnInit {
     private orderService: OrderService,
     public snackBar: MatSnackBar,
     private messageService: MessageService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.sub = this.activatedRoute.params.subscribe((params) => {
-      if (this.data.orderDetails) {
-        this.orderDetails = this.data.orderDetails;
+      if (this.data.orderId) {
+        this.orderService.getById(this.data.orderId).subscribe((res) => {
+          this.orderDetails = res.data;
+          this.deliveryCharges = this.orderDetails.deliveryCharges;
+          this.vatPercentage = this.orderDetails.vatPercentage;
+          this.discountPercentage = this.orderDetails.discountPercentage;
+          this.updateCalculations();
+        });
       }
     });
   }
 
-  public updateCart(updatedQuantity: any, updatedProduct: OrderProduct) {
-    updatedQuantity = parseInt(updatedQuantity);
-    this.orderDetails.itemTotal = 0;
-    if (updatedQuantity >= 0) {
+  public updateCartItem(qty: number, updatedProduct: OrderProduct) {
+    if (qty >= 0) {
       this.orderDetails.items.forEach((product) => {
         if (product.productId == updatedProduct.productId) {
-          product.qty = updatedQuantity;
+          product.qty = qty;
         }
-        this.orderDetails.itemTotal += product.qty * product.salePrice;
       });
     }
+    this.updateCalculations();
   }
 
-  public remove(product) {
+  public removeCartItem(product) {
     const index: number = this.orderDetails.items.indexOf(product);
     if (index !== -1) {
       this.orderDetails.items.splice(index, 1);
-      this.orderDetails.itemTotal -= product.qty * product.salePrice;
+      this.updateCalculations();
     }
+  }
+
+
+
+  updateCalculations() {
+    this.itemTotal = 0;
+    this.orderDetails.items.forEach((product) => {
+      this.itemTotal += product.qty * product.salePrice;
+    });
+    this.netTotal = this.itemTotal;
+    if (this.discountPercentage > 0) {
+      this.discountAmount = (this.itemTotal * this.discountPercentage) / 100;
+      this.netTotal = this.netTotal - this.discountAmount;
+    }
+    this.vatAmount = (this.netTotal * this.vatPercentage) / 100;
+    this.grandTotalWithVAT = this.netTotal + this.vatAmount + this.deliveryCharges;
+    this.grandTotalWithOutVAT = this.netTotal + this.deliveryCharges;
   }
 
   public onSubmit() {
     this.errorMessage = "";
-    this.orderService.update(this.orderDetails).subscribe({
+    let order = new OrderDetails();
+    order.items = this.orderDetails.items;
+    order.itemTotal = this.itemTotal;
+    order.deliveryCharges = this.deliveryCharges;
+    order.vatAmount = this.vatAmount;
+    order.vatPercentage = this.vatPercentage;
+    order.discountAmount = this.discountAmount;
+    order.discountPercentage = this.discountPercentage;
+    order.totalWithVATAmount = this.grandTotalWithVAT;
+    order.totalWithOutVATAmount = this.grandTotalWithOutVAT;
+    order.orderId = this.orderDetails.orderId;
+    this.orderService.update(order).subscribe({
       next: (res: Response) => {
         if (res.status) {
           this.dialogRef.close();
@@ -70,7 +114,7 @@ export class OrderDialogComponent implements OnInit {
       },
       error: (e) => {
         console.log(e);
-        this.errorMessage = "Unable to update Order";
+        this.messageService.showError("Unable to create Category");
       },
     });
   }

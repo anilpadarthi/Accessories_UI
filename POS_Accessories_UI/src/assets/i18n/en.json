@@ -58,9 +58,10 @@
     "ORDERS":"Orders",
     "COUPON":"Coupon",
     "CONFIGURATION":"Configuration",
-    "Accountability":"Accountability",
+    "ACCOUNTABILITY":"Accountability",
     "CREATE_ORDER":"Create Order",
     "INVENTORY":"Inventory",
+    "ADDSTOCK":"Add Stock",
     "WAREHOUSE":"Warehouse",
     "ORDER_LIST":"Order List",
     "THEME": "Theme"

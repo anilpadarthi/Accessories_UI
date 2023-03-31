@@ -1,105 +1,71 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Inject } from "@angular/core";
 import { OrderProduct } from "src/app/shared/models/orderProduct";
-import { Product } from "src/app/shared/models/product";
-import { Data, CartService } from "../../shared/services/cart.service";
-import { ConfigurationService } from "src/app/shared/services/configuration.service";
+import { CartService } from "../../shared/services/cart.service";
+
 
 @Component({
   selector: "app-cart",
   templateUrl: "./cart.component.html",
   styleUrls: ["./cart.component.scss"],
 })
+
 export class CartComponent implements OnInit {
   total = [];
-  grandTotal = 0;
-  grandTotalWithCalculation = 0;
-  cartItemCount = [];
-  cartItemCountTotal = 0;
-  deliveryCharges = 0;
-  vat = 0;
-  constructor(public cartService: CartService) {}
+  cartItemCount = 0;
+  cartItems: any[] = null;
+  itemTotal: any = null;
+  netTotal: any = null;
+  deliveryCharges: any = null;
+  vatAmount: any = null;
+  discountAmount: any = null;
+  discountPercentage: any = null;
+  vatPercentage: any = null;
+  grandTotalWithVAT: any = null;
+  grandTotalWithOutVAT: any = null;
+
+  constructor(public cartService: CartService) { }
 
   ngOnInit() {
-    this.cartService.Data.cartList.forEach((product) => {
-      this.total[product.productId] = product.qty * product.salePrice;
-      this.grandTotal += product.qty * product.salePrice;
-      this.cartItemCount[product.productId] = product.qty;
-      this.cartItemCountTotal += product.qty;
-    });
-
+    this.cartItems = this.cartService.Data.cartList;
+    this.vatPercentage = this.cartService.Data.vat;
     this.deliveryCharges = this.cartService.Data.deliveryCharges;
-    this.updateGrandTotal();
+    this.discountPercentage = this.cartService.Data.discount;
+    this.updateCalculations();
   }
 
-  public updateCart(updatedQuantity: any, updatedProduct: OrderProduct) {
-    updatedQuantity = parseInt(updatedQuantity);
-    if (updatedQuantity) {
-      this.total[updatedProduct.productId] =
-        updatedQuantity * updatedProduct.salePrice;
-      this.cartItemCount[updatedProduct.productId] = updatedQuantity;
-      this.grandTotal = 0;
-      this.total.forEach((price) => {
-        this.grandTotal += price;
-      });
-      this.cartItemCountTotal = 0;
-      this.cartItemCount.forEach((count) => {
-        this.cartItemCountTotal += count;
-      });
-
-      this.cartService.Data.totalPrice = this.grandTotal;
-      this.cartService.Data.totalCartCount = this.cartItemCountTotal;
-      this.updateGrandTotal();
-      this.cartService.Data.cartList.forEach((product) => {
-        this.cartItemCount.forEach((count, index) => {
-          if (product.productId == index) {
-            product.qty = count;
-          }
-        });
+  public updateCartItem(qty: number, updatedProduct: OrderProduct) {
+    if (qty >= 0) {
+      this.cartItems.forEach((product) => {
+        if (product.productId == updatedProduct.productId) {
+          product.qty = qty;
+        }
       });
     }
+    this.updateCalculations();
   }
 
-  public remove(product) {
-    const index: number = this.cartService.Data.cartList.indexOf(product);
+  public removeCartItem(product) {
+    const index: number = this.cartItems.indexOf(product);
     if (index !== -1) {
-      this.cartService.Data.cartList.splice(index, 1);
-      this.grandTotal = this.grandTotal - this.total[product.productId];
-      this.cartService.Data.totalPrice = this.grandTotal;
-      this.total.forEach((val) => {
-        if (val == this.total[product.id]) {
-          this.total[product.id] = 0;
-        }
-      });
-      this.updateGrandTotal();
-      this.cartItemCountTotal =
-        this.cartItemCountTotal - this.cartItemCount[product.productId];
-      this.cartService.Data.totalCartCount = this.cartItemCountTotal;
-      this.cartItemCount.forEach((val) => {
-        if (val == this.cartItemCount[product.id]) {
-          this.cartItemCount[product.productId] = 0;
-        }
-      });
-      this.cartService.resetProductCartCount(product);
+      this.cartItems.splice(index, 1);
+      this.updateCalculations();
     }
   }
 
-  public updateValue(updatedValue: any, control: string) {
-    switch (control) {
-      case "discount":
-        this.cartService.Data.discount = updatedValue;
-        this.updateGrandTotal();
-        return;
+  updateCalculations() {
+    this.itemTotal = 0;
+    this.cartItems.forEach((product) => {
+      this.itemTotal += product.qty * product.salePrice;
+    });
+    this.netTotal = this.itemTotal;
+    if (this.discountPercentage > 0) {
+      this.cartService.Data.discount = this.discountPercentage;
+      this.discountAmount = (this.itemTotal * this.discountPercentage) / 100;
+      this.netTotal = this.netTotal - this.discountAmount;
     }
-  }
-
-  updateGrandTotal() {
-    this.grandTotalWithCalculation = this.grandTotal;
-    if (this.cartService.Data.discount > 0) {
-      this.grandTotalWithCalculation -=
-        (this.grandTotal * this.cartService.Data.discount) / 100;
-    }
-    this.vat =
-      (this.grandTotalWithCalculation * this.cartService.Data.vat) / 100;
-    this.grandTotalWithCalculation += this.vat + this.deliveryCharges;
+    this.vatAmount = (this.netTotal * this.vatPercentage) / 100;
+    this.grandTotalWithVAT = this.netTotal + this.vatAmount + this.deliveryCharges;
+    this.grandTotalWithOutVAT = this.netTotal + this.deliveryCharges;
+    this.cartItemCount = this.cartItems.length;
   }
 }

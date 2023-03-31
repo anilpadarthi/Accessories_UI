@@ -34,7 +34,7 @@ export class AddSubCategoryComponent implements OnInit {
     public snackBar: MatSnackBar,
     private messageService: MessageService,
     private lookupService: LookupService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.form = this.fb.group({
@@ -56,11 +56,9 @@ export class AddSubCategoryComponent implements OnInit {
   }
 
   public loadData() {
-    this.subCategoryService
-      .getSubCategory(this.subCategoryId)
-      .subscribe((res: any) => {
-        this.form.patchValue(res.data);
-      });
+    this.subCategoryService.getSubCategory(this.subCategoryId).subscribe((res: any) => {
+      this.form.patchValue(res.data);
+    });
   }
 
   getCategoryLookup() {
@@ -74,7 +72,6 @@ export class AddSubCategoryComponent implements OnInit {
   }
 
   public onSubmit() {
-    console.log(this.form.value);
     if (this.form.valid) {
       if (this.subCategoryId === 0) {
         this.subCategoryService.addSubCategory(this.form.value).subscribe({

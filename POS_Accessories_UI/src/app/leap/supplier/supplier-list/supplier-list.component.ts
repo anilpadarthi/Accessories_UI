@@ -1,27 +1,26 @@
 import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from 'src/app/shared/confirm-dialog/confirm-dialog.component';
-import { StockInventoryDialogComponent } from '../stock-inventory-dialog/stock-inventory-dialog.component';
+import { AddSupplierComponent } from 'src/app/leap/supplier/add-supplier/add-supplier.component';
 import { AppSettings, Settings } from 'src/app/app.settings';
 import { Router, ActivatedRoute } from '@angular/router';
-import { StockInventoryService } from '../../../../shared/services/stockInventory.service'
+import { SupplierService } from 'src/app/shared/services/supplier.service'
 import { PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { PaginatorConstants } from 'src/app/shared/models/paginator-constants';
 import { MessageService } from 'src/app/shared/services/message.service';
-import { LookupService } from 'src/app/shared/services/lookup.service';
-import { Lookup } from 'src/app/shared/models/lookup';
 
 @Component({
-  selector: 'app-stock',
-  templateUrl: './stock-inventory.component.html',
-  styleUrls: ['./stock-inventory.component.scss']
+  selector: 'app-supplier-list',
+  templateUrl: './supplier-list.component.html',
+  styleUrls: ['./supplier-list.component.scss']
 })
-export class StockInventoryComponent implements OnInit {
+
+export class SupplierListComponent implements OnInit {
 
   public settings: Settings;
   searchText!: string | null;
-  displayedColumns = ['Id', 'Product','BuyPrice','Quantity','CreatedDate', 'Actions'];
+  displayedColumns = ['Id', 'Name', 'Status', 'Actions'];
   bogusDataSource = new MatTableDataSource<any>();
   pageEvent: PageEvent | undefined;
   tableDataSource: any[] = [];
@@ -29,7 +28,6 @@ export class StockInventoryComponent implements OnInit {
   pageOptions = PaginatorConstants.LEAP_STANDARD_PAGE_OPTIONS;
   pageIndex = 1;
   totalCount!: number;
-  products:Lookup[];
 
   constructor(
     public changeDetectorRefs: ChangeDetectorRef,
@@ -37,9 +35,8 @@ export class StockInventoryComponent implements OnInit {
     public activatedRoute: ActivatedRoute,
     public dialog: MatDialog,
     public appSettings: AppSettings,
-    private stockInventoryService: StockInventoryService,
-    private messageService: MessageService,
-    private lookupService: LookupService
+    private supplierService: SupplierService,
+    private messageService: MessageService
   ) {
     this.settings = this.appSettings.settings;
   }
@@ -49,7 +46,16 @@ export class StockInventoryComponent implements OnInit {
   }
 
   loadData(): void {
-     this.getProducts();
+    const request = {
+      pageNo: this.pageIndex,
+      pageSize: this.pageSize,
+      searchText: this.searchText
+    };
+
+    this.supplierService.getAll(request).subscribe((res) => {
+      this.tableDataSource = res.data.results;
+      this.totalCount = res.data.totalRecords;
+    });
   }
 
   handlePageEvent(event: PageEvent): void {
@@ -73,55 +79,37 @@ export class StockInventoryComponent implements OnInit {
   updateStatus(element) {
     element.status = !element.status;
   }
-  
-  getProducts(){
-    this.lookupService.getProducts().subscribe(res => {
-      this.products = res.data;
-      const request = {
-        pageNo: this.pageIndex,
-        pageSize: this.pageSize,
-        searchText: this.searchText
-      };
-      this.stockInventoryService.getAll(request).subscribe((res) => {
-        res.data.results.forEach(element => {
-          element.productName = this.products.find(a => a.id == element.productId).name;
-        });
-        this.tableDataSource = res.data.results;
-        this.totalCount = res.data.totalRecords;
+
+  openSupplierDialog(supplierId: any): void {
+    const dialogRef = this.dialog.open(AddSupplierComponent, {
+      data: {
+        id: supplierId
+      },
+      panelClass: ['theme-dialog'],
+      autoFocus: false,
+      direction: (this.settings.rtl) ? 'rtl' : 'ltr'
     });
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      if (dialogResult) {
+        this.loadData();
+      }
     });
   }
 
-  public openStockDialog(stockInventoryId: any){
-    const dialogRef = this.dialog.open(StockInventoryDialogComponent, {
-        data: {
-          id:stockInventoryId
-        },
-        panelClass: ['theme-dialog'],
-        autoFocus: false,
-        direction: (this.settings.rtl) ? 'rtl' : 'ltr'
-      });
-      dialogRef.afterClosed().subscribe(dialogResult => { 
-        if(dialogResult){    
-          this.loadData();        
-        }
-      });
-  }
-
-  public remove(stock: any): void {
+  public remove(supplier: any): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       maxWidth: "400px",
       data: {
         title: "Confirm",
-        message: "Are you sure you want remove this stock?"
+        message: "Are you sure you want remove this supplier?"
       }
     });
     dialogRef.afterClosed().subscribe(dialogResult => {
       if (dialogResult) {
-        const index: number = this.tableDataSource.indexOf(stock);
+        const index: number = this.tableDataSource.indexOf(supplier);
         if (index !== -1) {
-          stock.status = "D";
-          this.stockInventoryService.deleteStock(stock).subscribe({
+          supplier.status = "D";
+          this.supplierService.deleteSupplier(supplier).subscribe({
             next: (res) => {
               if (res.status) {
                 this.loadData();
@@ -133,7 +121,7 @@ export class StockInventoryComponent implements OnInit {
             },
             error: (e) => {
               console.log(e);
-              this.messageService.showError('Unable to delete Stock');
+              this.messageService.showError('Unable to delete supplier');
             }
           })
         }

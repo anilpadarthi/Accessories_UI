@@ -1,13 +1,13 @@
 <div class="p-1">
     <mat-card class="p-0">
         <div fxLayout="row wrap" fxLayoutAlign="space-between center" class="w-100 p-2">
-            <h2>Stock List</h2>
+            <h2>Supplier List</h2>
         </div>
         <div class="filter-controls">
             <div class="row wrap">
                 <mat-form-field appearance="outline" class="input-field">
-                    <mat-label>Search By Product</mat-label>
-                    <input matInput placeholder="Search By Product" [(ngModel)]="searchText" autocomplete="off">
+                    <mat-label>Search By Name</mat-label>
+                    <input matInput placeholder="Search By Name" [(ngModel)]="searchText" autocomplete="off">
                 </mat-form-field>
                 <button mat-flat-button color="primary" (click)="onReset()">
                     <mat-icon>refresh</mat-icon> Reset
@@ -16,8 +16,8 @@
                     <mat-icon>search</mat-icon> search
                 </button>
 
-                <button mat-raised-button color="primary" (click)="openStockDialog(null)">
-                    <mat-icon>add</mat-icon> Add Stock</button>
+                <button mat-raised-button color="primary" (click)="openSupplierDialog(null)">
+                    <mat-icon>add</mat-icon> Create Supplier</button>
             </div>
         </div>
 
@@ -26,18 +26,13 @@
                 <ng-container matColumnDef="Id">
                     <mat-header-cell *matHeaderCellDef> Id </mat-header-cell>
                 </ng-container>
-                <ng-container matColumnDef="Product">
-                    <mat-header-cell *matHeaderCellDef> Product </mat-header-cell>
+                <ng-container matColumnDef="Name">
+                    <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
                 </ng-container>
-                <ng-container matColumnDef="BuyPrice">
-                    <mat-header-cell *matHeaderCellDef> Buy Price </mat-header-cell>
+                <ng-container matColumnDef="Status">
+                    <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
                 </ng-container>
-                <ng-container matColumnDef="Quantity">
-                    <mat-header-cell *matHeaderCellDef> Quantity </mat-header-cell>
-                </ng-container>
-                <ng-container matColumnDef="CreatedDate">
-                    <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
-                </ng-container>
+
                 <ng-container matColumnDef="Actions">
                     <mat-header-cell *matHeaderCellDef></mat-header-cell>
                 </ng-container>
@@ -49,24 +44,24 @@
             <div class="example-container">
                 <mat-table #table [dataSource]="tableDataSource">
                     <ng-container matColumnDef="Id">
-                        <mat-cell *matCellDef="let element"> {{ element.stockInventoryId }} </mat-cell>
+                        <mat-cell *matCellDef="let element">{{ element.supplierId }}</mat-cell>
                     </ng-container>
-                    <ng-container matColumnDef="Product">
-                        <mat-cell *matCellDef="let element"> {{ element.productName }} </mat-cell>
+
+                    <ng-container matColumnDef="Name">
+                        <mat-cell *matCellDef="let element"> {{ element.supplierName }} </mat-cell>
                     </ng-container>
-                    <ng-container matColumnDef="BuyPrice">
-                        <mat-cell *matCellDef="let element"> {{ element.buyPrice }} </mat-cell>
+
+                    <ng-container matColumnDef="Status">
+                        <mat-cell *matCellDef="let element">
+                            <mat-slide-toggle [checked]="element.status" (change)="updateStatus(element)">
+                            </mat-slide-toggle>
+                        </mat-cell>
                     </ng-container>
-                    <ng-container matColumnDef="Quantity">
-                        <mat-cell *matCellDef="let element"> {{ element.qty }} </mat-cell>
-                    </ng-container>
-                    <ng-container matColumnDef="CreatedDate">
-                            <mat-cell *matCellDef="let element"> {{ element.createdDate | date:'MM/dd/yyyy'  }} </mat-cell>
-                    </ng-container>
+
                     <ng-container matColumnDef="Actions">
                         <mat-cell *matCellDef="let element">
                             <button mat-icon-button matTooltip="Click to Edit" class="iconbutton" color="primary"
-                                (click)="openStockDialog(element.stockInventoryId)">
+                                (click)="openSupplierDialog(element.supplierId)">
                                 <mat-icon>edit</mat-icon>
                             </button>
                             <button mat-icon-button matTooltip="Click to Delete" class="iconbutton"

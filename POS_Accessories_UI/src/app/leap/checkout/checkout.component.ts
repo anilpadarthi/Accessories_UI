@@ -24,9 +24,11 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   months = [];
   years = [];
   deliveryMethods = [];
-  grandTotal = 0;
+  itemTotal = 0;
   vat = 0;
+  vatPercentage: any;
   discountAmount = 0;
+  grandTotal = 0;
   watcher: Subscription;
   isOrderPlaced: boolean = false;
   deliveryAddress: string = "Charter House,25 High street,Bourne Mouth,UK";
@@ -59,15 +61,16 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.cartService.Data.cartList.forEach((product) => {
-      this.grandTotal += product.qty * product.salePrice;
+      this.itemTotal += product.qty * product.salePrice;
     });
     if (this.cartService.Data.discount > 0) {
       this.discountAmount =
-        (this.grandTotal * this.cartService.Data.discount) / 100;
-      this.grandTotal -= this.discountAmount;
+        (this.itemTotal * this.cartService.Data.discount) / 100;
+      this.itemTotal -= this.discountAmount;
     }
-    this.vat = (this.grandTotal * this.cartService.Data.vat) / 100;
-    this.grandTotal += this.vat + this.cartService.Data.deliveryCharges;
+    this.vatPercentage = this.cartService.Data.vat;
+    this.vat = (this.itemTotal * this.vatPercentage) / 100;
+    this.grandTotal = this.itemTotal + this.vat + this.cartService.Data.deliveryCharges;
 
     this.form = this.fb.group({
       paymentMode: "",
@@ -81,15 +84,17 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   public placeOrder() {
     let order = new OrderDetails();
     order.items = this.cartService.Data.cartList;
-    order.itemTotal = this.cartService.Data.totalCartCount;
+    order.itemTotal = this.grandTotal;
     order.shippingAddress = this.deliveryAddress;
     order.paymentMethod = this.form.value.paymentMode;
     order.discountPercentage = this.cartService.Data.discount;
     order.deliveryCharges = this.cartService.Data.deliveryCharges;
     order.vatAmount = this.vat;
+    order.vatPercentage = this.vatPercentage;
     order.discountAmount = this.discountAmount;
     order.totalWithVATAmount = this.grandTotal;
     order.totalWithOutVATAmount = this.grandTotal - this.vat;
+
     //TODO:Remove this hardcoding
     order.orderStatus = "Pending";
     order.shopId = 0;

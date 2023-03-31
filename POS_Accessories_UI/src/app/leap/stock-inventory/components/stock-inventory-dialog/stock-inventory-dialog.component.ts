@@ -9,6 +9,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Product } from 'src/app/shared/models/product';
 import { ProductService } from 'src/app/shared/services/product.service';
 import { map, Observable, startWith } from 'rxjs';
+import { LookupService } from "src/app/shared/services/lookup.service";
 
 @Component({
   selector: 'app-stock-inventory-dialog',
@@ -24,8 +25,11 @@ export class StockInventoryDialogComponent implements OnInit {
   public products: Array<Product> = [];
   filteredProducts: Observable<Product[]>;
   productId = new FormControl('');
+  suppliers: any[];
+
   constructor(public dialogRef: MatDialogRef<StockInventoryDialogComponent>, 
-    @Inject(MAT_DIALOG_DATA) public data: any,public router: Router, public fb: UntypedFormBuilder, private activatedRoute: ActivatedRoute, private stockInventoryService: StockInventoryService, public snackBar: MatSnackBar, private messageService: MessageService,public productService:ProductService) { }
+    @Inject(MAT_DIALOG_DATA) public data: any,public router: Router, public fb: UntypedFormBuilder, private activatedRoute: ActivatedRoute, private stockInventoryService: StockInventoryService, public snackBar: MatSnackBar, private messageService: MessageService,public productService:ProductService,
+    private lookupService: LookupService) { }
 
   ngOnInit(): void {
     this.form = this.fb.group({
@@ -36,7 +40,7 @@ export class StockInventoryDialogComponent implements OnInit {
       'buyPrice':[null, Validators.required],
       'invoiceNumber':null,
     }); 
-
+    this.getSupplierLookup();
     this.getAllProducts();
   }
 
@@ -67,6 +71,12 @@ export class StockInventoryDialogComponent implements OnInit {
           this.getStockById();
         }
       });
+    });
+  }
+
+  getSupplierLookup() {
+    this.lookupService.getSuppliers().subscribe((res) => {
+      this.suppliers = res.data;
     });
   }
 

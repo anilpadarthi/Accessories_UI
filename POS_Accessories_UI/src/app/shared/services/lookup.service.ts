@@ -38,4 +38,7 @@ export class LookupService {
   getProducts(): Observable<any> {
     return this.http.get<any>(this.url+'Products');
   }
+  getSuppliers(): Observable<any> {
+    return this.http.get<any>(this.url+'Suppliers');
+  }
 }
