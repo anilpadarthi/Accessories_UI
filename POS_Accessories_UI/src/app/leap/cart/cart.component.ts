@@ -2,13 +2,11 @@ import { Component, OnInit, Inject } from "@angular/core";
 import { OrderProduct } from "src/app/shared/models/orderProduct";
 import { CartService } from "../../shared/services/cart.service";
 
-
 @Component({
   selector: "app-cart",
   templateUrl: "./cart.component.html",
   styleUrls: ["./cart.component.scss"],
 })
-
 export class CartComponent implements OnInit {
   total = [];
   cartItemCount = 0;
@@ -23,7 +21,7 @@ export class CartComponent implements OnInit {
   grandTotalWithVAT: any = null;
   grandTotalWithOutVAT: any = null;
 
-  constructor(public cartService: CartService) { }
+  constructor(public cartService: CartService) {}
 
   ngOnInit() {
     this.cartItems = this.cartService.Data.cartList;
@@ -52,6 +50,11 @@ export class CartComponent implements OnInit {
     }
   }
 
+  updateDiscount(discount: any) {
+    this.discountPercentage = discount;
+    this.updateCalculations();
+  }
+
   updateCalculations() {
     this.itemTotal = 0;
     this.cartItems.forEach((product) => {
@@ -64,7 +67,8 @@ export class CartComponent implements OnInit {
       this.netTotal = this.netTotal - this.discountAmount;
     }
     this.vatAmount = (this.netTotal * this.vatPercentage) / 100;
-    this.grandTotalWithVAT = this.netTotal + this.vatAmount + this.deliveryCharges;
+    this.grandTotalWithVAT =
+      this.netTotal + this.vatAmount + this.deliveryCharges;
     this.grandTotalWithOutVAT = this.netTotal + this.deliveryCharges;
     this.cartItemCount = this.cartItems.length;
   }
