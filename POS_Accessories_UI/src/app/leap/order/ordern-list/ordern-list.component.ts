@@ -13,6 +13,7 @@ import { OrderDialogComponent } from "../order-dialog/order-dialog.component";
 import { Product } from "src/app/shared/models/product";
 import { ProductService } from "src/app/shared/services/product.service";
 import { MatSelect } from "@angular/material/select";
+import { ActionsEnum } from "src/app/shared/enum/actionsEnum";
 
 @Component({
   selector: "app-ordern-list",
@@ -26,7 +27,7 @@ export class OrdernListComponent implements OnInit {
     "OrderId",
     "CreatedDate",
     "User",
-    "Shop",   
+    "Shop",
     "OrderStatus",
     "PaymenthMethod",
     "Amount",
@@ -40,7 +41,8 @@ export class OrdernListComponent implements OnInit {
   pageIndex = 1;
   totalCount!: number;
   products: Product[];
-
+  action: ActionsEnum = ActionsEnum.Edit;
+  ActionsEnum = ActionsEnum;
   constructor(
     public changeDetectorRefs: ChangeDetectorRef,
     public router: Router,
@@ -75,12 +77,6 @@ export class OrdernListComponent implements OnInit {
   public getAllProducts() {
     this.productService.getProductList().subscribe((res) => {
       this.products = res.data;
-      // //TODO:remove this hardcodings
-      // this.products.forEach((a) => {
-      //   a.availibilityCount = 10;
-      //   a.newPrice = a.productId * 10;
-      //   a.oldPrice = a.productId * 10;
-      // });
     });
   }
 
@@ -102,10 +98,11 @@ export class OrdernListComponent implements OnInit {
     this.loadData();
   }
 
-  edit(orderDetails: any): void {
+  edit(orderDetails: any, action: ActionsEnum): void {
     const dialogRef = this.dialog.open(OrderDialogComponent, {
       data: {
         orderId: orderDetails.orderId,
+        action: action,
       },
       panelClass: ["theme-dialog"],
       autoFocus: false,
@@ -118,7 +115,7 @@ export class OrdernListComponent implements OnInit {
     });
   }
 
-  public getOrderById(orderId: any) {
+  public getOrderById(orderId: any, action: ActionsEnum) {
     this.orderService.getById(orderId).subscribe((res: any) => {
       let orderDetails = res.data;
       if (orderDetails.items.length > 0) {
@@ -131,7 +128,7 @@ export class OrdernListComponent implements OnInit {
           element.productCode = filteredProduct.productCode;
         });
       }
-      this.edit(orderDetails);
+      this.edit(orderDetails, action);
     });
   }
 
