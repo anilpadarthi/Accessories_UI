@@ -45,9 +45,9 @@ export class LookupService {
     return this.http.get<any>(this.url + "OrderStatusTypes");
   }
   getOrderPaymentTypes(): Observable<any> {
-    return this.http.get<any>(this.url + "GetOrderPaymentTypes");
+    return this.http.get<any>(this.url + "OrderPaymentTypes");
   }
   getOrderDeliveryTypes(): Observable<any> {
-    return this.http.get<any>(this.url + "GetOrderDeliveryTypes");
+    return this.http.get<any>(this.url + "OrderDeliveryTypes");
   }
 }

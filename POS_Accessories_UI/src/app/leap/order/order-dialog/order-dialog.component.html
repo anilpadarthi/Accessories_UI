@@ -8,10 +8,7 @@
         <mat-label>Order Status</mat-label>
         <mat-select [(ngModel)]="orderStatus.orderStatus">
           <mat-option [value]="">-</mat-option>
-          <mat-option
-            *ngFor="let status of orderStatusList"
-            [value]="status.name"
-          >
+          <mat-option *ngFor="let status of orderStatusList" [value]="status.name">
             <span>{{ status.name }}</span>
           </mat-option>
         </mat-select>
@@ -22,10 +19,7 @@
         <mat-label>Payment Method</mat-label>
         <mat-select [(ngModel)]="orderStatus.paymentMethod">
           <mat-option [value]="">-</mat-option>
-          <mat-option
-            *ngFor="let paymentMethod of paymentMethodList"
-            [value]="paymentMethod.name"
-          >
+          <mat-option *ngFor="let paymentMethod of paymentMethodList" [value]="paymentMethod.name">
             <span>{{ paymentMethod.name }}</span>
           </mat-option>
         </mat-select>
@@ -36,10 +30,7 @@
         <mat-label>Courier</mat-label>
         <mat-select [(ngModel)]="orderStatus.shippingMode">
           <mat-option [value]="">-</mat-option>
-          <mat-option
-            *ngFor="let deliveryMethod of deliveryMethodList"
-            [value]="deliveryMethod.name"
-          >
+          <mat-option *ngFor="let deliveryMethod of deliveryMethodList" [value]="deliveryMethod.name">
             <span>{{ deliveryMethod.name }}</span>
           </mat-option>
         </mat-select>
@@ -52,13 +43,7 @@
       </mat-form-field>
     </div>
     <div fxflex="100" fxFlex.gt-md="20" class="px-3">
-      <button
-        mat-raised-button
-        color="primary"
-        type="button"
-        class="margin-top-1"
-        (click)="updateOrderDetails()"
-      >
+      <button mat-raised-button color="primary" type="button" class="margin-top-1" (click)="updateOrderDetails()">
         Update
       </button>
     </div>
@@ -78,33 +63,19 @@
         <img [src]="'assets/images/products/keyboard/1-medium.png'" />
       </div>
       <div class="mat-cell">
-        <a
-          [routerLink]="[
+        <a [routerLink]="[
             '/products-view',
             product.productId,
             product.productName
-          ]"
-          class="product-name"
-          >{{ product.productName }}</a
-        >
+          ]" class="product-name">{{ product.productName }}</a>
       </div>
       <div class="mat-cell">{{ product.productCode }}</div>
       <div class="mat-cell">£ {{ product.salePrice | number : "1.2-2" }}</div>
       <div class="mat-cell py-1">
-        <div
-          fxFlex="100"
-          fxFlex.gt-sm="75"
-          class="px-1 py-1"
-          *ngIf="action == ActionsEnum.Edit"
-        >
+        <div fxFlex="100" fxFlex.gt-sm="75" class="px-1 py-1" *ngIf="action == ActionsEnum.Edit">
           <mat-form-field appearance="outline" class="w-100">
-            <input
-              type="number"
-              matInput
-              class="form-control"
-              value="{{ product.qty }}"
-              (change)="updateCartItem($event.target.value, product)"
-            />
+            <input type="number" matInput class="form-control" value="{{ product.qty }}"
+              (change)="updateCartItem($event.target.value, product)" />
           </mat-form-field>
         </div>
         <div *ngIf="action == ActionsEnum.View">{{ product.qty }}</div>
@@ -114,12 +85,7 @@
       </div>
       <div class="mat-cell text-center">
         <div class="p-1">
-          <button
-            mat-mini-fab
-            color="warn"
-            (click)="removeCartItem(product)"
-            matTooltip="remove"
-          >
+          <button mat-mini-fab color="warn" (click)="removeCartItem(product)" matTooltip="remove">
             <mat-icon>delete</mat-icon>
           </button>
         </div>
@@ -132,11 +98,7 @@
       <div class="mat-cell"></div>
       <div class="mat-cell"></div>
       <div class="mat-cell">
-        <div
-          fxLayout="column"
-          fxLayoutAlign="right"
-          class="text-right px-1 py-2"
-        >
+        <div fxLayout="column" fxLayoutAlign="right" class="text-right px-1 py-2">
           <span>Item Total : </span>
         </div>
       </div>
@@ -153,23 +115,14 @@
       <div class="mat-cell"></div>
       <div class="mat-cell"></div>
       <div class="mat-cell">
-        <div
-          fxLayout="column"
-          fxLayoutAlign="right"
-          class="text-right px-1 py-2"
-        >
+        <div fxLayout="column" fxLayoutAlign="right" class="text-right px-1 py-2">
           <span>Discount in % : </span>
         </div>
       </div>
       <div class="mat-cell">
         <div fxLayout="column" *ngIf="action == ActionsEnum.Edit">
           <mat-form-field appearance="outline" class="w-50">
-            <input
-              matInput
-              class="form-control"
-              [(ngModel)]="discountPercentage"
-              (change)="updateCalculations()"
-            />
+            <input matInput class="form-control" [(ngModel)]="discountPercentage" (change)="updateCalculations()" />
           </mat-form-field>
         </div>
         <div *ngIf="action == ActionsEnum.View">{{ discountPercentage }}</div>
@@ -182,11 +135,7 @@
       <div class="mat-cell"></div>
       <div class="mat-cell"></div>
       <div class="mat-cell">
-        <div
-          fxLayout="column"
-          fxLayoutAlign="right"
-          class="text-right px-1 py-2"
-        >
+        <div fxLayout="column" fxLayoutAlign="right" class="text-right px-1 py-2">
           <span>Net Total : </span>
         </div>
       </div>
@@ -204,11 +153,7 @@
       <div class="mat-cell"></div>
       <div class="mat-cell"></div>
       <div class="mat-cell">
-        <div
-          fxLayout="column"
-          fxLayoutAlign="right"
-          class="text-right px-1 py-2"
-        >
+        <div fxLayout="column" fxLayoutAlign="right" class="text-right px-1 py-2">
           <span>Delivery Chgs. : </span>
         </div>
       </div>
@@ -225,11 +170,7 @@
       <div class="mat-cell"></div>
       <div class="mat-cell"></div>
       <div class="mat-cell">
-        <div
-          fxLayout="column"
-          fxLayoutAlign="right"
-          class="text-right px-1 py-2"
-        >
+        <div fxLayout="column" fxLayoutAlign="right" class="text-right px-1 py-2">
           <span>VAT ({{ vatPercentage }}%) : </span>
         </div>
       </div>
@@ -247,19 +188,13 @@
       <div class="mat-cell"></div>
       <div class="mat-cell"></div>
       <div class="mat-cell">
-        <div
-          fxLayout="column"
-          fxLayoutAlign="right"
-          class="text-right px-1 py-2 grand-total"
-        >
+        <div fxLayout="column" fxLayoutAlign="right" class="text-right px-1 py-2 grand-total">
           <span>Grand Total : </span>
         </div>
       </div>
       <div class="mat-cell">
         <div fxLayout="column" fxLayoutAlign="center start" class="grand-total">
-          <span class="new-price"
-            >£ {{ grandTotalWithVAT | number : "1.2-2" }}</span
-          >
+          <span class="new-price">£ {{ grandTotalWithVAT | number : "1.2-2" }}</span>
         </div>
       </div>
 
@@ -271,12 +206,7 @@
         Close
       </button>
 
-      <button
-        mat-raised-button
-        color="primary"
-        type="button"
-        (click)="onSubmit()"
-      >
+      <button mat-raised-button *ngIf="action == ActionsEnum.Edit" color="primary" type="button" (click)="onSubmit()">
         Submit
       </button>
     </div>

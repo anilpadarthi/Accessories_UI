@@ -15,7 +15,7 @@ import { FullScreenComponent } from './components/fullscreen/fullscreen.componen
 import { MessagesComponent } from './components/messages/messages.component';
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component'; 
 import { ErrorComponent } from './error/components/error.component';
-
+import { WarehouseComponent } from 'src/app/leap/stock-inventory/components/warehouse/warehouse.component';
 
 
 export const routes = [ 
@@ -37,10 +37,12 @@ export const routes = [
       { path: 'checkout', loadChildren: () => import('./checkout/checkout.module').then(m => m.CheckoutModule) },
       { path: 'cart', loadChildren: () => import('./cart/cart.module').then(m => m.CartModule) },
       { path: 'stock-inventory', loadChildren: () => import('./stock-inventory/stock-inventory.module').then(m => m.StockInventoryModule) },
-      { path: 'warehouse', loadChildren: () => import('./stock-inventory/stock-inventory.module').then(m => m.StockInventoryModule) },
+      // { path: 'warehouse', loadChildren: () => import('./stock-inventory/stock-inventory.module').then(m => m.StockInventoryModule) },
+       { path: 'warehouse', component: WarehouseComponent }
     ]
   },
   { path: 'error', component: ErrorComponent}
+  
 ];
 
 @NgModule({

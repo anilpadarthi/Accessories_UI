@@ -15,6 +15,6 @@ export const menuItems = [
     new Menu (100, 'LEAP_NAV.ACCOUNTABILITY', '/accountability', null, 'assignment', null, false, 0),
     new Menu (110, 'LEAP_NAV.INVENTORY',null , null, 'view_list', null, true, 0), 
     new Menu (120, 'LEAP_NAV.ADDSTOCK', '/stock-inventory', null, 'addstock', null, false, 0),  
-    new Menu (130, 'LEAP_NAV.WAREHOUSE', '/stock-inventory', null, 'warehouse', null, false, 0),  
+    new Menu (130, 'LEAP_NAV.WAREHOUSE', '/warehouse', null, 'warehouse', null, false, 0),  
     new Menu (140, 'LEAP_NAV.THEME', '/admin', null, 'admin', null, false, 0),  
 ]

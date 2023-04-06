@@ -9,15 +9,18 @@ import { InputFileModule } from 'ngx-input-file';
 import { StockInventoryComponent } from './components/stock-inventory/stock-inventory.component';
 import { StockInventoryDialogComponent } from './components/stock-inventory-dialog/stock-inventory-dialog.component';
 import { FormsModule } from '@angular/forms';
+import { WarehouseComponent } from './components/warehouse/warehouse.component';
 
 export const routes: Routes = [ 
   { path: '', component: StockInventoryComponent, pathMatch: 'full' }, 
+  { path: 'warehouse', component: WarehouseComponent },
 ];
 
 @NgModule({
   declarations: [
     StockInventoryComponent,
-    StockInventoryDialogComponent
+    StockInventoryDialogComponent,
+    WarehouseComponent
   ],
   imports: [
     CommonModule,

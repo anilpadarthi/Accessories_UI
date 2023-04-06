@@ -1,0 +1,177 @@
+<h1 mat-dialog-title>View Order</h1>
+<div mat-dialog-content>
+    <div class="filter-controls">
+        <div class="row wrap">
+            <mat-form-field appearance="outline">
+                <mat-label>Status</mat-label>
+                <mat-select [(ngModel)]="statusId">
+                    <mat-option [value]="null">All</mat-option>
+                    <mat-option *ngFor="let status of orderStatusList" [value]="status.id">
+                        <span>{{status.name}}</span>
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Payment</mat-label>
+                <mat-select [(ngModel)]="paymentMethodId">
+                    <mat-option [value]="null">All</mat-option>
+                    <mat-option *ngFor="let payment of PaymentList" [value]="payment.id">
+                        <span>{{payment.name}}</span>
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Delivery Type</mat-label>
+                <mat-select [(ngModel)]="deliveryMethodId">
+                    <mat-option [value]="null">All</mat-option>
+                    <mat-option *ngFor="let deilvery of DeliveryTypeList" [value]="deilvery.id">
+                        <span>{{deilvery.name}}</span>
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="input-field">
+                <mat-label>Tracking Number</mat-label>
+                <input matInput placeholder="Tracking Number" [(ngModel)]="trackingNumber" autocomplete="off">
+            </mat-form-field>
+            <button mat-flat-button color="primary" (click)="onClear()">
+                <mat-icon>refresh</mat-icon> Cancel
+            </button>
+            <button mat-raised-button color="primary" (click)="updateOrder()">
+                <mat-icon>search</mat-icon> Update
+            </button>
+        </div>
+    </div>
+
+    <div class="results mat-elevation-z8">
+        <div class="mat-table cart-table">
+            <div class="mat-header-row">
+                <div class="mat-header-cell">Product</div>
+                <div class="mat-header-cell">Name</div>
+                <div class="mat-header-cell">Code</div>
+                <div class="mat-header-cell">Price</div>
+                <div class="mat-header-cell">Quantity</div>
+                <div class="mat-header-cell">Total</div>
+                <div class="mat-header-cell"></div>
+            </div>
+            <div *ngFor="let product of orderDetails.items" class="mat-row">
+                <div class="mat-cell">
+                    <img [src]="'assets/images/products/keyboard/1-medium.png'" />
+                </div>
+                <div class="mat-cell">
+                    <a [routerLink]="[
+          '/products-view',
+          product.productId,
+          product.productName
+        ]" class="product-name">{{ product.productName }}</a>
+                </div>
+                <div class="mat-cell">{{ product.productCode }}</div>
+                <div class="mat-cell">£ {{ product.salePrice | number : "1.2-2" }}</div>
+                <div class="mat-cell">{{ product.qty }}</div>
+                <div class="mat-cell">
+                    £ {{ product.qty * product.salePrice | number : "1.2-2" }}
+                </div>
+            </div>
+
+
+            <div class="mat-row additional-rows">
+                <div class="mat-cell"></div>
+                <div class="mat-cell"></div>
+                <div class="mat-cell"></div>
+                <div class="mat-cell"></div>
+                <div class="mat-cell">
+                    <div fxLayout="column" fxLayoutAlign="right" class="text-right px-1 py-2">
+                        <span>Item Total : </span>
+                    </div>
+                </div>
+                <div class="mat-cell">
+                    <div fxLayout="column" fxLayoutAlign="" class="py-1">
+                        £ {{ itemTotal | number : "1.2-2" }}
+                    </div>
+                </div>
+            </div>
+            <div class="mat-row additional-rows">
+                <div class="mat-cell"></div>
+                <div class="mat-cell"></div>
+                <div class="mat-cell"></div>
+                <div class="mat-cell"></div>
+                <div class="mat-cell">
+                    <div fxLayout="column" fxLayoutAlign="right" class="text-right px-1 py-2">
+                        <span>Discount ({{discountPercentage}}%) : </span>
+                    </div>
+                </div>
+                <div class="mat-cell">
+                    <div fxLayout="column" fxLayoutAlign="" class="">
+                        £ {{ discountAmount | number : "1.2-2" }}
+                    </div>
+                </div>
+            </div>
+            <div class="mat-row additional-rows">
+                <div class="mat-cell"></div>
+                <div class="mat-cell"></div>
+                <div class="mat-cell"></div>
+                <div class="mat-cell"></div>
+                <div class="mat-cell">
+                    <div fxLayout="column" fxLayoutAlign="right" class="text-right px-1 py-2">
+                        <span>Net Total : </span>
+                    </div>
+                </div>
+                <div class="mat-cell">
+                    <div fxLayout="column" fxLayoutAlign="" class="py-1">
+                        £ {{ netTotal | number : "1.2-2" }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="mat-row additional-rows">
+                <div class="mat-cell"></div>
+                <div class="mat-cell"></div>
+                <div class="mat-cell"></div>
+                <div class="mat-cell"></div>
+                <div class="mat-cell">
+                    <div fxLayout="column" fxLayoutAlign="right" class="text-right px-1 py-2">
+                        <span>Delivery Chgs. : </span>
+                    </div>
+                </div>
+                <div class="mat-cell">
+                    <div fxLayout="column" fxLayoutAlign="" class="py-1">
+                        £ {{ deliveryCharges | number : "1.2-2" }}
+                    </div>
+                </div>
+
+            </div>
+            <div class="mat-row additional-rows">
+                <div class="mat-cell"></div>
+                <div class="mat-cell"></div>
+                <div class="mat-cell"></div>
+                <div class="mat-cell"></div>
+                <div class="mat-cell">
+                    <div fxLayout="column" fxLayoutAlign="right" class="text-right px-1 py-2">
+                        <span>VAT ({{vatPercentage}}%) : </span>
+                    </div>
+                </div>
+                <div class="mat-cell">
+                    <div fxLayout="column" fxLayoutAlign="" class="py-1">
+                        £ {{ vatAmount | number : "1.2-2" }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="mat-row additional-rows">
+                <div class="mat-cell"></div>
+                <div class="mat-cell"></div>
+                <div class="mat-cell"></div>
+                <div class="mat-cell"></div>
+                <div class="mat-cell">
+                    <div fxLayout="column" fxLayoutAlign="right" class="text-right px-1 py-2 grand-total">
+                        <span>Grand Total : </span>
+                    </div>
+                </div>
+                <div class="mat-cell">
+                    <div fxLayout="column" fxLayoutAlign="center start" class="grand-total">
+                        <span class="new-price">£ {{ grandTotalWithVAT | number : "1.2-2" }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
