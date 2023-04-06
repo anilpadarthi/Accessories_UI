@@ -15,6 +15,7 @@ import { ProductService } from "src/app/shared/services/product.service";
 import { MatSelect } from "@angular/material/select";
 import { ActionsEnum } from "src/app/shared/enum/actionsEnum";
 
+
 @Component({
   selector: "app-ordern-list",
   templateUrl: "./ordern-list.component.html",
@@ -43,12 +44,19 @@ export class OrdernListComponent implements OnInit {
   products: Product[];
   action: ActionsEnum = ActionsEnum.Edit;
   ActionsEnum = ActionsEnum;
+  orderStatusId!: number | null;
+  statusList: any[];
+  fromDate:Date|null;
+  toDate:Date|null;
+
   constructor(
     public changeDetectorRefs: ChangeDetectorRef,
     public router: Router,
     public activatedRoute: ActivatedRoute,
     public dialog: MatDialog,
     public appSettings: AppSettings,
+    // public form: UntypedFormGroup,
+    // public fb: UntypedFormBuilder,
     private orderService: OrderService,
     private messageService: MessageService,
     private productService: ProductService
@@ -177,5 +185,13 @@ export class OrdernListComponent implements OnInit {
   }
   actionsSelectClose(select: MatSelect) {
     select.placeholder = "Select";
+  }
+
+  //5March2023
+  onOrderStatusChange() {
+    this.loadData();
+  }
+  onSubmit(){
+    this.loadData();
   }
 }

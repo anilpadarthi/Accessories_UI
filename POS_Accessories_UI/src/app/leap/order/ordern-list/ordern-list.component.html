@@ -9,24 +9,141 @@
     </div>
     <div class="filter-controls">
       <div class="row wrap">
+
         <mat-form-field appearance="outline" class="input-field">
-          <mat-label>Search By Name</mat-label>
-          <input
-            matInput
-            placeholder="Search By Name"
-            [(ngModel)]="searchText"
-            autocomplete="off"
-          />
+        <mat-label>Order Status</mat-label>
+          <mat-select
+            [(ngModel)]="orderStatusId"
+            (selectionChange)="onOrderStatusChange()"
+          >
+            <mat-option [value]="null">All</mat-option>
+            <mat-option
+              *ngFor="let status of statusList"
+              [value]="status.id"
+            >
+              <span>{{ category.name }}</span>
+            </mat-option>
+          </mat-select>
         </mat-form-field>
-        <button mat-flat-button color="primary" (click)="onReset()">
+
+        <mat-form-field appearance="outline" class="input-field">
+          <mat-label>Agent/Manager</mat-label>
+            <mat-select
+              [(ngModel)]="orderStatusId"
+              (selectionChange)="onOrderStatusChange()"
+            >
+              <mat-option [value]="null">Select</mat-option>
+              <mat-option
+                *ngFor="let status of statusList"
+                [value]="status.id"
+              >
+                <span>{{ category.name }}</span>
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="input-field">
+            <mat-label>Payment Method</mat-label>
+              <mat-select
+                [(ngModel)]="orderStatusId"
+                (selectionChange)="onOrderStatusChange()"
+              >
+                <mat-option [value]="null">Select</mat-option>
+                <mat-option
+                  *ngFor="let status of statusList"
+                  [value]="status.id"
+                >
+                  <span>{{ category.name }}</span>
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="input-field">
+              <mat-label>Order Number</mat-label>
+                <mat-select
+                  [(ngModel)]="orderStatusId"
+                  (selectionChange)="onOrderStatusChange()"
+                >
+                  <mat-option [value]="null">Order Number</mat-option>
+                  <mat-option
+                    *ngFor="let status of statusList"
+                    [value]="status.id"
+                  >
+                    <span>{{ category.name }}</span>
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+        <!-- <button mat-flat-button color="primary" (click)="onReset()">
           <mat-icon>refresh</mat-icon> Reset
         </button>
         <button mat-raised-button color="primary" (click)="search()">
           <mat-icon>search</mat-icon> search
-        </button>
+        </button> -->
       </div>
     </div>
 
+    <div class="filter-controls">
+      <div class="row wrap">
+
+        <mat-form-field appearance="outline" class="input-field">
+          <mat-label>From Date</mat-label>
+          <input matInput [matDatepicker]="validFrom" formControlName="validFrom" required>
+          <mat-datepicker-toggle matSuffix [for]="validFrom"></mat-datepicker-toggle>
+          <mat-datepicker #validFrom></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="input-field">
+        <mat-label>To Date</mat-label>
+        <input matInput [matDatepicker]="validFrom" formControlName="validFrom" required>
+        <mat-datepicker-toggle matSuffix [for]="validFrom"></mat-datepicker-toggle>
+        <mat-datepicker #validFrom></mat-datepicker>
+    </mat-form-field>
+
+          <mat-form-field appearance="outline" class="input-field">
+            <mat-label>Area</mat-label>
+              <mat-select
+                [(ngModel)]="orderStatusId"
+                (selectionChange)="onOrderStatusChange()"
+              >
+                <mat-option [value]="null">Select</mat-option>
+                <mat-option
+                  *ngFor="let status of statusList"
+                  [value]="status.id"
+                >
+                  <span>{{ category.name }}</span>
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="input-field">
+              <mat-label>Shop</mat-label>
+                <mat-select
+                  [(ngModel)]="orderStatusId"
+                  (selectionChange)="onOrderStatusChange()"
+                >
+                  <mat-option [value]="null">Select</mat-option>
+                  <mat-option
+                    *ngFor="let status of statusList"
+                    [value]="status.id"
+                  >
+                    <span>{{ category.name }}</span>
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+      </div>
+    </div>
+    <div class="filter-controls">
+      <div class="row center">
+        <button _ngcontent-serverapp-c500="" mat-raised-button="" color="warn" type="submit">
+        <span class="mat-button-wrapper"><mat-icon>download</mat-icon>Download</span></button>
+        
+        <button _ngcontent-serverapp-c500="" mat-raised-button="" color="primary" type="submit">
+          <span class="mat-button-wrapper"><mat-icon>filter</mat-icon>Filter</span></button>
+          
+          <button _ngcontent-serverapp-c500="" mat-raised-button="" color="accent" type="submit">
+          <span class="mat-button-wrapper"><mat-icon>refresh</mat-icon>Reset</span></button>
+    </div>
+  </div>
     <div class="results mat-elevation-z8">
       <mat-table #table [dataSource]="bogusDataSource">
         <ng-container matColumnDef="OrderId">
