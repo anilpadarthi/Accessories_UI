@@ -1,9 +1,9 @@
 export class OrderStatus {
   constructor(
     public orderId?: number,
-    public orderStatus?: string,
-    public paymentMethod?: string,
-    public shippingMode?: string,
+    public orderStatusId?: number,
+    public paymentMethodId?: number,
+    public shippingModeId?: number,
     public trackNumber?: string,
     public shippingAddress?: string
   ) {}

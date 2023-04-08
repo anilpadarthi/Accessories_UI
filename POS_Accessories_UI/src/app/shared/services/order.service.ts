@@ -38,4 +38,10 @@ export class OrderService {
   delete(category: Category): Observable<Response> {
     return this.http.put<Response>(this.url + "/UpdateStatus", category);
   }
+
+  getOrderHistory(requestBody: any): Observable<any> {
+    return this.http.post<any>(this.url + "/GetOrderHistory", requestBody);
+  }
+
+
 }

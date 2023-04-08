@@ -9,7 +9,7 @@ import { Observable } from "rxjs";
   providedIn: "root",
 })
 export class LookupService {
-  constructor(public http: HttpClient) {}
+  constructor(public http: HttpClient) { }
 
   //TODO:Keep the prefix url in environment file.
   public url = environment.url + "https://localhost:7159/api/Lookup/";
@@ -37,17 +37,36 @@ export class LookupService {
   getProducts(): Observable<any> {
     return this.http.get<any>(this.url + "Products");
   }
+
   getSuppliers(): Observable<any> {
     return this.http.get<any>(this.url + "Suppliers");
   }
 
-  getStatusTypes(): Observable<any> {
+  getOrderStatusTypes(): Observable<any> {
     return this.http.get<any>(this.url + "OrderStatusTypes");
   }
+
   getOrderPaymentTypes(): Observable<any> {
     return this.http.get<any>(this.url + "OrderPaymentTypes");
   }
+
   getOrderDeliveryTypes(): Observable<any> {
     return this.http.get<any>(this.url + "OrderDeliveryTypes");
+  }
+
+  getAgents(): Observable<any> {
+    return this.http.get<any>(this.url + "Agents");
+  }
+
+  getManagers(): Observable<any> {
+    return this.http.get<any>(this.url + "Managers");
+  }
+
+  getAreas(): Observable<any> {
+    return this.http.get<any>(this.url + "Areas");
+  }
+
+  getShops(areaId: number): Observable<any> {
+    return this.http.get<any>(this.url + "Shops/" + areaId);
   }
 }

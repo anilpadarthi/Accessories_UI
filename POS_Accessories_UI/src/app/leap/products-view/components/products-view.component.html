@@ -1,11 +1,6 @@
 <mat-sidenav-container>
-  <mat-sidenav
-    #sidenav
-    [opened]="sidenavOpen"
-    [mode]="sidenavOpen ? 'side' : 'over'"
-    class="filter-sidenav"
-    perfectScrollbar
-  >
+  <mat-sidenav #sidenav [opened]="sidenavOpen" [mode]="sidenavOpen ? 'side' : 'over'" class="filter-sidenav"
+    perfectScrollbar>
     <mat-accordion displayMode="flat" multi="true">
       <mat-expansion-panel expanded>
         <mat-expansion-panel-header>
@@ -14,11 +9,8 @@
           </mat-panel-title>
         </mat-expansion-panel-header>
         <div class="categories-dropdown" perfectScrollbar>
-          <app-category-list
-            [categories]="categories"
-            [categoryParentId]="0"
-            (change)="onChangeCategory($event)"
-          ></app-category-list>
+          <app-category-list [categories]="categories" [categoryParentId]="0"
+            (change)="onChangeCategory($event)"></app-category-list>
         </div>
       </mat-expansion-panel>
 
@@ -28,37 +20,13 @@
             <h4>Price</h4>
           </mat-panel-title>
         </mat-expansion-panel-header>
-        <div
-          fxLayout="row"
-          fxLayoutAlign="space-between center"
-          class="text-muted"
-        >
-          <span
-            >From: <b>£ {{ priceFrom }}</b></span
-          >
-          <span
-            >To: <b>£ {{ priceTo }}</b></span
-          >
+        <div fxLayout="row" fxLayoutAlign="space-between center" class="text-muted">
+          <span>From: <b>£ {{ priceFrom }}</b></span>
+          <span>To: <b>£ {{ priceTo }}</b></span>
         </div>
-        <div
-          fxLayout="row"
-          fxLayoutAlign="space-between center"
-          class="filter-price"
-        >
-          <mat-slider
-            color="primary"
-            max="2000"
-            min="1"
-            thumb-label="true"
-            [(ngModel)]="priceFrom"
-          ></mat-slider>
-          <mat-slider
-            color="warn"
-            max="2000"
-            min="1"
-            thumb-label="true"
-            [(ngModel)]="priceTo"
-          ></mat-slider>
+        <div fxLayout="row" fxLayoutAlign="space-between center" class="filter-price">
+          <mat-slider color="primary" max="2000" min="1" thumb-label="true" [(ngModel)]="priceFrom"></mat-slider>
+          <mat-slider color="warn" max="2000" min="1" thumb-label="true" [(ngModel)]="priceTo"></mat-slider>
         </div>
       </mat-expansion-panel>
 
@@ -68,17 +36,9 @@
             <h4>Color</h4>
           </mat-panel-title>
         </mat-expansion-panel-header>
-        <div
-          fxLayout="row wrap"
-          fxLayoutAlign="space-between center"
-          class="filter-buttons"
-        >
-          <button
-            mat-raised-button
-            *ngFor="let color of colors"
-            [style.background]="color.name"
-            (click)="color.selected = !color.selected"
-          >
+        <div fxLayout="row wrap" fxLayoutAlign="space-between center" class="filter-buttons">
+          <button mat-raised-button *ngFor="let color of colors" [style.background]="color.name"
+            (click)="color.selected = !color.selected">
             <span *ngIf="!color.selected">&nbsp;</span>
             <mat-icon *ngIf="color.selected">check</mat-icon>
           </button>
@@ -91,17 +51,9 @@
             <h4>Size</h4>
           </mat-panel-title>
         </mat-expansion-panel-header>
-        <div
-          fxLayout="row wrap"
-          fxLayoutAlign="space-between center"
-          class="filter-buttons"
-        >
-          <button
-            mat-raised-button
-            *ngFor="let size of sizes"
-            (click)="size.selected = !size.selected"
-            [class.selected]="size.selected"
-          >
+        <div fxLayout="row wrap" fxLayoutAlign="space-between center" class="filter-buttons">
+          <button mat-raised-button *ngFor="let size of sizes" (click)="size.selected = !size.selected"
+            [class.selected]="size.selected">
             {{ size.name }}
           </button>
         </div>
@@ -109,36 +61,19 @@
     </mat-accordion>
   </mat-sidenav>
   <mat-sidenav-content class="all-products" ngClass.gt-sm="p-left">
-    <div
-      fxLayout="row"
-      fxLayout.xs="column"
-      fxLayoutAlign="space-between center"
-      class="filter-row mat-elevation-z1 text-muted"
-    >
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between center"
+      class="filter-row mat-elevation-z1 text-muted">
       <button *ngIf="!sidenavOpen" mat-icon-button (click)="sidenav.toggle()">
         <mat-icon>more_vert</mat-icon>
       </button>
       <div>
-        <a
-          mat-button
-          [matMenuTriggerFor]="sortMenu"
-          #sortMenuTrigger="matMenuTrigger"
-        >
+        <a mat-button [matMenuTriggerFor]="sortMenu" #sortMenuTrigger="matMenuTrigger">
           {{ sort
           }}<mat-icon class="mat-icon-sm caret">arrow_drop_down</mat-icon>
         </a>
-        <mat-menu
-          #sortMenu="matMenu"
-          xPosition="before"
-          class="app-dropdown"
-          overlapTrigger="true"
-        >
+        <mat-menu #sortMenu="matMenu" xPosition="before" class="app-dropdown" overlapTrigger="true">
           <span (mouseleave)="sortMenuTrigger.closeMenu()">
-            <button
-              mat-menu-item
-              *ngFor="let sort of sortings"
-              (click)="changeSorting(sort)"
-            >
+            <button mat-menu-item *ngFor="let sort of sortings" (click)="changeSorting(sort)">
               <span>{{ sort }}</span>
             </button>
           </span>
@@ -157,53 +92,29 @@
       </div>
     </div>
 
-    <div
-      *ngIf="viewType == 'grid'"
-      fxLayout="row wrap"
-      class="products-wrapper"
-    >
-      <div
-        *ngFor="
+    <div *ngIf="viewType == 'grid'" fxLayout="row wrap" class="products-wrapper">
+      <div *ngFor="
           let product of products
             | paginate : { itemsPerPage: count, currentPage: page }
-        "
-        fxFlex="100"
-        [fxFlex.gt-sm]="viewCol"
-        fxFlex.sm="50"
-        class="col"
-      >
+        " fxFlex="100" [fxFlex.gt-sm]="viewCol" fxFlex.sm="50" class="col">
         <mat-card class="product-item text-center">
-          <a
-            [routerLink]="[
+          <a [routerLink]="[
               '/products-view',
               product.productId,
               product.productName
-            ]"
-            class="image-link"
-          >
-            <img
-              [src]="'assets/images/products/keyboard/1-medium.png'"
-              alt=""
-            />
+            ]" class="image-link">
+            <img [src]="'assets/images/products/keyboard/1-medium.png'" alt="" />
           </a>
           <!-- <h4 class="category text-muted">{{ ( appService.Data.categories | filterById : product.categoryId )?.name }}</h4>                                                                      -->
-          <a
-            [routerLink]="[
+          <a [routerLink]="[
               '/products-view',
               product.productId,
               product.productName
-            ]"
-            isEllipsisActive
-            class="title text-truncate"
-          >
+            ]" isEllipsisActive class="title text-truncate">
             {{ product.productName }}
           </a>
           <span class="productCodeColor">{{ product.productCode }}</span>
-          <div
-            fxLayout="row"
-            fxLayoutAlign="space-between center"
-            class="prices"
-          >
+          <div fxLayout="row" fxLayoutAlign="space-between center" class="prices">
             <div fxLayout="column" fxLayoutAlign="center start">
               <!-- <p class="old-price text-muted"><span *ngIf="product.oldPrice">${{product.oldPrice | number : '1.2-2'}}</span></p> -->
               <p class="new-price">
@@ -211,62 +122,41 @@
               </p>
             </div>
             <div>
-              <app-controls
-                [product]="product"
-                (onOpenProductDialog)="openProductDialog(product)"
-              ></app-controls>
+              <app-controls [product]="product" (onOpenProductDialog)="openProductDialog(product)"></app-controls>
             </div>
           </div>
         </mat-card>
       </div>
     </div>
 
-    <div
-      *ngIf="viewType == 'list'"
-      fxLayout="row wrap"
-      class="products-wrapper"
-    >
-      <div
-        *ngFor="
+    <div *ngIf="viewType == 'list'" fxLayout="row wrap" class="products-wrapper">
+      <div *ngFor="
           let product of products
             | paginate : { itemsPerPage: count, currentPage: page }
-        "
-        fxFlex="100"
-        class="col"
-      >
+        " fxFlex="100" class="col">
         <mat-card class="product-item">
           <div fxLayout="row wrap">
             <div fxFlex="100" fxFlex.gt-xs="40" class="p-2">
-              <a
-                [routerLink]="[
+              <a [routerLink]="[
                   '/products-view',
                   product.productId,
                   product.productName
-                ]"
-                class="image-link"
-              >
+                ]" class="image-link">
                 <img [src]="" alt="" />
               </a>
             </div>
             <div fxFlex="100" fxFlex.gt-xs="60" class="p-2">
               <!-- <h4 class="category text-muted">{{ ( cartService.Data.categories | filterById : product.categoryId )?.name }}</h4>                                                                      -->
-              <a
-                [routerLink]="[
+              <a [routerLink]="[
                   '/products-view',
                   product.productId,
                   product.productName
-                ]"
-                class="title"
-              >
+                ]" class="title">
                 {{ product.productName }}
               </a>
               <span class="productCodeColor">{{ product.productCode }}</span>
               <p class="py-1 text-muted lh">{{ product.description }}</p>
-              <div
-                fxLayout="row"
-                fxLayoutAlign="space-between center"
-                class="prices"
-              >
+              <div fxLayout="row" fxLayoutAlign="space-between center" class="prices">
                 <div fxLayout="column" fxLayoutAlign="center start">
                   <!-- <p class="old-price text-muted"><span *ngIf="product.oldPrice">£ {{product.oldPrice | number : '1.2-2'}}</span></p> -->
                   <p class="new-price">
@@ -276,10 +166,7 @@
               </div>
               <div class="divider"></div>
               <div class="icons">
-                <app-controls
-                  [product]="product"
-                  (onOpenProductDialog)="openProductDialog(product)"
-                ></app-controls>
+                <app-controls [product]="product" (onOpenProductDialog)="openProductDialog(product)"></app-controls>
               </div>
             </div>
           </div>
@@ -290,14 +177,8 @@
     <div *ngIf="products.length > 0" fxLayout="row wrap">
       <div fxFlex="100">
         <mat-card class="p-0 text-center">
-          <mat-paginator
-            #paginator
-            [length]="totalCount"
-            [pageSize]="pageSize"
-            [pageSizeOptions]="pageOptions"
-            [showFirstLastButtons]="true"
-            (page)="handlePageEvent($event)"
-          >
+          <mat-paginator #paginator [length]="totalCount" [pageSize]="pageSize" [pageSizeOptions]="pageOptions"
+            [showFirstLastButtons]="true" (page)="handlePageEvent($event)">
           </mat-paginator>
         </mat-card>
       </div>

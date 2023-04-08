@@ -1,4 +1,5 @@
 import { Component, OnInit, Inject } from "@angular/core";
+import { UntypedFormGroup, Validators } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
 import { OrderService } from "src/app/shared/services/order.service";
 import { MatSnackBar } from "@angular/material/snack-bar";
@@ -7,15 +8,17 @@ import { MessageService } from "src/app/shared/services/message.service";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { OrderDetails } from "src/app/shared/models/orderDetails";
 import { OrderProduct } from "src/app/shared/models/orderProduct";
+import { ActionsEnum } from "src/app/shared/enum/actionsEnum";
 import { LookupService } from "src/app/shared/services/lookup.service";
+import { OrderStatus } from "src/app/shared/models/orderStatus";
 
 @Component({
   selector: 'app-view-order-details',
   templateUrl: './view-order-details.component.html',
   styleUrls: ['./view-order-details.component.scss']
 })
-export class ViewOrderDetailsComponent implements OnInit {
 
+export class ViewOrderDetailsComponent implements OnInit {
   private sub: any;
   public orderId: number = 0;
   public errorMessage: string = "";
@@ -29,28 +32,32 @@ export class ViewOrderDetailsComponent implements OnInit {
   vatPercentage: any = null;
   grandTotalWithVAT: any = null;
   grandTotalWithOutVAT: any = null;
-  statusId!: number | null;
-  paymentMethodId!: number | null;
-  deliveryMethodId!: number | null;
-  trackingNumber!: any | null;
-  orderStatusList: any[];
-  PaymentList: any[];
-  DeliveryTypeList: any[];
+  action: ActionsEnum = ActionsEnum.Edit;
+  ActionsEnum = ActionsEnum;
+  orderStatusId  = 0;
+  paymentMethodId  = 0;
+  shippingId  = 0;
+  trackingNumber  = 0;
+  orderStatusLookUp: any[];
+  orderPaymentLookUp: any[];
+  orderDeliveryTypeLookUp: any[];
+  
 
   constructor(
     public dialogRef: MatDialogRef<ViewOrderDetailsComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
+    
     public router: Router,
     private activatedRoute: ActivatedRoute,
     private orderService: OrderService,
     public snackBar: MatSnackBar,
-    private messageService: MessageService,
     private lookupService: LookupService,
-  ) { }
+    private messageService: MessageService
+  ) {}
 
   ngOnInit(): void {
     this.sub = this.activatedRoute.params.subscribe((params) => {
-      if (this.data.orderId) {
+      if (this.data) {
         this.orderService.getById(this.data.orderId).subscribe((res) => {
           this.orderDetails = res.data;
           this.deliveryCharges = this.orderDetails.deliveryCharges;
@@ -58,32 +65,14 @@ export class ViewOrderDetailsComponent implements OnInit {
           this.discountPercentage = this.orderDetails.discountPercentage;
           this.updateCalculations();
         });
-      }
-    });
-  }
-
-  ngOnDestroy() {
-    this.sub.unsubscribe();
-  }
-
-  onClear(): void {
-
-  }
-
-  updateOrder(): void {
-
-  }
-
-  getLookupData(): void {
-
-    this.lookupService.getStatusTypes().subscribe((res) => {
-      this.orderStatusList = res.data;
-    });
-    this.lookupService.getOrderPaymentTypes().subscribe((res) => {
-      this.PaymentList = res.data;
-    });
-    this.lookupService.getOrderDeliveryTypes().subscribe((res) => {
-      this.DeliveryTypeList = res.data;
+        this.orderId = this.data.orderId;
+        this.orderStatusLookUp = this.data.orderStatusLookUp;
+        this.orderPaymentLookUp = this.data.orderPaymentLookUp;
+        this.orderDeliveryTypeLookUp = this.data.orderDeliveryTypeLookUp;
+        this.shippingId = this.data.shippingId;
+        this.orderStatusId = this.data.orderStatusId;
+        this.paymentMethodId = this.data.paymentMethodId;
+      }    
     });
   }
 
@@ -98,9 +87,35 @@ export class ViewOrderDetailsComponent implements OnInit {
       this.netTotal = this.netTotal - this.discountAmount;
     }
     this.vatAmount = (this.netTotal * this.vatPercentage) / 100;
-    this.grandTotalWithVAT = this.netTotal + this.vatAmount + this.deliveryCharges;
+    this.grandTotalWithVAT =
+      this.netTotal + this.vatAmount + this.deliveryCharges;
     this.grandTotalWithOutVAT = this.netTotal + this.deliveryCharges;
   }
 
-}
+  updateOrderDetails() {
+    let body = new OrderStatus();
+    body.orderId = this.orderId;
+    body.orderStatusId = this.orderStatusId;
+    body.paymentMethodId = this.paymentMethodId;
+    body.shippingModeId = this.shippingId;
+    body.orderId = this.orderId;
+    body.orderId = this.orderId;
+    this.orderService.updateStatus(body).subscribe({
+      next: (res: Response) => {
+        if (res.status) {
+          this.messageService.showSuccess(res.data);
+        } else {
+          this.errorMessage = res.data;
+        }
+      },
+      error: (e) => {
+        console.log(e);
+        this.messageService.showError("Unable to update Order Status");
+      },
+    });
+  }
 
+  ngOnDestroy() {
+    this.sub.unsubscribe();
+  }
+}

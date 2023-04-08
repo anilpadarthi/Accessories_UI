@@ -1,53 +1,34 @@
 <div class="p-1">
   <mat-card>
     <mat-card-header>
-      <mat-card-title
-        >{{ productId ? "Edit" : "Add New" }} Product</mat-card-title
-      >
+      <mat-card-title>{{ productId ? "Edit" : "Add New" }} Product</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <form
-        [formGroup]="form"
-        (ngSubmit)="onSubmit()"
-        autocomplete="off"
-        fxLayout="row wrap"
-      >
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" autocomplete="off" fxLayout="row wrap">
         <div fxLayout="row wrap" class="mt-2">
           <div fxFlex="100" fxFlex.gt-md="50" class="px-1">
             <mat-form-field appearance="outline" class="w-100">
               <mat-label>Name</mat-label>
               <input matInput formControlName="productName" required />
-              <mat-error *ngIf="form.controls.productName.errors?.required"
-                >Name is required</mat-error
-              >
+              <mat-error *ngIf="form.controls.productName.errors?.required">Name is required</mat-error>
             </mat-form-field>
           </div>
           <div fxFlex="100" fxFlex.gt-md="50" class="px-1">
             <mat-form-field appearance="outline" class="w-100">
               <mat-label>Code</mat-label>
               <input matInput formControlName="productCode" required />
-              <mat-error *ngIf="form.controls.productCode.errors?.required"
-                >Code is required</mat-error
-              >
+              <mat-error *ngIf="form.controls.productCode.errors?.required">Code is required</mat-error>
             </mat-form-field>
           </div>
           <div fxFlex="100" fxFlex.gt-md="50" class="px-1">
             <mat-form-field appearance="outline" class="w-100">
               <mat-label>Category</mat-label>
-              <mat-select
-                formControlName="categoryId"
-                (selectionChange)="onCategorySelectionChange($event)"
-              >
+              <mat-select formControlName="categoryId" (selectionChange)="onCategorySelectionChange($event)">
                 <mat-option>
-                  <ngx-mat-select-search
-                    [formControl]="categoryFilterCtrl"
-                  ></ngx-mat-select-search>
+                  <ngx-mat-select-search [formControl]="categoryFilterCtrl"></ngx-mat-select-search>
                 </mat-option>
                 <mat-option [value]="">-</mat-option>
-                <mat-option
-                  *ngFor="let category of filteredCategories | async"
-                  [value]="category.id"
-                >
+                <mat-option *ngFor="let category of filteredCategories | async" [value]="category.id">
                   <span>{{ category.name }}</span>
                 </mat-option>
               </mat-select>
@@ -58,15 +39,10 @@
               <mat-label>Sub-Category</mat-label>
               <mat-select formControlName="subCategoryId">
                 <mat-option>
-                  <ngx-mat-select-search
-                    [formControl]="subCategoryFilterCtrl"
-                  ></ngx-mat-select-search>
+                  <ngx-mat-select-search [formControl]="subCategoryFilterCtrl"></ngx-mat-select-search>
                 </mat-option>
                 <mat-option [value]="">-</mat-option>
-                <mat-option
-                  *ngFor="let subCategory of filteredSubCategories | async"
-                  [value]="subCategory.id"
-                >
+                <mat-option *ngFor="let subCategory of filteredSubCategories | async" [value]="subCategory.id">
                   <span>{{ subCategory.name }}</span>
                 </mat-option>
               </mat-select>
@@ -77,14 +53,9 @@
               <mat-label>Colour</mat-label>
               <mat-select formControlName="colourList" multiple>
                 <mat-option>
-                  <ngx-mat-select-search
-                    [formControl]="colourFilterCtrl"
-                  ></ngx-mat-select-search>
+                  <ngx-mat-select-search [formControl]="colourFilterCtrl"></ngx-mat-select-search>
                 </mat-option>
-                <mat-option
-                  *ngFor="let colour of filteredColours | async"
-                  [value]="colour.id"
-                >
+                <mat-option *ngFor="let colour of filteredColours | async" [value]="colour.id">
                   <span>{{ colour.name }}</span>
                 </mat-option>
               </mat-select>
@@ -95,14 +66,9 @@
               <mat-label>Size</mat-label>
               <mat-select formControlName="sizeList" multiple>
                 <mat-option>
-                  <ngx-mat-select-search
-                    [formControl]="sizeFilterCtrl"
-                  ></ngx-mat-select-search>
+                  <ngx-mat-select-search [formControl]="sizeFilterCtrl"></ngx-mat-select-search>
                 </mat-option>
-                <mat-option
-                  *ngFor="let size of filteredSizes | async"
-                  [value]="size.id"
-                >
+                <mat-option *ngFor="let size of filteredSizes | async" [value]="size.id">
                   <span>{{ size.name }}</span>
                 </mat-option>
               </mat-select>
@@ -163,12 +129,7 @@
         </div>
 
         <div fxLayout="row" fxLayoutAlign="space-between center" class="w-100">
-          <button
-            mat-raised-button
-            color="warn"
-            type="button"
-            (click)="navigateToCateogryList()"
-          >
+          <button mat-raised-button color="warn" type="button" (click)="navigateToCateogryList()">
             Cancel
           </button>
           <button mat-raised-button color="primary" type="submit">

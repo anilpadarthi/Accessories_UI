@@ -1,5 +1,4 @@
 import { Component, OnInit, Inject } from "@angular/core";
-import { UntypedFormGroup, Validators } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
 import { OrderService } from "src/app/shared/services/order.service";
 import { MatSnackBar } from "@angular/material/snack-bar";
@@ -31,12 +30,6 @@ export class OrderDialogComponent implements OnInit {
   vatPercentage: any = null;
   grandTotalWithVAT: any = null;
   grandTotalWithOutVAT: any = null;
-  action: ActionsEnum = ActionsEnum.Edit;
-  ActionsEnum = ActionsEnum;
-  deliveryMethodList: [];
-  paymentMethodList: [];
-  orderStatusList: [];
-  orderStatus: OrderStatus;
 
   constructor(
     public dialogRef: MatDialogRef<OrderDialogComponent>,
@@ -47,35 +40,17 @@ export class OrderDialogComponent implements OnInit {
     public snackBar: MatSnackBar,
     private lookupService: LookupService,
     private messageService: MessageService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.sub = this.activatedRoute.params.subscribe((params) => {
       if (this.data.orderId) {
         this.orderService.getById(this.data.orderId).subscribe((res) => {
           this.orderDetails = res.data;
-          this.orderStatus = new OrderStatus();
-          this.orderStatus.orderId = this.orderDetails.orderId;
           this.deliveryCharges = this.orderDetails.deliveryCharges;
           this.vatPercentage = this.orderDetails.vatPercentage;
           this.discountPercentage = this.orderDetails.discountPercentage;
           this.updateCalculations();
-        });
-      }
-      if (this.data.action) {
-        this.action = this.data.action;
-      }
-      if (this.action == ActionsEnum.View) {
-        this.lookupService.getStatusTypes().subscribe((res) => {
-          this.orderStatusList = res.data;
-        });
-
-        this.lookupService.getOrderDeliveryTypes().subscribe((res) => {
-          this.deliveryMethodList = res.data;
-        });
-
-        this.lookupService.getOrderPaymentTypes().subscribe((res) => {
-          this.paymentMethodList = res.data;
         });
       }
     });
@@ -111,8 +86,7 @@ export class OrderDialogComponent implements OnInit {
       this.netTotal = this.netTotal - this.discountAmount;
     }
     this.vatAmount = (this.netTotal * this.vatPercentage) / 100;
-    this.grandTotalWithVAT =
-      this.netTotal + this.vatAmount + this.deliveryCharges;
+    this.grandTotalWithVAT = this.netTotal + this.vatAmount + this.deliveryCharges;
     this.grandTotalWithOutVAT = this.netTotal + this.deliveryCharges;
   }
 
@@ -145,22 +119,6 @@ export class OrderDialogComponent implements OnInit {
       error: (e) => {
         console.log(e);
         this.messageService.showError("Unable to update Order");
-      },
-    });
-  }
-
-  updateOrderDetails() {
-    this.orderService.updateStatus(this.orderStatus).subscribe({
-      next: (res: Response) => {
-        if (res.status) {
-          this.messageService.showSuccess(res.data);
-        } else {
-          this.errorMessage = res.data;
-        }
-      },
-      error: (e) => {
-        console.log(e);
-        this.messageService.showError("Unable to update Order Status");
       },
     });
   }

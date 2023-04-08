@@ -10,10 +10,12 @@ import { MatTableDataSource } from "@angular/material/table";
 import { PaginatorConstants } from "src/app/shared/models/paginator-constants";
 import { MessageService } from "src/app/shared/services/message.service";
 import { OrderDialogComponent } from "../order-dialog/order-dialog.component";
+import { ViewOrderDetailsComponent } from "../view-order-details/view-order-details.component";
 import { Product } from "src/app/shared/models/product";
 import { ProductService } from "src/app/shared/services/product.service";
 import { MatSelect } from "@angular/material/select";
 import { ActionsEnum } from "src/app/shared/enum/actionsEnum";
+import { LookupService } from "src/app/shared/services/lookup.service";
 
 
 @Component({
@@ -45,9 +47,14 @@ export class OrdernListComponent implements OnInit {
   action: ActionsEnum = ActionsEnum.Edit;
   ActionsEnum = ActionsEnum;
   orderStatusId!: number | null;
-  statusList: any[];
-  fromDate:Date|null;
-  toDate:Date|null;
+  fromDate: Date | null;
+  toDate: Date | null;
+  orderStatusLookUp: any[];
+  orderPaymentLookUp: any[];
+  orderDeliveryTypeLookUp: any[];
+  agentLookUp: any[];
+  managerLookUp: any[];
+  areaLookUp: any[];
 
   constructor(
     public changeDetectorRefs: ChangeDetectorRef,
@@ -59,7 +66,8 @@ export class OrdernListComponent implements OnInit {
     // public fb: UntypedFormBuilder,
     private orderService: OrderService,
     private messageService: MessageService,
-    private productService: ProductService
+    private productService: ProductService,
+    private lookupService: LookupService,
   ) {
     this.settings = this.appSettings.settings;
   }
@@ -67,6 +75,7 @@ export class OrdernListComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     this.loadData();
     this.getAllProducts();
+    this.loadDropDowns();
   }
 
   loadData(): void {
@@ -80,6 +89,34 @@ export class OrdernListComponent implements OnInit {
       this.tableDataSource = res.data.results;
       this.totalCount = res.data.totalRecords;
     });
+  }
+
+  loadDropDowns(): void {
+
+    this.lookupService.getOrderStatusTypes().subscribe((res) => {
+      this.orderStatusLookUp = res.data;
+    });
+
+    this.lookupService.getOrderPaymentTypes().subscribe((res) => {
+      this.orderPaymentLookUp = res.data;
+    });
+
+    this.lookupService.getOrderDeliveryTypes().subscribe((res) => {
+      this.orderDeliveryTypeLookUp = res.data;
+    });
+
+    this.lookupService.getAreas().subscribe((res) => {
+      this.areaLookUp = res.data;
+    });
+
+    this.lookupService.getAgents().subscribe((res) => {
+      this.agentLookUp = res.data;
+    });
+
+    this.lookupService.getManagers().subscribe((res) => {
+      this.managerLookUp = res.data;
+    });
+
   }
 
   public getAllProducts() {
@@ -106,11 +143,33 @@ export class OrdernListComponent implements OnInit {
     this.loadData();
   }
 
-  edit(orderDetails: any, action: ActionsEnum): void {
+  editOrder(orderDetails: any): void {
     const dialogRef = this.dialog.open(OrderDialogComponent, {
       data: {
         orderId: orderDetails.orderId,
-        action: action,
+      },
+      panelClass: ["theme-dialog"],
+      autoFocus: false,
+      direction: this.settings.rtl ? "rtl" : "ltr",
+    });
+    dialogRef.afterClosed().subscribe((dialogResult) => {
+      if (dialogResult) {
+        this.loadData();
+      }
+    });
+  }
+
+  viewOrder(orderDetails: any): void {
+    const dialogRef = this.dialog.open(ViewOrderDetailsComponent, {
+      data: {
+        orderId: orderDetails.orderId,
+        orderStatusLookUp: this.orderStatusLookUp,
+        orderPaymentLookUp: this.orderPaymentLookUp,
+        orderDeliveryTypeLookUp: this.orderDeliveryTypeLookUp,
+        orderStatusId: orderDetails.orderStatusId,
+        paymentMethodId: orderDetails.PaymentMethodId,
+        shippingId: orderDetails.ShippingModeId,
+
       },
       panelClass: ["theme-dialog"],
       autoFocus: false,
@@ -136,62 +195,36 @@ export class OrdernListComponent implements OnInit {
           element.productCode = filteredProduct.productCode;
         });
       }
-      this.edit(orderDetails, action);
-    });
-  }
-
-  updateStatus(element) {
-    element.status = !element.status;
-  }
-
-  public remove(category: any): void {
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      maxWidth: "400px",
-      data: {
-        title: "Confirm",
-        message: "Are you sure you want remove this order?",
-      },
-    });
-    dialogRef.afterClosed().subscribe((dialogResult) => {
-      if (dialogResult) {
-        const index: number = this.tableDataSource.indexOf(category);
-        if (index !== -1) {
-          category.status = "D";
-          this.orderService.delete(category).subscribe({
-            next: (res) => {
-              if (res.status) {
-                this.loadData();
-                this.messageService.showSuccess("Deleted successfully.");
-              } else {
-                this.messageService.showError(res.data);
-              }
-            },
-            error: (e) => {
-              console.log(e);
-              this.messageService.showError("Unable to delete Order");
-            },
-          });
-        }
+      if (action == ActionsEnum.Edit) {
+        this.editOrder(orderDetails);
+      }
+      else if (action == ActionsEnum.View) {
+        this.viewOrder(orderDetails);
       }
     });
   }
 
-  actionsResetSelect(select: MatSelect): void {
-    select.value = null;
-    select.close();
-  }
-  actionsSelectOpen(select: MatSelect) {
-    select.placeholder = "";
-  }
-  actionsSelectClose(select: MatSelect) {
-    select.placeholder = "Select";
+  async onAdvancedFilter(): Promise<void> {
   }
 
-  //5March2023
-  onOrderStatusChange() {
-    this.loadData();
+  async downloadInvoice(IsVAT: boolean): Promise<void> {
+
   }
-  onSubmit(){
-    this.loadData();
+
+  async InvoiceEmail(IsVAT: boolean): Promise<void> {
+
   }
+
+  async viewOrderHistory(): Promise<void> {
+
+  }
+
+  async openMakePayment(): Promise<void> {
+
+  }
+
+  async viewAccountTransactions(): Promise<void> {
+
+  }
+
 }

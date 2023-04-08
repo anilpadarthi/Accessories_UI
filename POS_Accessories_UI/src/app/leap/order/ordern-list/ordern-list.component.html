@@ -1,149 +1,114 @@
 <div class="p-1">
   <mat-card class="p-0">
-    <div
-      fxLayout="row wrap"
-      fxLayoutAlign="space-between center"
-      class="w-100 p-2"
-    >
+    <div fxLayout="row wrap" fxLayoutAlign="space-between center" class="w-100 p-2">
       <h2>Order List</h2>
     </div>
     <div class="filter-controls">
       <div class="row wrap">
-
         <mat-form-field appearance="outline" class="input-field">
-        <mat-label>Order Status</mat-label>
-          <mat-select
-            [(ngModel)]="orderStatusId"
-            (selectionChange)="onOrderStatusChange()"
-          >
+          <mat-label>Order item</mat-label>
+          <mat-select [(ngModel)]="orderStatusId" (selectionChange)="onAdvancedFilter()">
             <mat-option [value]="null">All</mat-option>
-            <mat-option
-              *ngFor="let status of statusList"
-              [value]="status.id"
-            >
-              <span>{{ category.name }}</span>
+            <mat-option *ngFor="let item of orderStatusLookUp" [value]="item.id">
+              <span>{{ item.name }}</span>
             </mat-option>
           </mat-select>
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="input-field">
-          <mat-label>Agent/Manager</mat-label>
-            <mat-select
-              [(ngModel)]="orderStatusId"
-              (selectionChange)="onOrderStatusChange()"
-            >
-              <mat-option [value]="null">Select</mat-option>
-              <mat-option
-                *ngFor="let status of statusList"
-                [value]="status.id"
-              >
-                <span>{{ category.name }}</span>
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline" class="input-field">
-            <mat-label>Payment Method</mat-label>
-              <mat-select
-                [(ngModel)]="orderStatusId"
-                (selectionChange)="onOrderStatusChange()"
-              >
-                <mat-option [value]="null">Select</mat-option>
-                <mat-option
-                  *ngFor="let status of statusList"
-                  [value]="status.id"
-                >
-                  <span>{{ category.name }}</span>
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-
-            <mat-form-field appearance="outline" class="input-field">
-              <mat-label>Order Number</mat-label>
-                <mat-select
-                  [(ngModel)]="orderStatusId"
-                  (selectionChange)="onOrderStatusChange()"
-                >
-                  <mat-option [value]="null">Order Number</mat-option>
-                  <mat-option
-                    *ngFor="let status of statusList"
-                    [value]="status.id"
-                  >
-                    <span>{{ category.name }}</span>
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-        <!-- <button mat-flat-button color="primary" (click)="onReset()">
-          <mat-icon>refresh</mat-icon> Reset
-        </button>
-        <button mat-raised-button color="primary" (click)="search()">
-          <mat-icon>search</mat-icon> search
-        </button> -->
-      </div>
-    </div>
-
-    <div class="filter-controls">
-      <div class="row wrap">
+          <mat-label>Payment Method</mat-label>
+          <mat-select [(ngModel)]="orderStatusId" (selectionChange)="onAdvancedFilter()">
+            <mat-option [value]="null">Select</mat-option>
+            <mat-option *ngFor="let item of orderPaymentLookUp" [value]="item.id">
+              <span>{{ item.name }}</span>
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
 
         <mat-form-field appearance="outline" class="input-field">
+          <mat-label>Agent</mat-label>
+          <mat-select [(ngModel)]="orderStatusId" (selectionChange)="onAdvancedFilter()">
+            <mat-option [value]="null">Select</mat-option>
+            <mat-option *ngFor="let item of agentLookUp" [value]="item.id">
+              <span>{{ item.name }}</span>
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="input-field">
+          <mat-label>Manager</mat-label>
+          <mat-select [(ngModel)]="orderStatusId" (selectionChange)="onAdvancedFilter()">
+            <mat-option [value]="null">Select</mat-option>
+            <mat-option *ngFor="let item of managerLookUp" [value]="item.id">
+              <span>{{ item.name }}</span>
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="input-field">
+          <mat-label>Area</mat-label>
+          <mat-select [(ngModel)]="orderStatusId" (selectionChange)="onAdvancedFilter()">
+            <mat-option [value]="null">Select</mat-option>
+            <mat-option *ngFor="let item of areaLookUp" [value]="item.id">
+              <span>{{ item.name }}</span>
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="input-field">
+          <mat-label>Shop</mat-label>
+          <input matInput placeholder="Search By Name" [(ngModel)]="searchText" autocomplete="off" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="input-field">
+          <mat-label>Order Number</mat-label>
+          <input matInput placeholder="Search By Name" [(ngModel)]="searchText" autocomplete="off" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="input-field">
+          <mat-label>Track Number</mat-label>
+          <input matInput placeholder="Search By Name" [(ngModel)]="searchText" autocomplete="off" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="input-field">
+          <mat-label>Shipping Type</mat-label>
+          <mat-select [(ngModel)]="orderStatusId" (selectionChange)="onAdvancedFilter()">
+            <mat-option [value]="null">Select</mat-option>
+            <mat-option *ngFor="let item of orderDeliveryTypeLookUp" [value]="item.id">
+              <span>{{ item.name }}</span>
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="input-field date-control">
           <mat-label>From Date</mat-label>
           <input matInput [matDatepicker]="validFrom" formControlName="validFrom" required>
           <mat-datepicker-toggle matSuffix [for]="validFrom"></mat-datepicker-toggle>
           <mat-datepicker #validFrom></mat-datepicker>
-      </mat-form-field>
+        </mat-form-field>
 
-      <mat-form-field appearance="outline" class="input-field">
-        <mat-label>To Date</mat-label>
-        <input matInput [matDatepicker]="validFrom" formControlName="validFrom" required>
-        <mat-datepicker-toggle matSuffix [for]="validFrom"></mat-datepicker-toggle>
-        <mat-datepicker #validFrom></mat-datepicker>
-    </mat-form-field>
-
-          <mat-form-field appearance="outline" class="input-field">
-            <mat-label>Area</mat-label>
-              <mat-select
-                [(ngModel)]="orderStatusId"
-                (selectionChange)="onOrderStatusChange()"
-              >
-                <mat-option [value]="null">Select</mat-option>
-                <mat-option
-                  *ngFor="let status of statusList"
-                  [value]="status.id"
-                >
-                  <span>{{ category.name }}</span>
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-
-            <mat-form-field appearance="outline" class="input-field">
-              <mat-label>Shop</mat-label>
-                <mat-select
-                  [(ngModel)]="orderStatusId"
-                  (selectionChange)="onOrderStatusChange()"
-                >
-                  <mat-option [value]="null">Select</mat-option>
-                  <mat-option
-                    *ngFor="let status of statusList"
-                    [value]="status.id"
-                  >
-                    <span>{{ category.name }}</span>
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
+        <mat-form-field appearance="outline" class="input-field date-control">
+          <mat-label>To Date</mat-label>
+          <input matInput [matDatepicker]="validFrom" formControlName="validFrom" required>
+          <mat-datepicker-toggle matSuffix [for]="validFrom"></mat-datepicker-toggle>
+          <mat-datepicker #validFrom></mat-datepicker>
+        </mat-form-field>
       </div>
     </div>
     <div class="filter-controls">
-      <div class="row center">
-        <button _ngcontent-serverapp-c500="" mat-raised-button="" color="warn" type="submit">
-        <span class="mat-button-wrapper"><mat-icon>download</mat-icon>Download</span></button>
-        
-        <button _ngcontent-serverapp-c500="" mat-raised-button="" color="primary" type="submit">
-          <span class="mat-button-wrapper"><mat-icon>filter</mat-icon>Filter</span></button>
-          
-          <button _ngcontent-serverapp-c500="" mat-raised-button="" color="accent" type="submit">
-          <span class="mat-button-wrapper"><mat-icon>refresh</mat-icon>Reset</span></button>
+      <div class="row right">
+        <button mat-flat-button color="warn" (click)="onReset()">
+          <mat-icon>download</mat-icon> Download
+        </button>
+        <button mat-flat-button color="primary" (click)="onReset()">
+          <mat-icon>filter</mat-icon> Filter
+        </button>
+        <button mat-flat-button color="primary" (click)="onReset()">
+          <mat-icon>refresh</mat-icon> Clear
+        </button>
+      </div>
     </div>
-  </div>
+
     <div class="results mat-elevation-z8">
       <mat-table #table [dataSource]="bogusDataSource">
         <ng-container matColumnDef="OrderId">
@@ -179,13 +144,8 @@
       <div class="example-container">
         <mat-table #table [dataSource]="tableDataSource">
           <ng-container matColumnDef="OrderId">
-            <mat-cell *matCellDef="let element"
-              ><a
-                [routerLink]="[]"
-                (click)="getOrderById(element.orderId, ActionsEnum.Edit)"
-                >{{ element.orderId }}</a
-              ></mat-cell
-            >
+            <mat-cell *matCellDef="let element"><a [routerLink]="[]"
+                (click)="getOrderById(element.orderId, ActionsEnum.Edit)">{{ element.orderId }}</a></mat-cell>
           </ng-container>
 
           <ng-container matColumnDef="CreatedDate">
@@ -206,12 +166,12 @@
           </ng-container>
           <ng-container matColumnDef="OrderStatus">
             <mat-cell *matCellDef="let element">
-              {{ element.orderStatus }}
+              {{ element.orderStatusId }}
             </mat-cell>
           </ng-container>
           <ng-container matColumnDef="PaymenthMethod">
             <mat-cell *matCellDef="let element">
-              {{ element.paymentMethod }}
+              {{ element.orderPaymentMethodId }}
             </mat-cell>
           </ng-container>
 
@@ -222,66 +182,56 @@
               </span>
               /
               <span>
-                £ {{ element.totalWithOutVATAmount | number : "1.2-2" }}</span
-              >
+                £ {{ element.totalWithOutVATAmount | number : "1.2-2" }}</span>
             </mat-cell>
           </ng-container>
 
           <ng-container matColumnDef="Actions">
             <mat-cell *matCellDef="let element">
-              <button
-                mat-icon-button
-                matTooltip="View"
-                (click)="getOrderById(element.orderId, ActionsEnum.View)"
-                class="iconbutton"
-                color="primary"
-              >
+              <button mat-icon-button matTooltip="View" (click)="getOrderById(element.orderId, ActionsEnum.View)"
+                class="iconbutton" color="primary">
                 <mat-icon>remove_red_eye</mat-icon>
               </button>
-              <button
-                mat-icon-button
-                [matMenuTriggerFor]="menu"
-                aria-label="Example icon-button with a menu"
-              >
+              <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
                 <mat-icon>more_vert</mat-icon>
               </button>
               <mat-menu #menu="matMenu">
-                <button mat-menu-item>
-                  <mat-icon>print</mat-icon>
-                  <span>Print</span>
-                </button>
-                <button mat-menu-item>
+                <button mat-menu-item (click)="downloadInvoice(true)">
                   <mat-icon>download</mat-icon>
                   <span>VAT</span>
-                </button>
-                <button mat-menu-item>
+                </button>               
+                <button mat-menu-item (click)="downloadInvoice(false)">
                   <mat-icon>download</mat-icon>
                   <span>With Out VAT</span>
+                </button>
+                <button mat-menu-item (click)="InvoiceEmail(true)">
+                  <mat-icon>email</mat-icon>
+                  <span>EMAIL</span>
+                </button>
+                <button mat-menu-item (click)="viewOrderHistory()">
+                  <mat-icon>print</mat-icon>
+                  <span>Order History</span>
+                </button>
+                <button mat-menu-item (click)="openMakePayment()">
+                  <mat-icon>print</mat-icon>
+                  <span>Make Payment</span>
+                </button>
+                <button mat-menu-item (click)="viewAccountTransactions()">
+                  <mat-icon>print</mat-icon>
+                  <span>View Transactions</span>
                 </button>
               </mat-menu>
             </mat-cell>
           </ng-container>
-          <mat-header-row
-            *matHHeaderCellDef="displayedColumns"
-            [style.min-height]="0"
-          ></mat-header-row>
+          <mat-header-row *matHHeaderCellDef="displayedColumns" [style.min-height]="0"></mat-header-row>
           <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
         </mat-table>
-        <div
-          class="zero-results"
-          *ngIf="!tableDataSource || tableDataSource.length == 0"
-        >
+        <div class="zero-results" *ngIf="!tableDataSource || tableDataSource.length == 0">
           No records found
         </div>
       </div>
-      <mat-paginator
-        #paginator
-        [length]="totalCount"
-        [pageSize]="pageSize"
-        [pageSizeOptions]="pageOptions"
-        [showFirstLastButtons]="true"
-        (page)="handlePageEvent($event)"
-      >
+      <mat-paginator #paginator [length]="totalCount" [pageSize]="pageSize" [pageSizeOptions]="pageOptions"
+        [showFirstLastButtons]="true" (page)="handlePageEvent($event)">
       </mat-paginator>
     </div>
     <div style="height: 0px"><br /></div>
