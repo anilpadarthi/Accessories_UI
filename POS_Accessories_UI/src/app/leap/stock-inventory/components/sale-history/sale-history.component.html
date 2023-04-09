@@ -1,1 +1,98 @@
-<p>sale-history works!</p>
+<h1 mat-dialog-title>Sale History</h1>
+<div fxLayout="row wrap">
+<div class="p-1">
+    <mat-card class="p-0">
+        <div class="results mat-elevation-z8">
+            <mat-table #table [dataSource]="bogusDataSource">
+                <ng-container matColumnDef="productId">
+                    <mat-header-cell *matHeaderCellDef> Product Id </mat-header-cell>
+                </ng-container>
+                <ng-container matColumnDef="productName">
+                    <mat-header-cell *matHeaderCellDef> Product Name </mat-header-cell>
+                </ng-container>
+                <ng-container matColumnDef="productCode">
+                    <mat-header-cell *matHeaderCellDef> Product Code </mat-header-cell>
+                </ng-container>
+                <ng-container matColumnDef="supplierId">
+                    <mat-header-cell *matHeaderCellDef> Supplier Id </mat-header-cell>
+                </ng-container>
+                <ng-container matColumnDef="invoiceNumber">
+                    <mat-header-cell *matHeaderCellDef> Invoice Number </mat-header-cell>
+                </ng-container>
+                <ng-container matColumnDef="qty">
+                    <mat-header-cell *matHeaderCellDef> Quantity </mat-header-cell>
+                </ng-container>
+                <ng-container matColumnDef="buyPrice">
+                    <mat-header-cell *matHeaderCellDef> Buy Price </mat-header-cell>
+                </ng-container>
+                <ng-container matColumnDef="createdDate">
+                    <mat-header-cell *matHeaderCellDef> Created Date </mat-header-cell>
+                </ng-container>
+                <ng-container matColumnDef="Actions">
+                    <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+            </mat-table>
+
+            <div class="example-container">
+                <mat-table #table [dataSource]="tableDataSource">
+                    <ng-container matColumnDef="productId">
+                        <mat-cell *matCellDef="let element"> {{ element.productId }} </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="productName">
+                        <mat-cell *matCellDef="let element"> {{ element.productName }} </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="productCode">
+                        <mat-cell *matCellDef="let element"> {{ element.productCode }} </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="supplierId">
+                        <mat-cell *matCellDef="let element"> {{ element.supplierId }} </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="invoiceNumber">
+                        <mat-cell *matCellDef="let element"> {{ element.invoiceNumber }} </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="qty">
+                        <mat-cell *matCellDef="let element"> {{ element.qty }} </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="buyPrice">
+                        <mat-cell *matCellDef="let element"> {{ element.buyPrice }} </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="createdDate">
+                        <mat-cell *matCellDef="let element"> {{ element.createdDate | date:'MM/dd/yyyy' }} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Actions">
+                        <mat-cell *matCellDef="let element">
+                            <button mat-icon-button matTooltip="Click to Edit" class="iconbutton" color="primary"
+                                (click)="openStockDialog(element.stockInventoryId)">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                            <button mat-icon-button matTooltip="Click to Delete" class="iconbutton"
+                                (click)="remove(element)" color="warn">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="symbol">
+                        <mat-cell *matCellDef="let element"> {{ element.symbol }} </mat-cell>
+                    </ng-container>
+
+                    <mat-header-row *matHHeaderCellDef="displayedColumns" [style.min-height]="0"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+                </mat-table>
+                <div class="zero-results" *ngIf="!tableDataSource || tableDataSource.length == 0">No records found</div>
+            </div>
+            <mat-paginator #paginator [length]="totalCount" [pageSize]="pageSize" [pageSizeOptions]="pageOptions"
+                [showFirstLastButtons]="true" (page)="handlePageEvent($event)">
+            </mat-paginator>
+        </div>
+        <div style="height: 0px;"><br></div>
+    </mat-card>
+</div>
+<div fxLayout="row" fxLayoutAlign="space-between center" class="w-100">
+    <button mat-raised-button color="warn" type="button" mat-dialog-close>Close</button>
+</div>
+</div>

@@ -10,17 +10,21 @@ import { StockInventoryComponent } from './components/stock-inventory/stock-inve
 import { StockInventoryDialogComponent } from './components/stock-inventory-dialog/stock-inventory-dialog.component';
 import { FormsModule } from '@angular/forms';
 import { WarehouseComponent } from './components/warehouse/warehouse.component';
+import { SaleHistoryComponent } from './components/sale-history/sale-history.component';
+
 
 export const routes: Routes = [ 
   { path: '', component: StockInventoryComponent, pathMatch: 'full' }, 
   { path: 'warehouse', component: WarehouseComponent },
+  { path: 'salehistory', component: SaleHistoryComponent },
 ];
 
 @NgModule({
   declarations: [
     StockInventoryComponent,
     StockInventoryDialogComponent,
-    WarehouseComponent
+    WarehouseComponent,
+    SaleHistoryComponent
   ],
   imports: [
     CommonModule,

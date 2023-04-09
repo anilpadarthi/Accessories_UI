@@ -11,6 +11,7 @@ import { MessageService } from 'src/app/shared/services/message.service';
 import { LookupService } from 'src/app/shared/services/lookup.service';
 import { WareHouseService } from 'src/app/shared/services/warehouse.service';
 import { WareHouse } from 'src/app/shared/models/warehouse';
+import { SaleHistoryComponent } from '../sale-history/sale-history.component';
 
 @Component({
   selector: 'app-warehouse',
@@ -35,6 +36,7 @@ export class WarehouseComponent implements OnInit {
   pageIndex = 1;
   totalCount!: number;
   warehouse:WareHouse[];
+  productId:number=0;
   
 
   constructor(public changeDetectorRefs: ChangeDetectorRef,
@@ -81,23 +83,23 @@ export class WarehouseComponent implements OnInit {
     });
   }
 
-//   getStockPurchaseHistory(){
-//     const request = {
-//     pageNo: this.pageIndex,
-//     pageSize: this.pageSize,
-//     id:this.id,
-//     categoryId:this.categoryId,
-//     subCategoryId:this.subCategoryId,
-//     searchText: this.searchText,
-//     mode:this.mode,
-//     loggedInUserId:this.loggedInUserId
-//   };
-//   this.wareHouseService.getWareHouseList(request).subscribe((res) => {
-//     this.warehouse = res.data;
-//     this.tableDataSource = res.data.results;
-//     this.totalCount = res.data.totalRecords;
-// });
-// }
+
+openSaleHistoryDialog(productId: any): void {
+  const dialogRef = this.dialog.open(SaleHistoryComponent, {
+    data: {
+      id: productId
+    },
+    panelClass: ["theme-dialog"],
+    autoFocus: false,
+    direction: this.settings.rtl ? "rtl" : "ltr",
+  });
+  dialogRef.afterClosed().subscribe((dialogResult) => {
+    if (dialogResult) {
+      this.loadData();
+    }
+  });
+}
+
 
   updateStatus(element) {
     element.status = !element.status;

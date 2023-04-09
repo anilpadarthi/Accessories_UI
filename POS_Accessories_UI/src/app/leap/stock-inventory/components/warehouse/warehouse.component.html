@@ -57,9 +57,13 @@
                         <mat-cell *matCellDef="let element"> {{ element.productCode }} </mat-cell>
                     </ng-container>
                     <ng-container matColumnDef="buyTotal">
-                        <mat-cell *matCellDef="let element"> 
-                            <a [routerLink]="['/warehouse']" [queryParams]="{categoryId: element.productId}">
-                            {{ element.buyTotal }} </a>
+                        <mat-cell *matCellDef="let element" > 
+                         <button type="button"
+                          style="color:rgb(0, 0, 255);text-decoration: underline;background-color: transparent;border: none;"
+                           
+                            (click)="openSaleHistoryDialog(element.productId)">  
+                            {{ element.buyTotal }}
+                         </button>
                         </mat-cell>
                     </ng-container>
                     <ng-container matColumnDef="saleTotal">
@@ -68,7 +72,7 @@
                     <ng-container matColumnDef="Actions">
                         <mat-cell *matCellDef="let element">
                             <button mat-icon-button matTooltip="Click to Edit" class="iconbutton" color="primary"
-                                (click)="openStockDialog(element.stockInventoryId)">
+                                (click)="openStockDialog(element.productId)">
                                 <mat-icon>edit</mat-icon>
                             </button>
                             <button mat-icon-button matTooltip="Click to Delete" class="iconbutton"
