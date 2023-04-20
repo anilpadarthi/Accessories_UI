@@ -12,6 +12,7 @@ import { LookupService } from 'src/app/shared/services/lookup.service';
 import { WareHouseService } from 'src/app/shared/services/warehouse.service';
 import { WareHouse } from 'src/app/shared/models/warehouse';
 import { SaleHistoryComponent } from '../sale-history/sale-history.component';
+import { PurchaseHistoryComponent } from '../purchase-history/purchase-history.component';
 
 @Component({
   selector: 'app-warehouse',
@@ -84,8 +85,8 @@ export class WarehouseComponent implements OnInit {
   }
 
 
-openSaleHistoryDialog(productId: any): void {
-  const dialogRef = this.dialog.open(SaleHistoryComponent, {
+openPurchaseHistoryDialog(productId: any): void {
+  const dialogRef = this.dialog.open(PurchaseHistoryComponent, {
     data: {
       id: productId
     },

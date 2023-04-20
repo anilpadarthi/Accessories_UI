@@ -13,7 +13,7 @@ export class WareHouseService {
   constructor(public http: HttpClient) { }
 
   //TODO:Keep the prefix url in environment file.
-  public url = environment.url + 'https://localhost:7159/api/Inventory';
+  public url = environment.url + 'https://localhost:44352/api/Inventory';
 
   getWareHouseList(requestBody: any): Observable<Response> {
     return this.http.post<Response>(this.url+ "/GetWareHouseResult", requestBody);

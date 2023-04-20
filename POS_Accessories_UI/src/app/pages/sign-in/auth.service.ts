@@ -8,7 +8,7 @@ import { User } from './user';
 @Injectable()
 export class AuthService {
   private loggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  baseURL = "https://localhost:7159/api/";
+  baseURL = "https://localhost:44352/api/";
   get isLoggedIn() {
     return this.loggedIn.asObservable();
   }

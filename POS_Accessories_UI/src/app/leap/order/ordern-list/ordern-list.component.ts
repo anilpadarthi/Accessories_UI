@@ -43,7 +43,6 @@ export class OrdernListComponent implements OnInit {
   pageOptions = PaginatorConstants.LEAP_STANDARD_PAGE_OPTIONS;
   pageIndex = 1;
   totalCount!: number;
-  products: Product[];
   action: ActionsEnum = ActionsEnum.Edit;
   ActionsEnum = ActionsEnum;
   orderStatusId!: number | null;
@@ -73,8 +72,7 @@ export class OrdernListComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    this.loadData();
-    this.getAllProducts();
+    this.loadData();    
     this.loadDropDowns();
   }
 
@@ -117,12 +115,6 @@ export class OrdernListComponent implements OnInit {
       this.managerLookUp = res.data;
     });
 
-  }
-
-  public getAllProducts() {
-    this.productService.getProductList().subscribe((res) => {
-      this.products = res.data;
-    });
   }
 
   handlePageEvent(event: PageEvent): void {
@@ -184,17 +176,7 @@ export class OrdernListComponent implements OnInit {
 
   public getOrderById(orderId: any, action: ActionsEnum) {
     this.orderService.getById(orderId).subscribe((res: any) => {
-      let orderDetails = res.data;
-      if (orderDetails.items.length > 0) {
-        orderDetails.items.forEach((element) => {
-          let filteredProduct = this.products.find(
-            (a) => a.productId == element.productId
-          );
-
-          element.productName = filteredProduct.productName;
-          element.productCode = filteredProduct.productCode;
-        });
-      }
+      let orderDetails = res.data;      
       if (action == ActionsEnum.Edit) {
         this.editOrder(orderDetails);
       }

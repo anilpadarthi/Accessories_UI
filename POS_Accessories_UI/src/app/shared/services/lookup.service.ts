@@ -12,7 +12,7 @@ export class LookupService {
   constructor(public http: HttpClient) { }
 
   //TODO:Keep the prefix url in environment file.
-  public url = environment.url + "https://localhost:7159/api/Lookup/";
+  public url = environment.url + "https://localhost:44352/api/Lookup/";
 
   getCategories(): Observable<any> {
     return this.http.get<any>(this.url + "Categories");

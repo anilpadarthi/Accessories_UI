@@ -13,7 +13,7 @@ export class SubCategoryService {
   constructor(public http: HttpClient) { }
 
   //TODO:Keep the prefix url in environment file.
-  public url = environment.url + 'https://localhost:7159/api/SubCategory';
+  public url = environment.url + 'https://localhost:44352/api/SubCategory';
 
   getSubCategoryList(): Observable<any> {
     return this.http.get<any>(this.url);

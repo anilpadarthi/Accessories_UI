@@ -10,13 +10,15 @@ import { OrdernListComponent } from "../order/ordern-list/ordern-list.component"
 import { OrderDialogComponent } from "../order/order-dialog/order-dialog.component";
 import { FormsModule } from "@angular/forms";
 import { ViewOrderDetailsComponent } from './view-order-details/view-order-details.component';
+import { OrderHistoryComponent } from './order-history/order-history.component';
+import { MakePaymentComponent } from './make-payment/make-payment.component';
 
 export const routes: Routes = [
   { path: "", component: OrdernListComponent, pathMatch: "full" },
 ];
 
 @NgModule({
-  declarations: [OrdernListComponent, OrderDialogComponent, ViewOrderDetailsComponent],
+  declarations: [OrdernListComponent, OrderDialogComponent, ViewOrderDetailsComponent, OrderHistoryComponent, MakePaymentComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),

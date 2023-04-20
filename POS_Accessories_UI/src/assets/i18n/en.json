@@ -59,6 +59,7 @@
     "COUPON":"Coupon",
     "CONFIGURATION":"Configuration",
     "ACCOUNTABILITY":"Accountability",
+    "MAKEPAYMENT":"Make Payment",
     "CREATE_ORDER":"Create Order",
     "INVENTORY":"Inventory",
     "ADDSTOCK":"Add Stock",

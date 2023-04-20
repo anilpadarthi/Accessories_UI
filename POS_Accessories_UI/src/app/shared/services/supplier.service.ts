@@ -13,7 +13,7 @@ export class SupplierService {
   constructor(public http: HttpClient) { }
 
   //TODO:Keep the prefix url in environment file.
-  public url = environment.url + 'https://localhost:7159/api/Supplier';
+  public url = environment.url + 'https://localhost:44352/api/Supplier';
 
   getSupplierList(): Observable<any> {
     return this.http.get<any>(this.url);

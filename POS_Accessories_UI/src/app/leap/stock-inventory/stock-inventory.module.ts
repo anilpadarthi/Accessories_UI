@@ -11,12 +11,14 @@ import { StockInventoryDialogComponent } from './components/stock-inventory-dial
 import { FormsModule } from '@angular/forms';
 import { WarehouseComponent } from './components/warehouse/warehouse.component';
 import { SaleHistoryComponent } from './components/sale-history/sale-history.component';
+import { PurchaseHistoryComponent } from './components/purchase-history/purchase-history.component';
+
 
 
 export const routes: Routes = [ 
   { path: '', component: StockInventoryComponent, pathMatch: 'full' }, 
   { path: 'warehouse', component: WarehouseComponent },
-  { path: 'salehistory', component: SaleHistoryComponent },
+  { path: 'salehistory', component: SaleHistoryComponent }
 ];
 
 @NgModule({
@@ -24,7 +26,8 @@ export const routes: Routes = [
     StockInventoryComponent,
     StockInventoryDialogComponent,
     WarehouseComponent,
-    SaleHistoryComponent
+    SaleHistoryComponent,
+    PurchaseHistoryComponent
   ],
   imports: [
     CommonModule,

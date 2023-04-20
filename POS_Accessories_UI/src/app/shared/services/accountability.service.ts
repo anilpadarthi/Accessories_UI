@@ -13,7 +13,7 @@ export class AccountabilityService {
   constructor(public http: HttpClient) { }
 
   //TODO:Keep the prefix url in environment file.
-  public url = environment.url + 'https://localhost:7159/api/Category';
+  public url = environment.url + 'https://localhost:44352/api/Category';
 
   getByPaging(requestBody: any): Observable<any> {
     return this.http.post<any>(this.url + '/GetByPaging', requestBody);
