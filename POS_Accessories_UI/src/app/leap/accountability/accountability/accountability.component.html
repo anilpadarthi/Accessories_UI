@@ -10,49 +10,54 @@
     </div>
   </div>
   <form [formGroup]='buyTicketForm' novalidate class="text-center border border-light p-5" (ngSubmit)='buyTickets()'>
-    <input formControlName='emailControl' type="text" class="form-control mb-4" placeholder="Enter Email" />
+    <input formControlName='emailControl' type="text" class="form-control mb-4" placeholder="Enter Email*" />
     <input formControlName='phoneControl' type="text" class="form-control mb-4" placeholder="Enter Phone" />
     <form formGroupName='address'>
       <input formControlName='streetControl' type="text" class="form-control mb-4" placeholder="Enter Street Name" />
       <input formControlName='postalcodeControl' type="number" class="form-control mb-4"
         placeholder="Enter Postal code " />
     </form>
-    <div formArrayName="tickets" *ngFor="let t of tickets.controls; let i = index">
-      <div class="row" [formGroupName]="i">
-        <div class="col-md-2">
-          <p class="lead">Ticket {{i+1}}</p>
-        </div>
-        <div class="col-md-5">
-          <input formControlName='name' id="{{'name'+i}}" type="text" class="form-control mb-4"
-            placeholder="Enter Name" />
-        </div>
-        <div class="col-md-5">
-          <input formControlName='age' id="{{'age' + i}}" type="number" class="form-control mb-4"
-            placeholder="Enter Age " />
-        </div>
+	<div *ngIf="tickets.controls">
+		<div formArrayName="tickets" *ngFor="let t of tickets.controls; let i = index">
+		<div class="row" [formGroupName]="i">
+			<div class="col-md-2">
+			<p class="lead">Ticket {{i+1}}</p>
+			</div>
+			<div >
+				<input formControlName='name' id="{{'name'+i}}" type="text" class="form-control mb-4"
+					placeholder="Enter Name*" />
+				<p style="color:red"
+					*ngIf="tickets.controls[i].get('name').hasError('required') && tickets.controls[i].get('name').touched">
+					Name is required
+				</p>
+			</div>
+			<div >
+				<input formControlName='age' id="{{'age' + i}}" type="number" class="form-control mb-4"
+					placeholder="Enter Age*" />
+				</div>
+				<p style="color:red"
+				*ngIf="tickets.controls[i].get('age').hasError('required') && tickets.controls[i].get('age').touched">
+					Age is required
+				</p>
+			<div *ngIf="i>0">
+				<button (click) = "deleteTicket(i)">Delete</button>
+			</div>
+		</div>
+		<!-- <div class="row">
+			<div class="col-md-2">
 
-      </div>
-      <div class="row">
-        <div class="col-md-2">
+			</div>
+			<div >
 
-        </div>
-        <div class="col-md-5">
 
-          <div class="alert  alert-danger"
-            *ngIf="tickets.controls[i].get('name').hasError('required') && tickets.controls[i].get('name').touched">
-            Name is required
-          </div>
-        </div>
-        <div class="col-md-5">
-          <div class="alert  alert-danger"
-            *ngIf="tickets.controls[i].get('age').hasError('required') && tickets.controls[i].get('age').touched">
-            Age is required
-          </div>
-        </div>
-      </div>
+			</div>
+			<div >
 
-    </div>
+			</div>
+		</div> -->
 
+		</div>
+	</div>
     <button class="btn btn-danger" [disabled]='buyTicketForm.invalid'>Submit</button>
   </form>
 

@@ -47,8 +47,15 @@ export class AccountabilityComponent implements OnInit {
 
   buyTickets() {
 
+    this.tickets.markAllAsTouched();
+    this.buyTicketForm.markAllAsTouched();
     if(this.buyTicketForm.status == 'VALID'){
       console.log(this.buyTicketForm.value);
     }
+  }
+
+  deleteTicket(index: number) {
+    console.log('Deleting the ticket - ', index);
+    this.tickets.removeAt(index);
   }
 }
