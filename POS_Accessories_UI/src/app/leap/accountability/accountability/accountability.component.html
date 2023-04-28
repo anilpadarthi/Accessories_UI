@@ -25,10 +25,14 @@
 			</div>
 			<div >
 				<input formControlName='name' id="{{'name'+i}}" type="text" class="form-control mb-4"
-					placeholder="Enter Name*" />
+					placeholder="Enter Name*" (change)="OnNameChange($event, i)"/>
 				<p style="color:red"
 					*ngIf="tickets.controls[i].get('name').hasError('required') && tickets.controls[i].get('name').touched">
 					Name is required
+				</p>
+				<p style="color:red"
+					*ngIf="tickets.controls[i].get('name').hasError('duplicate') && tickets.controls[i].get('name').touched">
+					Duplicate Name
 				</p>
 			</div>
 			<div >

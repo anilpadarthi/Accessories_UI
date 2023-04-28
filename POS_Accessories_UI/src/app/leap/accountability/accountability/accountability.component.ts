@@ -58,4 +58,11 @@ export class AccountabilityComponent implements OnInit {
     console.log('Deleting the ticket - ', index);
     this.tickets.removeAt(index);
   }
+
+  OnNameChange(event:any, index: number) {
+    const matches: any = this.tickets.value.filter(item => item.name === event.target.value);
+    if( matches.length > 1) {
+      this.tickets.controls[index].get('name').setErrors({'duplicate': true});
+    }
+  }
 }
