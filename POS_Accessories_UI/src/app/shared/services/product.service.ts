@@ -12,7 +12,7 @@ export class ProductService {
   constructor(public http: HttpClient) {}
 
   //TODO:Keep the prefix url in environment file.
-  public url = environment.url + "https://localhost:44352/api/Product";
+  public url = environment.url + "http://api.leap-tel.com/api/Product";
 
   getProductList(): Observable<any> {
     return this.http.get<any>(this.url + "/GetAll");

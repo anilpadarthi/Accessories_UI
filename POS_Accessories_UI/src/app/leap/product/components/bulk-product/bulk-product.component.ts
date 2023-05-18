@@ -4,6 +4,8 @@ import {
   UntypedFormBuilder,
   UntypedFormGroup,
   Validators,
+  FormGroup,
+  FormArray,
 } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
 import { ProductService } from "../../../../shared/services/product.service";
@@ -11,36 +13,38 @@ import { MatSnackBar } from "@angular/material/snack-bar";
 import { Response } from "src/app/shared/models/response";
 import { MessageService } from "src/app/shared/services/message.service";
 import { LookupService } from "src/app/shared/services/lookup.service";
-import { ReplaySubject, Subject, takeUntil } from "rxjs";
+import { ReplaySubject, Subject, takeUntil, Observable, startWith, map } from "rxjs";
 import { Lookup } from "src/app/shared/models/lookup";
 import { ProductPriceList } from "src/app/shared/models/productPriceRequest";
+import { Product } from 'src/app/shared/models/product';
+
 @Component({
-  selector: "app-product-detail",
-  templateUrl: "./product-detail.component.html",
-  styleUrls: ["./product-detail.component.scss"],
+  selector: 'app-bulk-product',
+  templateUrl: './bulk-product.component.html',
+  styleUrls: ['./bulk-product.component.scss']
 })
-export class ProductDetailComponent implements OnInit {
-  public form: UntypedFormGroup;
+
+export class BulkProductComponent implements OnInit {
   private sub: any;
   public productId: number = 0;
   public categories: Lookup[];
   public filteredCategories: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
-  public filteredSubCategories: ReplaySubject<any[]> = new ReplaySubject<any[]>(
-    1
-  );
+  public filteredSubCategories: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
   public filteredColours: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
   public filteredSizes: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
   public subCategories: Lookup[];
-  public sizes: [];
-  public colours: [];
   public categoryFilterCtrl: FormControl<string> = new FormControl<string>("");
-  public subCategoryFilterCtrl: FormControl<string> = new FormControl<string>(
-    ""
-  );
+  public subCategoryFilterCtrl: FormControl<string> = new FormControl<string>("");
   public colourFilterCtrl: FormControl<string> = new FormControl<string>("");
   public sizeFilterCtrl: FormControl<string> = new FormControl<string>("");
   protected _onDestroy = new Subject<void>();
   public priceList: ProductPriceList[];
+  public products: Array<Product> = [];
+  filteredProducts: Observable<Product[]>;
+  childProductId = new FormControl('');
+  bulkProductForm: FormGroup;
+
+
   constructor(
     public router: Router,
     public fb: UntypedFormBuilder,
@@ -49,25 +53,21 @@ export class ProductDetailComponent implements OnInit {
     public snackBar: MatSnackBar,
     private messageService: MessageService,
     private lookupService: LookupService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
-    this.form = this.fb.group({
+
+
+    this.bulkProductForm = this.fb.group({
       productId: 0,
       productName: [null, Validators.required],
       productCode: [null, Validators.required],
-      purchasePrice: [null, Validators.required],
       images: null,
-      isNewArrival: false,
-      isBundle: false,
-      isOutOfStock: false,
-      isVatEnabled: false,
       categoryId: null,
       subCategoryId: null,
       description: null,
       specification: null,
-      colourList: [[]],
-      sizeList: [[]],
+      childProducts: this.fb.array([this.createChild()], Validators.required)
     });
 
     this.sub = this.activatedRoute.params.subscribe((params) => {
@@ -77,8 +77,6 @@ export class ProductDetailComponent implements OnInit {
       }
     });
     this.getCategories();
-    this.getColours();
-    this.getSizes();
 
     this.categoryFilterCtrl.valueChanges
       .pipe(takeUntil(this._onDestroy))
@@ -92,17 +90,8 @@ export class ProductDetailComponent implements OnInit {
         this.filter("subCategory");
       });
 
-    this.colourFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filter("colour");
-      });
+    this.getProductList();
 
-    this.sizeFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filter("size");
-      });
   }
 
   getCategories() {
@@ -112,7 +101,7 @@ export class ProductDetailComponent implements OnInit {
       let selectedCategoryId =
         this.activatedRoute.snapshot.queryParamMap.get("categoryId");
       if (selectedCategoryId) {
-        this.form.patchValue({ categoryId: parseInt(selectedCategoryId) });
+        this.bulkProductForm.patchValue({ categoryId: parseInt(selectedCategoryId) });
         this.getSubCategories(parseInt(selectedCategoryId));
       }
     });
@@ -125,30 +114,18 @@ export class ProductDetailComponent implements OnInit {
       let selectedSubCategoryId =
         this.activatedRoute.snapshot.queryParamMap.get("subCategoryId");
       if (selectedSubCategoryId) {
-        this.form.patchValue({
+        this.bulkProductForm.patchValue({
           subCategoryId: parseInt(selectedSubCategoryId),
         });
       }
     });
   }
 
-  getColours() {
-    this.lookupService.getColours().subscribe((res) => {
-      this.colours = res.data;
-      this.filteredColours.next(this.colours.slice());
-    });
-  }
 
-  getSizes() {
-    this.lookupService.getSizes().subscribe((res) => {
-      this.sizes = res.data;
-      this.filteredSizes.next(this.sizes.slice());
-    });
-  }
 
   public getProductById() {
     this.productService.getProduct(this.productId).subscribe((res: any) => {
-      this.form.patchValue(res.data);
+      this.bulkProductForm.patchValue(res.data);
     });
   }
 
@@ -156,11 +133,11 @@ export class ProductDetailComponent implements OnInit {
     this.router.navigate(["/product"]);
   }
   public onSubmit() {
-    console.log(this.form.value);
-    this.form.value.priceList = this.priceList;
-    if (this.form.valid) {
+    console.log(this.bulkProductForm.value);
+    this.bulkProductForm.value.priceList = this.priceList;
+    if (this.bulkProductForm.valid) {
       if (this.productId === 0) {
-        this.productService.addProduct(this.form.value).subscribe({
+        this.productService.addProduct(this.bulkProductForm.value).subscribe({
           next: (res: Response) => {
             if (res.status) {
               this.navigateToCateogryList();
@@ -175,7 +152,7 @@ export class ProductDetailComponent implements OnInit {
           },
         });
       } else {
-        this.productService.updateProduct(this.form.value).subscribe({
+        this.productService.updateProduct(this.bulkProductForm.value).subscribe({
           next: (res: Response) => {
             if (res.status) {
               this.navigateToCateogryList();
@@ -214,16 +191,6 @@ export class ProductDetailComponent implements OnInit {
         filteredList = this.filteredSubCategories;
         filterCtrl = this.subCategoryFilterCtrl;
         break;
-      case "colour":
-        list = this.colours;
-        filteredList = this.filteredColours;
-        filterCtrl = this.colourFilterCtrl;
-        break;
-      case "size":
-        list = this.sizes;
-        filteredList = this.filteredSizes;
-        filterCtrl = this.sizeFilterCtrl;
-        break;
     }
     if (!list) {
       return;
@@ -245,4 +212,50 @@ export class ProductDetailComponent implements OnInit {
   ngOnDestroy() {
     this.sub.unsubscribe();
   }
+
+  getProductList() {
+    this.productService.getProductList().subscribe(res => {
+      this.products = res.data;
+      this.filteredProducts = this.childProductId.valueChanges.pipe(
+        startWith(''),
+        map(value => this._filter(value || '')),
+      );
+    });
+  }
+
+  private _filter(value: string): Product[] {
+    const filterValue = value.toString().toLowerCase();
+
+    return this.products.filter(option => option.productName.toLowerCase().includes(filterValue));
+  }
+
+  createChild(): FormGroup {
+
+    return this.fb.group({
+      childProductId: [null, Validators.required],
+      childProductQty: [null, Validators.required]
+    })
+  }
+
+  get childProducts(): FormArray {
+    return <FormArray>this.bulkProductForm.get('childProducts');
+  }
+
+  addChildProduct() {
+    this.childProducts.push(this.createChild());
+  }
+
+  removeChildProduct(index: number) {
+    console.log('remove the child - ', index);
+    this.childProducts.removeAt(index);
+  }
+
+  validate(event: any, index: number) {
+    const matches: any = this.childProducts.value.filter(item => item.childProductId === event.target.value);
+    if (matches.length > 1) {
+      this.childProducts.controls[index].get('childProductId').setErrors({ 'duplicate': true });
+    }
+  }
+
 }
+

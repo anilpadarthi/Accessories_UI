@@ -15,7 +15,7 @@ export class OrderDetails {
     public orderStatus?: string,
     public paymentMethod?: string,
     public shippingMode?: string,
-    public trackNumber?: string,
+    public trackingNumber?: string,
     public shippingAddress?: string,
     public vatPercentage?: number,
     public discountPercentage?: number,

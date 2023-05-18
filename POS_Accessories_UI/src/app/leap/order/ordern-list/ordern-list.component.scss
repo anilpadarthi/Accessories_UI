@@ -28,7 +28,7 @@
 }
 
 .results {
-  margin: 4em 15px 15px 15px;
+  margin: 15px 15px 15px 15px;
 }
 
 .example-container {
@@ -53,4 +53,22 @@
 
 .actions {
   width: 60%;
+}
+
+.tile{
+  text-align: right;
+  .mat-icon{
+      position: absolute;
+      left: 4px;
+      top: 50%;
+      line-height: 0;
+      font-size: 54px;
+      opacity: 0.3;
+  }
+  h2{
+      font-weight: 500;
+  }
+  p{
+      text-transform: uppercase;
+  }
 }

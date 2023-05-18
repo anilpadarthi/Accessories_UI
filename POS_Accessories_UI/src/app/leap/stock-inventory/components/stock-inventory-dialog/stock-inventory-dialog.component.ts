@@ -21,25 +21,25 @@ export class StockInventoryDialogComponent implements OnInit {
   public form: UntypedFormGroup;
   private sub: any;
   public stockInventoryId: number = 0;
-  public errorMessage:string = '';
+  public errorMessage: string = '';
   public products: Array<Product> = [];
   filteredProducts: Observable<Product[]>;
   productId = new FormControl('');
   suppliers: any[];
 
-  constructor(public dialogRef: MatDialogRef<StockInventoryDialogComponent>, 
-    @Inject(MAT_DIALOG_DATA) public data: any,public router: Router, public fb: UntypedFormBuilder, private activatedRoute: ActivatedRoute, private stockInventoryService: StockInventoryService, public snackBar: MatSnackBar, private messageService: MessageService,public productService:ProductService,
+  constructor(public dialogRef: MatDialogRef<StockInventoryDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any, public router: Router, public fb: UntypedFormBuilder, private activatedRoute: ActivatedRoute, private stockInventoryService: StockInventoryService, public snackBar: MatSnackBar, private messageService: MessageService, public productService: ProductService,
     private lookupService: LookupService) { }
 
   ngOnInit(): void {
     this.form = this.fb.group({
       'stockInventoryId': 0,
-      'productId':this.productId,
-      'qty':[null, Validators.required],
-      'supplierId':'',
-      'buyPrice':[null, Validators.required],
-      'invoiceNumber':null,
-    }); 
+      'productId': this.productId,
+      'qty': [null, Validators.required],
+      'supplierId': '',
+      'buyPrice': [null, Validators.required],
+      'invoiceNumber': null,
+    });
     this.getSupplierLookup();
     this.getAllProducts();
   }
@@ -53,13 +53,13 @@ export class StockInventoryDialogComponent implements OnInit {
   public getStockById() {
     this.stockInventoryService.getStock(this.stockInventoryId).subscribe((res: any) => {
       this.form.patchValue(res.data);
-      this.form.patchValue({productId: this.products.find(a=>a.productId == res.data.productId).productName});
+      this.form.patchValue({ productId: this.products.find(a => a.productId == res.data.productId).productName });
     });
   }
 
-  public getAllProducts(){
-    this.productService.getProductList().subscribe(res=>{
-      this.products = res.data; 
+  public getAllProducts() {
+    this.productService.getProductList().subscribe(res => {
+      this.products = res.data;
       this.filteredProducts = this.productId.valueChanges.pipe(
         startWith(''),
         map(value => this._filter(value || '')),
@@ -81,8 +81,8 @@ export class StockInventoryDialogComponent implements OnInit {
   }
 
   public onSubmit() {
-    this.form.value.productId = this.products.find(a=> a.productName == this.productId.value).productId;
-    this.errorMessage='';
+    this.form.value.productId = this.products.find(a => a.productName == this.productId.value).productId;
+    this.errorMessage = '';
     if (this.form.valid) {
       if (this.stockInventoryId === 0) {
         this.stockInventoryService.addStock(this.form.value).subscribe({
@@ -92,12 +92,12 @@ export class StockInventoryDialogComponent implements OnInit {
               this.messageService.showSuccess(res.data);
             }
             else {
-              this.errorMessage=res.data;
+              this.errorMessage = res.data;
             }
           },
           error: (e) => {
             console.log(e);
-            this.errorMessage='Unable to create Stock';
+            this.errorMessage = 'Unable to create Stock';
           }
         })
       }
@@ -109,12 +109,12 @@ export class StockInventoryDialogComponent implements OnInit {
               this.messageService.showSuccess(res.data);
             }
             else {
-              this.errorMessage=res.data;
+              this.errorMessage = res.data;
             }
           },
           error: (e) => {
             console.log(e);
-            this.errorMessage='Unable to update Stock';
+            this.errorMessage = 'Unable to update Stock';
           }
         })
       }

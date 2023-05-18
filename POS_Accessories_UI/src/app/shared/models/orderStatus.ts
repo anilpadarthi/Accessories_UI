@@ -4,7 +4,7 @@ export class OrderStatus {
     public orderStatusId?: number,
     public paymentMethodId?: number,
     public shippingModeId?: number,
-    public trackNumber?: string,
+    public trackingNumber?: string,
     public shippingAddress?: string
   ) {}
 }

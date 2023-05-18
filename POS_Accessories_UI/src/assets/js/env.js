@@ -2,7 +2,7 @@
     window.__env = window.__env || {};
   
     // API url
-    window.__env.apiUrl = 'https://localhost:44352/api/';
+    window.__env.apiUrl = 'http://api.leap-tel.com/api/';
     window.__env.production = false;
     if (window.__env.production) {
     window.__env.documentPath = "https://dev.crystalmatrix.in/vmd-drive";

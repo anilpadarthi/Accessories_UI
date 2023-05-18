@@ -1,14 +1,10 @@
 import { Component, OnInit, Input, ChangeDetectorRef, Inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ConfirmDialogComponent } from 'src/app/shared/confirm-dialog/confirm-dialog.component';
 import { AppSettings, Settings } from 'src/app/app.settings';
 import { Router, ActivatedRoute } from '@angular/router';
-import { StockInventoryService } from '../../../../shared/services/stockInventory.service'
 import { PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { PaginatorConstants } from 'src/app/shared/models/paginator-constants';
-import { MessageService } from 'src/app/shared/services/message.service';
-import { LookupService } from 'src/app/shared/services/lookup.service';
 import { WareHouseService } from 'src/app/shared/services/warehouse.service';
 import { WareHouse } from 'src/app/shared/models/warehouse';
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";

@@ -10,13 +10,13 @@ import { OrderDetails } from "../models/orderDetails";
   providedIn: "root",
 })
 export class OrderService {
-  constructor(public http: HttpClient) {}
+  constructor(public http: HttpClient) { }
 
   //TODO:Keep the prefix url in environment file.
-  public url = environment.url + "https://localhost:44352/api/Order";
+  public url = environment.url + "http://api.leap-tel.com/api/Order";
 
-  getAll(requestBody: any): Observable<any> {
-    return this.http.post<any>(this.url + "/GetByPaging", requestBody);
+  getPagedOrderList(requestBody: any): Observable<any> {
+    return this.http.post<any>(this.url + "/GetPagedOrderList", requestBody);
   }
 
   getById(id: number): Observable<Response> {
@@ -39,8 +39,12 @@ export class OrderService {
     return this.http.put<Response>(this.url + "/UpdateStatus", category);
   }
 
-  getOrderHistory(requestBody: any): Observable<any> {
-    return this.http.post<any>(this.url + "/GetOrderHistory", requestBody);
+  getOrderHistory(orderId: number): Observable<any> {
+    return this.http.get<any>(this.url + "/GetOrderHistory/" + orderId);
+  }
+
+  downloadOrders(requestBody: any): Observable<any> {
+    return this.http.post<any>(this.url + "/DownloadOrders", requestBody);
   }
 
 

@@ -12,7 +12,7 @@ export class ConfigurationService {
   constructor(public http: HttpClient) {}
 
   //TODO:Keep the prefix url in environment file.
-  public url = environment.url + "https://localhost:44352/api/Configuration";
+  public url = environment.url + "http://api.leap-tel.com/api/Configuration";
 
   getByPaging(requestBody: any): Observable<any> {
     return this.http.post<any>(this.url + "/GetByPaging", requestBody);

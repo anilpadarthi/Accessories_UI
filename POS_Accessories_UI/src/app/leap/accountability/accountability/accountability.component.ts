@@ -17,7 +17,6 @@ export class AccountabilityComponent implements OnInit {
   }
 
   createTicket():FormGroup{
-
     return this.fb.group({
       name:[null,Validators.required],
       age:[null,Validators.required]

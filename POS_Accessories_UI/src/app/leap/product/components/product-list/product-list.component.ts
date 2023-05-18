@@ -136,6 +136,17 @@ export class ProductListComponent implements OnInit {
     });
   }
 
+  public navigateToBulkProduct(data: any): void {
+    const queryParams = {
+      categoryId: this.categoryId,
+      subCategoryId: this.subCategoryId,
+    };
+    this.router.navigate(["bulkproduct/create"], {
+      queryParams,
+      relativeTo: this.activatedRoute,
+    });
+  }
+
   edit(id: any): void {
     this.router.navigateByUrl(`/product/edit/${id}`);
   }

@@ -10,7 +10,7 @@
         <div class="mat-header-cell">Total</div>
         <div class="mat-header-cell"></div>
       </div>
-      <div *ngFor="let product of orderDetails.items" class="mat-row">
+      <div *ngFor="let product of orderDetails?.items" class="mat-row">
         <div class="mat-cell">
           <a [routerLink]="[
             '/products-view',
@@ -41,8 +41,8 @@
   </div>
   <div fxFlex="100" fxFlex.gt-md="25" class="px-1">
     <div class="w-100">
-      <span class="calculation" >Item Total : </span>
-      <span class="calculation">£ {{ itemTotal | number : "1.2-2" }}  </span>
+      <span class="calculation">Item Total : </span>
+      <span class="calculation">£ {{ itemTotal | number : "1.2-2" }} </span>
     </div>
     <div class="w-100">
       <mat-form-field appearance="outline" class="w-50">
@@ -52,20 +52,20 @@
     </div>
     <div class="w-100">
       <span class="calculation">Net Total : </span>
-      <span class="calculation">£ {{ netTotal | number : "1.2-2" }}  </span>
+      <span class="calculation">£ {{ netTotal | number : "1.2-2" }} </span>
     </div>
     <div class="w-100">
       <span class="calculation">Delivery Chgs. : </span>
-      <span class="calculation">£ {{ deliveryCharges | number : "1.2-2" }}  </span>
+      <span class="calculation">£ {{ deliveryCharges | number : "1.2-2" }} </span>
     </div>
 
     <div class="w-100">
       <span class="calculation">VAT ({{ vatPercentage }}%) : </span>
-      <span class="calculation">£ {{ vatAmount | number : "1.2-2" }}  </span>
+      <span class="calculation">£ {{ vatAmount | number : "1.2-2" }} </span>
     </div>
     <div class="w-100">
       <span class="calculation">Grand Total : </span>
-      <span class="calculation">£ {{ grandTotalWithVAT | number : "1.2-2" }}  </span>
+      <span class="calculation">£ {{ grandTotalWithVAT | number : "1.2-2" }} </span>
     </div>
   </div>
 </div>

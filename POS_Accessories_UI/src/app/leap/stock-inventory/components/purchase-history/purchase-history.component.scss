@@ -1,56 +1,75 @@
-.filter-controls {
-  margin: 0px 15px 0px 15px;
+.cart-table.mat-table {
+  display: block;
+  overflow: hidden;
 
-  button {
-    margin-right: 10px;
-  }
-
-  mat-form-field {
-    margin-right: 10px;
-    font-size: 0.8em;
-  }
-
-  mat-select {
-    width: 100%;
+  .mat-row,
+  .mat-header-row {
+    display: flex;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    align-items: center;
+    padding: 0 24px;
+    min-width: 850px;
   }
 
-  .date-control {
-    width: 198px !important;
+
+
+  .mat-cell,
+  .mat-header-cell {
+    flex: 1;
+    overflow: hidden;
+    word-wrap: break-word;
   }
 
-  .right
-  {
-    float:right;
+  .mat-header-cell {
+    font-size: 14px;
   }
-  mat-checkbox {
-    margin-right: 1em;
+
+  .mat-cell {
+    img {
+      width: 100px;
+    }
+
+    .product-name {
+      color: inherit;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .grand-total {
+      font-weight: 500;
+
+      span:nth-child(3) {
+        font-size: 16px;
+      }
+
+      padding-top: 10px;
+    }
   }
+}
+
+.mat-icon.empty-cart-icon {
+  font-size: 150px;
+  line-height: 150px;
+  height: 150px;
+  width: 150px;
+  vertical-align: middle;
+}
+
+.additional-rows {
+  min-height: 10px !important;
+  border: none !important;
+}
+
+::ng-deep .mat-form-field-wrapper {
+  margin-bottom: -1.25em !important;
+}
+
+.margin-top-1 {
+  margin-top: 0.5em;
 }
 
 .results {
-  margin: 4em 15px 15px 15px;
-}
-
-.example-container {
-  display: flex;
-  flex-direction: column;
-  max-height: 360px;
-  min-width: 300px;
-}
-
-.mat-table {
-  overflow: auto;
-  max-height: 500px;
-}
-
-.zero-results {
-  text-align: center;
-  color: red;
-  margin: 1em;
-  font-weight: bold;
-  font-size: 16px;
-}
-
-.actions {
-  width: 60%;
+ 
+  width: 1000px;
 }

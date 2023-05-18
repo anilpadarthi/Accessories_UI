@@ -1,21 +1,18 @@
 import { Component, OnInit, Input, ChangeDetectorRef } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
-import { ConfirmDialogComponent } from "src/app/shared/confirm-dialog/confirm-dialog.component";
 import { AppSettings, Settings } from "src/app/app.settings";
 import { Router, ActivatedRoute } from "@angular/router";
 import { OrderService } from "src/app/shared/services/order.service";
-import { MatPaginator, PageEvent } from "@angular/material/paginator";
-import { MatSort } from "@angular/material/sort";
+import { PageEvent } from "@angular/material/paginator";
 import { MatTableDataSource } from "@angular/material/table";
 import { PaginatorConstants } from "src/app/shared/models/paginator-constants";
-import { MessageService } from "src/app/shared/services/message.service";
 import { OrderDialogComponent } from "../order-dialog/order-dialog.component";
 import { ViewOrderDetailsComponent } from "../view-order-details/view-order-details.component";
-import { Product } from "src/app/shared/models/product";
-import { ProductService } from "src/app/shared/services/product.service";
-import { MatSelect } from "@angular/material/select";
+import { OrderHistoryComponent } from "../order-history/order-history.component";
 import { ActionsEnum } from "src/app/shared/enum/actionsEnum";
 import { LookupService } from "src/app/shared/services/lookup.service";
+import { DownloadService } from "src/app/shared/services/download.service";
+import { OrderListFilterRequest } from "src/app/shared/models/requestModels/orderListFilterRequest";
 
 
 @Component({
@@ -25,15 +22,16 @@ import { LookupService } from "src/app/shared/services/lookup.service";
 })
 export class OrdernListComponent implements OnInit {
   public settings: Settings;
-  searchText!: string | null;
   displayedColumns = [
-    "OrderId",
-    "CreatedDate",
+    "ID",
+    "Date",
     "User",
+    "Area",
     "Shop",
-    "OrderStatus",
-    "PaymenthMethod",
     "Amount",
+    "Status",
+    "PaymenthMethod",
+    "ShippedBy",
     "Actions",
   ];
   bogusDataSource = new MatTableDataSource<any>();
@@ -43,11 +41,9 @@ export class OrdernListComponent implements OnInit {
   pageOptions = PaginatorConstants.LEAP_STANDARD_PAGE_OPTIONS;
   pageIndex = 1;
   totalCount!: number;
+  actions = ActionsEnum;
   action: ActionsEnum = ActionsEnum.Edit;
-  ActionsEnum = ActionsEnum;
-  orderStatusId!: number | null;
-  fromDate: Date | null;
-  toDate: Date | null;
+  orderListFilterRequest = new OrderListFilterRequest();
   orderStatusLookUp: any[];
   orderPaymentLookUp: any[];
   orderDeliveryTypeLookUp: any[];
@@ -61,29 +57,22 @@ export class OrdernListComponent implements OnInit {
     public activatedRoute: ActivatedRoute,
     public dialog: MatDialog,
     public appSettings: AppSettings,
-    // public form: UntypedFormGroup,
-    // public fb: UntypedFormBuilder,
     private orderService: OrderService,
-    private messageService: MessageService,
-    private productService: ProductService,
     private lookupService: LookupService,
+    private downloadService: DownloadService,
   ) {
     this.settings = this.appSettings.settings;
   }
 
-  async ngOnInit(): Promise<void> {
-    this.loadData();    
+  ngOnInit(): void {
+    this.loadData();
     this.loadDropDowns();
   }
 
   loadData(): void {
-    const request = {
-      pageNo: this.pageIndex,
-      pageSize: this.pageSize,
-      searchText: this.searchText,
-    };
-
-    this.orderService.getAll(request).subscribe((res) => {
+    this.orderListFilterRequest.pageNo = this.pageIndex;
+    this.orderListFilterRequest.pageSize = this.pageSize;
+    this.orderService.getPagedOrderList(this.orderListFilterRequest).subscribe((res) => {
       this.tableDataSource = res.data.results;
       this.totalCount = res.data.totalRecords;
     });
@@ -129,10 +118,22 @@ export class OrdernListComponent implements OnInit {
     this.loadData();
   }
 
-  onReset(): void {
+  onFilter(): void {
     this.pageIndex = 1;
-    this.searchText = null;
     this.loadData();
+  }
+
+  onClear(): void {
+    this.pageIndex = 1;
+    this.orderListFilterRequest = new OrderListFilterRequest();
+    this.loadData();
+  }
+
+  onDownload(): void {
+    this.orderService.downloadOrders(this.orderListFilterRequest).subscribe((res) => {
+      //this.downloadService.exportAsExcelFile(res.data, 'Sales');
+      this.downloadService.DownloadDocument(res, 'Sales');
+    });
   }
 
   editOrder(orderDetails: any): void {
@@ -145,9 +146,7 @@ export class OrdernListComponent implements OnInit {
       direction: this.settings.rtl ? "rtl" : "ltr",
     });
     dialogRef.afterClosed().subscribe((dialogResult) => {
-      if (dialogResult) {
-        this.loadData();
-      }
+      this.loadData();
     });
   }
 
@@ -168,15 +167,13 @@ export class OrdernListComponent implements OnInit {
       direction: this.settings.rtl ? "rtl" : "ltr",
     });
     dialogRef.afterClosed().subscribe((dialogResult) => {
-      if (dialogResult) {
-        this.loadData();
-      }
+      this.loadData();
     });
   }
 
   public getOrderById(orderId: any, action: ActionsEnum) {
     this.orderService.getById(orderId).subscribe((res: any) => {
-      let orderDetails = res.data;      
+      let orderDetails = res.data;
       if (action == ActionsEnum.Edit) {
         this.editOrder(orderDetails);
       }
@@ -197,8 +194,20 @@ export class OrdernListComponent implements OnInit {
 
   }
 
-  async viewOrderHistory(): Promise<void> {
-
+  viewOrderHistory(orderId: number): void {
+    const dialogRef = this.dialog.open(OrderHistoryComponent, {
+      data: {
+        orderId: orderId
+      },
+      panelClass: ["theme-dialog"],
+      autoFocus: false,
+      direction: this.settings.rtl ? "rtl" : "ltr",
+    });
+    dialogRef.afterClosed().subscribe((dialogResult) => {
+      if (dialogResult) {
+        this.loadData();
+      }
+    });
   }
 
   async openMakePayment(): Promise<void> {
@@ -208,5 +217,7 @@ export class OrdernListComponent implements OnInit {
   async viewAccountTransactions(): Promise<void> {
 
   }
+
+  
 
 }

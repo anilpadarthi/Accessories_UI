@@ -34,45 +34,46 @@ export class ViewOrderDetailsComponent implements OnInit {
   grandTotalWithOutVAT: any = null;
   action: ActionsEnum = ActionsEnum.Edit;
   ActionsEnum = ActionsEnum;
-  orderStatusId  = 0;
-  paymentMethodId  = 0;
-  shippingId  = 0;
-  trackingNumber  = 0;
+  orderStatusId = 0;
+  paymentMethodId = 0;
+  shippingId = 0;
+  trackingNumber = '';
   orderStatusLookUp: any[];
   orderPaymentLookUp: any[];
   orderDeliveryTypeLookUp: any[];
-  
+
 
   constructor(
     public dialogRef: MatDialogRef<ViewOrderDetailsComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    
+
     public router: Router,
     private activatedRoute: ActivatedRoute,
     private orderService: OrderService,
     public snackBar: MatSnackBar,
     private lookupService: LookupService,
     private messageService: MessageService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.sub = this.activatedRoute.params.subscribe((params) => {
       if (this.data) {
+        this.orderStatusLookUp = this.data.orderStatusLookUp;
+        this.orderPaymentLookUp = this.data.orderPaymentLookUp;
+        this.orderDeliveryTypeLookUp = this.data.orderDeliveryTypeLookUp;
         this.orderService.getById(this.data.orderId).subscribe((res) => {
           this.orderDetails = res.data;
           this.deliveryCharges = this.orderDetails.deliveryCharges;
           this.vatPercentage = this.orderDetails.vatPercentage;
           this.discountPercentage = this.orderDetails.discountPercentage;
           this.updateCalculations();
+          this.orderId = this.data.orderId;
+          this.shippingId = res.data.orderDeliveryTypeId;
+          this.orderStatusId = res.data.orderStatusTypeId;
+          this.paymentMethodId = res.data.orderPaymentTypeId;
+          this.trackingNumber = res.data.trackingNumber;
         });
-        this.orderId = this.data.orderId;
-        this.orderStatusLookUp = this.data.orderStatusLookUp;
-        this.orderPaymentLookUp = this.data.orderPaymentLookUp;
-        this.orderDeliveryTypeLookUp = this.data.orderDeliveryTypeLookUp;
-        this.shippingId = this.data.shippingId;
-        this.orderStatusId = this.data.orderStatusId;
-        this.paymentMethodId = this.data.paymentMethodId;
-      }    
+      }
     });
   }
 
@@ -98,8 +99,7 @@ export class ViewOrderDetailsComponent implements OnInit {
     body.orderStatusId = this.orderStatusId;
     body.paymentMethodId = this.paymentMethodId;
     body.shippingModeId = this.shippingId;
-    body.orderId = this.orderId;
-    body.orderId = this.orderId;
+    body.trackingNumber = this.trackingNumber;
     this.orderService.updateStatus(body).subscribe({
       next: (res: Response) => {
         if (res.status) {

@@ -11,11 +11,14 @@ import { ProductDetailComponent } from './components/product-detail/product-deta
 import { FormsModule } from '@angular/forms';
 import { ProductImageComponent } from './components/product-image/product-image.component';
 import { ProductPricingComponent } from './components/product-pricing/product-pricing.component';
+import { BulkProductComponent } from './components/bulk-product/bulk-product.component';
 
 export const routes: Routes = [ 
   { path: '', component: ProductListComponent, pathMatch: 'full' },
   { path: 'create', component: ProductDetailComponent },
   { path: 'edit/:id', component: ProductDetailComponent, data: { breadcrumb: 'Edit Product' } }, 
+  { path: 'bulkproduct/create', component: BulkProductComponent, data: { breadcrumb: 'Create Bulk Product' } }, 
+  { path: 'bulkproduct/edit/:id', component: BulkProductComponent, data: { breadcrumb: 'Edit Bulk Product' } }, 
 ];
 
 @NgModule({
@@ -23,7 +26,8 @@ export const routes: Routes = [
     ProductListComponent,
     ProductDetailComponent,
     ProductImageComponent,
-    ProductPricingComponent
+    ProductPricingComponent,
+    BulkProductComponent
   ],
   imports: [
     CommonModule,

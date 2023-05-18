@@ -7,9 +7,6 @@ import { MessageService } from "src/app/shared/services/message.service";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { OrderDetails } from "src/app/shared/models/orderDetails";
 import { OrderProduct } from "src/app/shared/models/orderProduct";
-import { ActionsEnum } from "src/app/shared/enum/actionsEnum";
-import { LookupService } from "src/app/shared/services/lookup.service";
-import { OrderStatus } from "src/app/shared/models/orderStatus";
 
 @Component({
   selector: "app-order-dialog",
@@ -38,7 +35,6 @@ export class OrderDialogComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private orderService: OrderService,
     public snackBar: MatSnackBar,
-    private lookupService: LookupService,
     private messageService: MessageService
   ) { }
 
@@ -56,11 +52,11 @@ export class OrderDialogComponent implements OnInit {
     });
   }
 
-  public updateCartItem(qty: number, updatedProduct: OrderProduct) {
+  public updateCartItem(qty: any, updatedProduct: OrderProduct) {   
     if (qty >= 0) {
       this.orderDetails.items.forEach((product) => {
         if (product.productId == updatedProduct.productId) {
-          product.qty = qty;
+          product.qty = Number(qty);
         }
       });
     }
@@ -90,7 +86,7 @@ export class OrderDialogComponent implements OnInit {
     this.grandTotalWithOutVAT = this.netTotal + this.deliveryCharges;
   }
 
-  public onSubmit() {
+  public onSubmit() {    
     this.errorMessage = "";
     let order = new OrderDetails();
     order.items = this.orderDetails.items;
@@ -106,7 +102,7 @@ export class OrderDialogComponent implements OnInit {
     order.shippingMode = this.orderDetails.shippingMode;
     order.paymentMethod = this.orderDetails.paymentMethod;
     order.orderStatus = this.orderDetails.orderStatus;
-    order.trackNumber = this.orderDetails.trackNumber;
+    order.trackingNumber = this.orderDetails.trackingNumber;
     this.orderService.update(order).subscribe({
       next: (res: Response) => {
         if (res.status) {

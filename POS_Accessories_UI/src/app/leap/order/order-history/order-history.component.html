@@ -1,1 +1,73 @@
-<p>order-history works!</p>
+<h1 mat-dialog-title>Order History</h1>
+
+<div>
+    <mat-card class="p-0">
+        <div class="results mat-elevation-z8">
+            <mat-table>
+                <ng-container matColumnDef="orderId">
+                    <mat-header-cell *matHeaderCellDef> OrderId </mat-header-cell>
+                </ng-container>
+                <ng-container matColumnDef="status">
+                    <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
+                </ng-container>
+                <ng-container matColumnDef="paymentMethod">
+                    <mat-header-cell *matHeaderCellDef> Payment Method </mat-header-cell>
+                </ng-container>
+                <ng-container matColumnDef="courier">
+                    <mat-header-cell *matHeaderCellDef> Courier </mat-header-cell>
+                </ng-container>
+                <ng-container matColumnDef="trackingNumber">
+                    <mat-header-cell *matHeaderCellDef> Tracking </mat-header-cell>
+                </ng-container>
+                <ng-container matColumnDef="comments">
+                    <mat-header-cell *matHeaderCellDef> Comments </mat-header-cell>
+                </ng-container>
+                <ng-container matColumnDef="date">
+                    <mat-header-cell *matHeaderCellDef> Date  </mat-header-cell>
+                </ng-container>
+                <ng-container matColumnDef="by">
+                    <mat-header-cell *matHeaderCellDef> By </mat-header-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+            </mat-table>
+
+            <div class="example-container">
+                <mat-table #table [dataSource]="tableDataSource">
+                    <ng-container matColumnDef="orderId">
+                        <mat-cell *matCellDef="let element"> {{ element.orderId }} </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="status">
+                        <mat-cell *matCellDef="let element"> {{ element.orderStatus }} </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="paymentMethod">
+                        <mat-cell *matCellDef="let element"> {{ element.paymentMethod }} </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="courier">
+                        <mat-cell *matCellDef="let element"> {{ element.shippingMode }} </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="trackingNumber">
+                        <mat-cell *matCellDef="let element"> {{ element.trackingNumber }} </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="comments">
+                        <mat-cell *matCellDef="let element"> {{ element.comments }} </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="date">
+                        <mat-cell *matCellDef="let element"> {{ element.createdDate | date:'MM/dd/yyyy' }} </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="by">
+                        <mat-cell *matCellDef="let element"> {{ element.CreatedByName }} </mat-cell>
+                    </ng-container>
+
+                    <mat-header-row *matHHeaderCellDef="displayedColumns" [style.min-height]="0"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+                </mat-table>
+                <div class="zero-results" *ngIf="!tableDataSource || tableDataSource.length == 0">No records found</div>
+            </div>
+         
+        </div>
+        <div style="height: 0px;"><br></div>
+    </mat-card>
+
+</div>

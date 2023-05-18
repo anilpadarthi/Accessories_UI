@@ -21,7 +21,7 @@
                         <mat-option *ngFor="let subCategory of subCategories" [value]="subCategory.id">
                             <span>{{subCategory.name}}</span>
                         </mat-option>
-                    </mat-select> 
+                    </mat-select>
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="input-field">
                     <mat-label>Search By Name</mat-label>
@@ -35,7 +35,11 @@
                 </button>
 
                 <button mat-raised-button color="primary" (click)="openProductDialog(null)">
-                    <mat-icon>add</mat-icon> Add Product</button>
+                    <mat-icon>add</mat-icon> Create Product
+                </button>
+                    <button mat-raised-button color="primary" (click)="navigateToBulkProduct(null)">
+                        <mat-icon>add</mat-icon> Create Bulk Product
+                    </button>
             </div>
         </div>
 
