@@ -13,7 +13,7 @@ export class StockInventoryService {
   constructor(public http: HttpClient) { }
 
   //TODO:Keep the prefix url in environment file.
-  public url = environment.url + 'http://api.leap-tel.com/api/StockInventory';
+  public url = environment.url + 'https://localhost:44352/api/StockInventory';
 
   getStockList(): Observable<any> {
     return this.http.get<any>(this.url);

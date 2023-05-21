@@ -13,7 +13,7 @@ export class OrderService {
   constructor(public http: HttpClient) { }
 
   //TODO:Keep the prefix url in environment file.
-  public url = environment.url + "http://api.leap-tel.com/api/Order";
+  public url = environment.url + "https://localhost:44352/api/Order";
 
   getPagedOrderList(requestBody: any): Observable<any> {
     return this.http.post<any>(this.url + "/GetPagedOrderList", requestBody);

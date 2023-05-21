@@ -13,7 +13,7 @@ export class CategoryService {
   constructor(public http: HttpClient) { }
 
   //TODO:Keep the prefix url in environment file.
-  public url = environment.url + 'http://api.leap-tel.com/api/Category';
+  public url = environment.url + 'https://localhost:44352/api/Category';
 
   getCategoryList(): Observable<any> {
     return this.http.get<any>(this.url);
