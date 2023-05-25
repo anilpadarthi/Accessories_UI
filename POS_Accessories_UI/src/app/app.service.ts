@@ -25,7 +25,7 @@ export class AppService {
         0 //totalCartCount
     )
     
-    public url = environment.url + '/assets/data/'; 
+    public url = environment.apiUrl + '/assets/data/'; 
 
     constructor(public http:HttpClient, public snackBar: MatSnackBar) { }
     

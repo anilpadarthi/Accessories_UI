@@ -36,115 +36,81 @@
             </div>
         </div>
 
-        <div class="results mat-elevation-z8">
-            <mat-table #table [dataSource]="bogusDataSource">
+        <div class="table-container mat-elevation-z8">
+            <table mat-table [dataSource]="dataSource">
                 <ng-container matColumnDef="ID">
-                    <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
+                    <th mat-header-cell *matHeaderCellDef> ID </th>
+                    <td mat-cell *matCellDef="let element"> 
+                        <a [routerLink]="[]" (click)="getOrderById(element.productId)">{{ element.productId }}</a>
+                    </td>
                 </ng-container>
                 <ng-container matColumnDef="Name">
-                    <mat-header-cell *matHeaderCellDef> NAME </mat-header-cell>
+                    <th mat-header-cell *matHeaderCellDef> Name </th>
+                    <td mat-cell *matCellDef="let element"> {{element.productName}} </td>
                 </ng-container>
                 <ng-container matColumnDef="Code">
-                    <mat-header-cell *matHeaderCellDef> CODE </mat-header-cell>
+                    <th mat-header-cell *matHeaderCellDef> Code </th>
+                    <td mat-cell *matCellDef="let element"> {{element.productCode}} </td>
                 </ng-container>
                 <ng-container matColumnDef="BuyPrice">
-                    <mat-header-cell *matHeaderCellDef> BUY PRICE </mat-header-cell>
+                    <th mat-header-cell *matHeaderCellDef> Buy Price </th>
+                    <td mat-cell *matCellDef="let element"> {{element.buyPrice}} </td>
                 </ng-container>
                 <ng-container matColumnDef="SalePrice">
-                    <mat-header-cell *matHeaderCellDef> SALE PRICE </mat-header-cell>
+                    <th mat-header-cell *matHeaderCellDef> Sale Price </th>
+                    <td mat-cell *matCellDef="let element"> {{element.salePrice}} </td>
                 </ng-container>
                 <ng-container matColumnDef="Quantity">
-                    <mat-header-cell *matHeaderCellDef> QUANTITY </mat-header-cell>
+                    <th mat-header-cell *matHeaderCellDef> Quantity </th>
+                    <td mat-cell *matCellDef="let element"> {{element.quantity}} </td>
                 </ng-container>
                 <ng-container matColumnDef="SaleAmount">
-                    <mat-header-cell *matHeaderCellDef> SALE AMOUNT </mat-header-cell>
+                    <th mat-header-cell *matHeaderCellDef> Sale Amount </th>
+                    <td mat-cell *matCellDef="let element"> {{element.saleAmount}} </td>
                 </ng-container>
                 <ng-container matColumnDef="PurchaseAmount">
-                    <mat-header-cell *matHeaderCellDef> PURCHAE AMOUNT </mat-header-cell>
+                    <th mat-header-cell *matHeaderCellDef> Purchase Amount </th>
+                    <td mat-cell *matCellDef="let element"> {{element.purchaseAmount}} </td>
                 </ng-container>
                 <ng-container matColumnDef="Profit">
-                    <mat-header-cell *matHeaderCellDef> PROFIT </mat-header-cell>
+                    <th mat-header-cell *matHeaderCellDef> Profit </th>
+                    <td mat-cell *matCellDef="let element"> {{element.profit}} </td>
                 </ng-container>
                 <ng-container matColumnDef="ProfitPercentage">
-                    <mat-header-cell *matHeaderCellDef> PROFIT IN % </mat-header-cell>
+                    <th mat-header-cell *matHeaderCellDef> Profit In % </th>
+                    <td mat-cell *matCellDef="let element"> {{element.profitPercentage}} </td>
                 </ng-container>
                 <ng-container matColumnDef="AgentCommission">
-                    <mat-header-cell *matHeaderCellDef> AGENT COMMISSION </mat-header-cell>
+                    <th mat-header-cell *matHeaderCellDef>Agent Commission</th>
+                    <td mat-cell *matCellDef="let element"> {{element.agentCommission}} </td>
                 </ng-container>
                 <ng-container matColumnDef="ManagerCommission">
-                    <mat-header-cell *matHeaderCellDef> MANAGER COMMISSION </mat-header-cell>
+                    <th mat-header-cell *matHeaderCellDef>Manager Commission</th>
+                    <td mat-cell *matCellDef="let element"> {{element.managerCommission}} </td>
                 </ng-container>
                 <ng-container matColumnDef="OperationalCommission">
-                    <mat-header-cell *matHeaderCellDef> OPERATION COMMISSION </mat-header-cell>
+                    <th mat-header-cell *matHeaderCellDef>Operation Commission</th>
+                    <td mat-cell *matCellDef="let element"> {{element.operationalCommission}} </td>
                 </ng-container>
                 <ng-container matColumnDef="Discount">
-                    <mat-header-cell *matHeaderCellDef> DISCOUNT </mat-header-cell>
+                    <th mat-header-cell *matHeaderCellDef>Discount</th>
+                    <td mat-cell *matCellDef="let element"> {{element.discountAmount}} </td>
                 </ng-container>
                 <ng-container matColumnDef="Revenue">
-                    <mat-header-cell *matHeaderCellDef> REVENUE </mat-header-cell>
+                    <th mat-header-cell *matHeaderCellDef>Revenue</th>
+                    <td mat-cell *matCellDef="let element"> {{element.revenue}} </td>
                 </ng-container>
 
-                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
-            </mat-table>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
-            <div class="example-container">
-                <mat-table #table [dataSource]="tableDataSource">
-                    <ng-container matColumnDef="ID">
-                        <mat-cell *matCellDef="let element">
-                            <a [routerLink]="[]" (click)="getOrderById(element.productId)">{{ element.productId }}</a>
-                        </mat-cell>
-                    </ng-container>
-                    <ng-container matColumnDef="Name">
-                        <mat-cell *matCellDef="let element">{{ element.productName }} </mat-cell>
-                    </ng-container>
-                    <ng-container matColumnDef="Code">
-                        <mat-cell *matCellDef="let element">{{ element.productCode }} </mat-cell>
-                    </ng-container>
-                    <ng-container matColumnDef="BuyPrice">
-                        <mat-cell *matCellDef="let element">{{ element.buyPrice }} </mat-cell>
-                    </ng-container>
-                    <ng-container matColumnDef="SalePrice">
-                        <mat-cell *matCellDef="let element">{{ element.salePrice }} </mat-cell>
-                    </ng-container>
-                    <ng-container matColumnDef="Quantity">
-                        <mat-cell *matCellDef="let element">{{ element.quantity }} </mat-cell>
-                    </ng-container>
-                    <ng-container matColumnDef="SaleAmount">
-                        <mat-cell *matCellDef="let element">{{ element.saleAmount }} </mat-cell>
-                    </ng-container>
-                    <ng-container matColumnDef="PurchaseAmount">
-                        <mat-cell *matCellDef="let element">{{ element.purchaseAmount }} </mat-cell>
-                    </ng-container>
-                    <ng-container matColumnDef="Profit">
-                        <mat-cell *matCellDef="let element">{{ element.profit }} </mat-cell>
-                    </ng-container>
-                    <ng-container matColumnDef="ProfitPercentage">
-                        <mat-cell *matCellDef="let element">{{ element.profitPercentage }} </mat-cell>
-                    </ng-container>
-                    <ng-container matColumnDef="AgentCommission">
-                        <mat-cell *matCellDef="let element">{{ element.agentCommission }} </mat-cell>
-                    </ng-container>
-                    <ng-container matColumnDef="ManagerCommission">
-                        <mat-cell *matCellDef="let element">{{ element.managerCommission }} </mat-cell>
-                    </ng-container>
-                    <ng-container matColumnDef="OperationalCommission">
-                        <mat-cell *matCellDef="let element">{{ element.operationalCommission }} </mat-cell>
-                    </ng-container>
-                    <ng-container matColumnDef="Discount">
-                        <mat-cell *matCellDef="let element">{{ element.discountAmount }} </mat-cell>
-                    </ng-container>
-                    <ng-container matColumnDef="Revenue">
-                        <mat-cell *matCellDef="let element">{{ element.revenue }} </mat-cell>
-                    </ng-container>
-
-                    <mat-header-row *matHHeaderCellDef="displayedColumns" [style.min-height]="0"></mat-header-row>
-                    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
-                </mat-table>
-                <mat-paginator #paginatorPageSize [pageSizeOptions]="pageSizes" showFirstLastButtons></mat-paginator>
-
-            </div>
+            </table>
         </div>
+        <mat-paginator #paginator
+            [pageSizeOptions]="[20, 50, 100, 200]"
+            showFirstLastButtons
+            aria-label="Select page of periodic elements">
+        </mat-paginator>
         <div style="height: 0px"><br /></div>
     </mat-card>
 </div>

@@ -10,33 +10,37 @@ import { Observable } from 'rxjs';
 })
 export class AccountabilityService {
 
-  constructor(public http: HttpClient) { }
+  baseUrl: string;
+
+  constructor(public httpClient: HttpClient) { 
+    this.baseUrl = environment.apiUrl;
+  }
 
   //TODO:Keep the prefix url in environment file.
-  public url = environment.url + 'https://localhost:44352/api/Category';
+  //public url = environment.url + 'https://localhost:44352/api/Category';
 
   getByPaging(requestBody: any): Observable<any> {
-    return this.http.post<any>(this.url + '/GetByPaging', requestBody);
+    return this.httpClient.post<any>(`${this.baseUrl}/api/Category/GetByPaging`, requestBody);
   }
 
   getById(id: number): Observable<Response> {
-    return this.http.get<Response>(this.url + '/' + id);
+    return this.httpClient.get<Response>(`${this.baseUrl}/api/Category/${id}`);
   }
 
   create(category: Category): Observable<Response> {
-    return this.http.post<Response>(this.url, category);
+    return this.httpClient.post<Response>(`${this.baseUrl}/api/Category`, category);
   }
 
   update(category: Category): Observable<Response> {
-    return this.http.put<Response>(this.url, category);
+    return this.httpClient.put<Response>(`${this.baseUrl}/api/Category`, category);
   }
 
   updateStatus(category: Category): Observable<Response> {
-    return this.http.put<Response>(this.url + "/UpdateStatus",category);
+    return this.httpClient.put<Response>(`${this.baseUrl}/api/Category/UpdateStatus`, category);
   }
 
   delete(category: Category): Observable<Response> {
-    return this.http.put<Response>(this.url + "/UpdateStatus",category);
+    return this.httpClient.put<Response>(`${this.baseUrl}/api/Category/UpdateStatus`, category);
   }
   
 }

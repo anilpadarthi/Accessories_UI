@@ -1,1 +1,161 @@
-<p>analysis-report works!</p>
+<div class="p-1">
+    <mat-card class="p-0">
+        <div fxLayout="row wrap" fxLayoutAlign="space-between center" class="w-100 p-2">
+            <h2>Revenue Report</h2>
+        </div>
+        <div class="filter-controls">
+            <div class="row wrap">
+
+                <mat-form-field appearance="outline" class="input-field">
+                    <mat-label>Search By Name</mat-label>
+                    <input matInput placeholder="Search By Name" [(ngModel)]="searchText" autocomplete="off">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="input-field date-control">
+                    <mat-label>From Date</mat-label>
+                    <input matInput [matDatepicker]="validFrom" [(ngModel)]="fromDate">
+                    <mat-datepicker-toggle matSuffix [for]="validFrom"></mat-datepicker-toggle>
+                    <mat-datepicker #validFrom></mat-datepicker>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="input-field date-control">
+                    <mat-label>To Date</mat-label>
+                    <input matInput [matDatepicker]="validTo" [(ngModel)]="toDate">
+                    <mat-datepicker-toggle matSuffix [for]="validTo"></mat-datepicker-toggle>
+                    <mat-datepicker #validTo></mat-datepicker>
+                </mat-form-field>
+                <button mat-flat-button color="primary" (click)="onReset()">
+                    <mat-icon>refresh</mat-icon>
+                </button>
+                <button mat-raised-button color="primary" (click)="onFilter()">
+                    <mat-icon>search</mat-icon>
+                </button>
+                <button mat-raised-button color="primary" (click)="onDownload()">
+                    <mat-icon>download</mat-icon>
+                </button>
+            </div>
+        </div>
+
+        <div fxLayout="row wrap" class="w-100 p-1">
+            <!-- <div fxFlex="100" fxFlex.xl="20" fxFlex.lg="20" fxFlex.md="33.3" fxFlex.sm="33.3" class="p-1"
+                        *ngFor="let item of Object.keys(revenueModel)">
+                        <mat-card class="gradient-red tile p-1">
+                            <mat-icon>thumb_up_alt</mat-icon>
+                            <h2>{{item}}</h2>
+                            <p>{{revenueModel[item]}}</p>
+                        </mat-card>
+                    </div> -->
+            <div fxFlex="100" fxFlex.xl="20" fxFlex.lg="20" fxFlex.md="33.3" fxFlex.sm="33.3" class="p-1">
+                <mat-card class="gradient-red tile p-1">
+                    <mat-icon>thumb_up_alt</mat-icon>
+                    <h2>Agent Commission</h2>
+                    <p>{{revenueModel.agentCommission}}</p>
+                </mat-card>
+            </div>
+            <div fxFlex="100" fxFlex.xl="20" fxFlex.lg="20" fxFlex.md="33.3" fxFlex.sm="33.3" class="p-1">
+                <mat-card class="gradient-green tile p-1">
+                    <mat-icon>monetization_on</mat-icon>
+                    <h2>Manager Commission</h2>
+                    <p>{{revenueModel.managerCommission}}</p>
+                </mat-card>
+            </div>
+            <div fxFlex="100" fxFlex.xl="20" fxFlex.lg="20" fxFlex.md="33.3" fxFlex.sm="33.3" class="p-1">
+                <mat-card class="gradient-red tile p-1">
+                    <mat-icon>thumb_up_alt</mat-icon>
+                    <h2>Operational Commission</h2>
+                    <p>{{revenueModel.operationalCommission}}</p>
+                </mat-card>
+            </div>
+            <div fxFlex="100" fxFlex.xl="20" fxFlex.lg="20" fxFlex.md="33.3" fxFlex.sm="33.3" class="p-1">
+                <mat-card class="gradient-green tile p-1">
+                    <mat-icon>monetization_on</mat-icon>
+                    <h2>profit</h2>
+                    <p>{{revenueModel.profit}}</p>
+                </mat-card>
+            </div>
+            <div fxFlex="100" fxFlex.xl="20" fxFlex.lg="20" fxFlex.md="33.3" fxFlex.sm="33.3" class="p-1">
+                <mat-card class="gradient-red tile p-1">
+                    <mat-icon>thumb_up_alt</mat-icon>
+                    <h2>Profit %</h2>
+                    <p>{{revenueModel.profitPercent}}</p>
+                </mat-card>
+            </div>
+            <div fxFlex="100" fxFlex.xl="20" fxFlex.lg="20" fxFlex.md="33.3" fxFlex.sm="33.3" class="p-1">
+                <mat-card class="gradient-green tile p-1">
+                    <mat-icon>monetization_on</mat-icon>
+                    <h2>Purchase Amount</h2>
+                    <p>{{revenueModel.purchaseAmount}}</p>
+                </mat-card>
+            </div>
+            <div fxFlex="100" fxFlex.xl="20" fxFlex.lg="20" fxFlex.md="33.3" fxFlex.sm="33.3" class="p-1">
+                <mat-card class="gradient-red tile p-1">
+                    <mat-icon>thumb_up_alt</mat-icon>
+                    <h2>Revenue</h2>
+                    <p>{{revenueModel.revenue}}</p>
+                </mat-card>
+            </div>
+            <div fxFlex="100" fxFlex.xl="20" fxFlex.lg="20" fxFlex.md="33.3" fxFlex.sm="33.3" class="p-1">
+                <mat-card class="gradient-green tile p-1">
+                    <mat-icon>monetization_on</mat-icon>
+                    <h2>Sale Amount</h2>
+                    <p>{{revenueModel.saleAmount}}</p>
+                </mat-card>
+            </div>
+        </div>
+
+        <div class="table-container mat-elevation-z8">
+            <table mat-table [dataSource]="dataSource">
+                <ng-container matColumnDef="Name">
+                    <th mat-header-cell *matHeaderCellDef> Name </th>
+                    <td mat-cell *matCellDef="let element"> {{element.userName}} </td>
+                </ng-container>
+                <ng-container matColumnDef="AgentCommission">
+                    <th mat-header-cell *matHeaderCellDef> Agent Commission </th>
+                    <td mat-cell *matCellDef="let element"> {{element.agentCommission}} </td>
+                </ng-container>
+                <ng-container matColumnDef="DiscountAmount">
+                    <th mat-header-cell *matHeaderCellDef>Discount Amount</th>
+                    <td mat-cell *matCellDef="let element"> {{element.discountAmount}} </td>
+                </ng-container>
+                <ng-container matColumnDef="ManagerCommission">
+                    <th mat-header-cell *matHeaderCellDef>Manager Commission</th>
+                    <td mat-cell *matCellDef="let element"> {{element.managerCommission}} </td>
+                </ng-container>
+                <ng-container matColumnDef="OperationalCommission">
+                    <th mat-header-cell *matHeaderCellDef>Operational Commission</th>
+                    <td mat-cell *matCellDef="let element"> {{element.operationalCommission}} </td>
+                </ng-container>
+                <ng-container matColumnDef="Profit">
+                    <th mat-header-cell *matHeaderCellDef> Profit</th>
+                    <td mat-cell *matCellDef="let element"> {{element.profit}} </td>
+                </ng-container>
+                <ng-container matColumnDef="ProfitPercent">
+                    <th mat-header-cell *matHeaderCellDef>Profit %</th>
+                    <td mat-cell *matCellDef="let element"> {{element.profitPercent}} </td>
+                </ng-container>
+                <ng-container matColumnDef="PurchaseAmount">
+                    <th mat-header-cell *matHeaderCellDef>Purchase Amount</th>
+                    <td mat-cell *matCellDef="let element"> {{element.purchaseAmount}} </td>
+                </ng-container>
+                <ng-container matColumnDef="Revenue">
+                    <th mat-header-cell *matHeaderCellDef>Revenue</th>
+                    <td mat-cell *matCellDef="let element"> {{element.revenue}} </td>
+                </ng-container>
+                <ng-container matColumnDef="SaleAmount">
+                    <th mat-header-cell *matHeaderCellDef>Sale Amount</th>
+                    <td mat-cell *matCellDef="let element"> {{element.saleAmount}} </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+            </table>
+            <mat-paginator #paginator
+                [pageSizeOptions]="[20, 50, 100, 200]"
+                showFirstLastButtons
+                aria-label="Select page of periodic elements">
+            </mat-paginator>
+        </div>
+        <div style="height: 0px"><br /></div>
+    </mat-card>
+</div>

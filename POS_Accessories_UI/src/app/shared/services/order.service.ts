@@ -10,13 +10,18 @@ import { OrderDetails } from "../models/orderDetails";
   providedIn: "root",
 })
 export class OrderService {
-  constructor(public http: HttpClient) { }
+
+  url: string;
+
+  constructor(public http: HttpClient) { 
+    this.url = `${environment.apiUrl}/api/Order`;
+  }
 
   //TODO:Keep the prefix url in environment file.
-  public url = environment.url + "https://localhost:44352/api/Order";
+  //public url = environment.url + "https://localhost:44352/api/Order";
 
   getPagedOrderList(requestBody: any): Observable<any> {
-    return this.http.post<any>(this.url + "/GetPagedOrderList", requestBody);
+    return this.http.post<any>(`${this.url}/GetPagedOrderList`, requestBody);
   }
 
   getById(id: number): Observable<Response> {

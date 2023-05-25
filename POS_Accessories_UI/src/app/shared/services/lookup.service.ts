@@ -9,10 +9,15 @@ import { Observable } from "rxjs";
   providedIn: "root",
 })
 export class LookupService {
-  constructor(public http: HttpClient) { }
+
+  url: string;
+
+  constructor(public http: HttpClient) {
+    this.url = `${environment.apiUrl}/api/Lookup/`
+  }
 
   //TODO:Keep the prefix url in environment file.
-  public url = environment.url + "https://localhost:44352/api/Lookup/";
+  //public url = environment.url + "https://localhost:44352/api/Lookup/";
 
   getCategories(): Observable<any> {
     return this.http.get<any>(this.url + "Categories");
