@@ -12,7 +12,7 @@ export class ConfigurationService {
   url: string;
 
   constructor(public http: HttpClient) {
-    this.url = `${environment.apiUrl}/api/Configuration`
+    this.url = `${environment.apiUrl}/api/Configuration`;
   }
 
   getByPaging(requestBody: any): Observable<any> {
