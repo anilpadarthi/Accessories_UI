@@ -9,10 +9,11 @@ import { Observable } from "rxjs";
   providedIn: "root",
 })
 export class ProductService {
-  constructor(public http: HttpClient) {}
+  url: string;
 
-  //TODO:Keep the prefix url in environment file.
-  public url = environment.url + "https://localhost:44352/api/Product";
+  constructor(public http: HttpClient) {
+    this.url = `${environment.apiUrl}/api/Product`
+  }
 
   getProductList(): Observable<any> {
     return this.http.get<any>(this.url + "/GetAll");

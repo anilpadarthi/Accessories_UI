@@ -10,10 +10,11 @@ import { WareHouse } from '../models/warehouse';
 })
 export class WareHouseService {
 
-  constructor(public http: HttpClient) { }
+  url: string;
 
-  //TODO:Keep the prefix url in environment file.
-  public url = environment.url + 'https://localhost:44352/api/Inventory';
+  constructor(public http: HttpClient) {
+    this.url = `${environment.apiUrl}/api/Inventory`
+  }
 
   getWareHouseList(requestBody: any): Observable<Response> {
     return this.http.post<Response>(this.url+ "/GetWareHouseResult", requestBody);

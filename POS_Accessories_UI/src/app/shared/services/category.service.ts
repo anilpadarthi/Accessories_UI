@@ -10,10 +10,11 @@ import { Observable } from 'rxjs';
 })
 export class CategoryService {
 
-  constructor(public http: HttpClient) { }
+  url: string;
 
-  //TODO:Keep the prefix url in environment file.
-  public url = environment.url + 'https://localhost:44352/api/Category';
+  constructor(public http: HttpClient) {
+    this.url = `${environment.apiUrl}/api/Category`
+  }
 
   getCategoryList(): Observable<any> {
     return this.http.get<any>(this.url);

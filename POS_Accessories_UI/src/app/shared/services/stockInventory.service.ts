@@ -10,10 +10,12 @@ import { Observable } from 'rxjs';
 })
 export class StockInventoryService {
 
-  constructor(public http: HttpClient) { }
+  url: string;
 
-  //TODO:Keep the prefix url in environment file.
-  public url = environment.url + 'https://localhost:44352/api/StockInventory';
+  constructor(public http: HttpClient) {
+    this.url = `${environment.apiUrl}/api/StockInventory`
+  }
+
 
   getStockList(): Observable<any> {
     return this.http.get<any>(this.url);

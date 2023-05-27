@@ -17,9 +17,7 @@ export class OrderService {
     this.url = `${environment.apiUrl}/api/Order`;
   }
 
-  //TODO:Keep the prefix url in environment file.
-  //public url = environment.url + "https://localhost:44352/api/Order";
-
+  
   getPagedOrderList(requestBody: any): Observable<any> {
     return this.http.post<any>(`${this.url}/GetPagedOrderList`, requestBody);
   }
