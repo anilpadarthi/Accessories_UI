@@ -56,6 +56,7 @@ import { BannersComponent } from './banners/banners.component';
 import { CategoryListComponent } from './category-list/category-list.component';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import { LangComponent } from './lang/lang.component';
+import { MatTableExporterModule } from 'mat-table-exporter';
 
 @NgModule({
   imports: [
@@ -97,7 +98,8 @@ import { LangComponent } from './lang/lang.component';
     MatStepperModule,
     PerfectScrollbarModule,
     NgxMatSelectSearchModule,
-    PipesModule
+    PipesModule,
+    MatTableExporterModule
   ],
   exports: [
     RouterModule,
@@ -148,7 +150,8 @@ import { LangComponent } from './lang/lang.component';
     CategoryListComponent,
     ConfirmDialogComponent,
     LangComponent,
-    IsEllipsisActive
+    IsEllipsisActive,
+    MatTableExporterModule
   ],
   declarations: [
     RatingComponent,

@@ -1,10 +1,11 @@
-import { Component, OnInit, AfterViewInit, ViewChild  } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { ReportService } from 'src/app/shared/services/report.service'
 import { PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { PaginatorConstants } from 'src/app/shared/models/paginator-constants';
-import {MatPaginator} from '@angular/material/paginator';
+import { MatPaginator } from '@angular/material/paginator';
 import { ProductAnalysis } from 'src/app/shared/models/product-analysis';
+import { MatTableExporterDirective } from 'mat-table-exporter';
 
 @Component({
   selector: 'app-product-revenue-report',
@@ -12,27 +13,28 @@ import { ProductAnalysis } from 'src/app/shared/models/product-analysis';
   styleUrls: ['./product-revenue-report.component.scss']
 })
 
-export class ProductRevenueReportComponent implements OnInit, AfterViewInit  {
+export class ProductRevenueReportComponent implements OnInit, AfterViewInit {
 
   searchText!: string | null;
 
-  displayedColumns: string[] = ['ID', 'Name', 'Code', 'BuyPrice','SalePrice', 'Quantity','SaleAmount',
-    'PurchaseAmount','Profit','ProfitPercentage','AgentCommission','ManagerCommission',
-    'OperationalCommission','Discount','Revenue'];
-  
+  displayedColumns: string[] = ['ID', 'Name', 'Code', 'BuyPrice', 'SalePrice', 'Quantity', 'SaleAmount',
+    'PurchaseAmount', 'Profit', 'ProfitPercentage', 'AgentCommission', 'ManagerCommission',
+    'OperationalCommission', 'Discount', 'Revenue'];
+
   data: ProductAnalysis[] = [];
   dataSource = new MatTableDataSource<ProductAnalysis>(this.data);
 
   fromDate: string | null;
   toDate: string | null;
 
-  @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
-  
+  @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
+  @ViewChild(MatTableExporterDirective, { static: true }) exporter: MatTableExporterDirective;
+
   constructor(
     private _reportService: ReportService
   ) { }
 
-  ngOnInit(): void {
+  ngOnInit(): void {  
     this.loadData();
   }
 
@@ -53,15 +55,18 @@ export class ProductRevenueReportComponent implements OnInit, AfterViewInit  {
   }
 
   onReset(): void {
-   this.loadData();
+    this.loadData();
   }
 
   onFilter(): void {
     this.loadData();
-   }
+  }
 
-   onDownload(): void {
-    this.loadData();
-   }
+  onDownload(): void {
+    this.exporter.exportTable('xlsx', {
+      fileName: "Product Analysis Report",
+      sheet: "Product Analysis Report"
+    });
+  }
 
 }
