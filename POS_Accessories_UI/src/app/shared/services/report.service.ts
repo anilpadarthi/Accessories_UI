@@ -10,22 +10,22 @@ import { Observable } from 'rxjs';
 })
 export class ReportService {
 
-  baseUrl: string;
+  url: string;
 
-  constructor(public httpClient: HttpClient) { 
-    this.baseUrl = environment.apiUrl;
+  constructor(public http: HttpClient) {
+    this.url = `${environment.apiUrl}/api/Report`
   }
 
   getProductAnalysisReport(requestBody: any): Observable<any> {
-    return this.httpClient.post<any>(`${this.baseUrl}/api/Report/ProductAnalysisReport`, requestBody);
+    return this.http.post<any>(`${this.url}/ProductAnalysisReport`, requestBody);
   }
 
   getRevenueReport(requestBody: any): Observable<any> {
-    return this.httpClient.post<any>(`${this.baseUrl}/api/Report/RevenueReport`, requestBody);
+    return this.http.post<any>(`${this.url}/RevenueReport`, requestBody);
   }
 
   getGraphMetricsReport(requestBody: any): Observable<any> {
-    return this.httpClient.post<any>(`${this.baseUrl}/api/Report/GetGraphMetricsReport`, requestBody);
+    return this.http.post<any>(`${this.url}/GetGraphMetricsReport`, requestBody);
   }
 
   

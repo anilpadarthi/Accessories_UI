@@ -10,10 +10,11 @@ import { Observable } from 'rxjs';
 })
 export class CouponService {
 
-  constructor(public http: HttpClient) { }
+  url: string;
 
-  //TODO:Keep the prefix url in environment file.
-  public url = environment.url + 'https://localhost:44352/api/Coupon';
+  constructor(public http: HttpClient) {
+    this.url = `${environment.apiUrl}/api/Coupon`
+  }
 
 
   getByPaging(requestBody: any): Observable<any> {
