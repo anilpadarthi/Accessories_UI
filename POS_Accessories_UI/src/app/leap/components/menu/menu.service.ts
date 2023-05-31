@@ -4,6 +4,7 @@ import { Location } from '@angular/common';
 
 import { Menu } from './menu.model';
 import { menuItems } from './menu';
+import { userRoles } from './user.roles';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,10 @@ export class MenuService {
 
   public getMenuItems():Array<Menu> {
     return menuItems;
+  }
+
+  public getUserRoles() {
+    return userRoles;
   }
 
   public expandActiveSubMenu(menu:Array<Menu>){

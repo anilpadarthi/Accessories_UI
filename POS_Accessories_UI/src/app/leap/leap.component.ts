@@ -3,6 +3,7 @@ import { AppSettings, Settings } from "../app.settings";
 import { Router, NavigationEnd } from "@angular/router";
 import { MenuService } from "./components/menu/menu.service";
 import { CartService } from "../shared/services/cart.service";
+import { AccountService } from "../shared/services/account.service";
 
 @Component({
   selector: "app-leap",
@@ -14,15 +15,23 @@ export class LeapComponent implements OnInit {
   public userImage = "assets/images/others/admin.jpg";
   public settings: Settings;
   public menuItems: Array<any>;
+  public roleBasedMenus: Array<any> = [];
   public toggleSearchBar: boolean = false;
   public hideSideNavUrl = ["/order-create", "/products-view"];
+
+  public userRoles;
+  public currentUser;
+
   constructor(
     public appSettings: AppSettings,
     public router: Router,
     private menuService: MenuService,
-    public cartService: CartService
+    public cartService: CartService,
+    private accountService: AccountService
   ) {
     this.settings = this.appSettings.settings;
+    this.userRoles = this.menuService.getUserRoles();
+    this.currentUser = this.accountService.getUserInfo();
   }
 
   ngOnInit() {
@@ -34,6 +43,28 @@ export class LeapComponent implements OnInit {
       this.settings.theme = "blue";
     });
     this.menuItems = this.menuService.getMenuItems();
+    this.filterMenus();
+  }
+
+  //Display Menus based on Roles
+  filterMenus(){
+    const filteredMenus = [];
+    this.menuItems.forEach((element, index) => {
+      if(element.title && element.icon !== 'view_list'){
+        const isMenuExists = this.userRoles[element.title]?.indexOf(this.currentUser.roleId) !== -1
+        if(isMenuExists){
+          filteredMenus.push(element);
+          if(element.parentId){
+            const parentMenu = this.menuItems.find(item => item.id === element.parentId);
+            const parentMenuExists = filteredMenus.filter(item => item.id === parentMenu?.id)
+            if(parentMenuExists.length === 0){
+              filteredMenus.push(parentMenu);
+            }
+          }
+        }
+      } 
+    });
+    this.roleBasedMenus = filteredMenus;
   }
 
   ngAfterViewInit() {

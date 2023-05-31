@@ -14,11 +14,11 @@ export const menuItems = [
     new Menu (12, 'LEAP_NAV.CREATE_ORDER', '/order-create', null, 'border_outer', "_blank", false, 10), 
    
     new Menu (20, 'LEAP_NAV.REPORTS',null , null, 'view_list', null, true, 0),  
-    new Menu (21, 'LEAP_NAV.PRODUCTANALYSISREPORT', 'reports/product-revenue', null, 'list_alt', null, false, 20), 
-    new Menu (22, 'LEAP_NAV.AGENTANALYSISREPORT', 'reports/analysis', null, 'border_outer', null, false, 20), 
+    new Menu (21, 'LEAP_NAV.PRODUCTANALYSISREPORT', 'reports/product-analysys', null, 'list_alt', null, false, 20), 
+    new Menu (22, 'LEAP_NAV.AGENTANALYSISREPORT', 'reports/agent-analysis', null, 'border_outer', null, false, 20), 
     new Menu (23, 'LEAP_NAV.AGENTACCOUNTABILITYREPORT', '/accountability', null, 'assignment', null, false, 20),
-    new Menu (23, 'LEAP_NAV.DASHBOARDREPORT', '/accountability', null, 'assignment', null, false, 20),
-    new Menu (23, 'LEAP_NAV.PERFORMANCEREPORT', '/accountability', null, 'assignment', null, false, 20),
+    new Menu (23, 'LEAP_NAV.DASHBOARDREPORT', '/dashboardreport', null, 'assignment', null, false, 20),
+    new Menu (23, 'LEAP_NAV.PERFORMANCEREPORT', '/performacereport', null, 'assignment', null, false, 20),
 
     new Menu (30, 'LEAP_NAV.SETTINGS',null , null, 'view_list', null, true, 0),  
     new Menu (31, 'LEAP_NAV.COUPON', '/coupon', null, 'card_giftcard', null, false, 30),  

@@ -6,7 +6,7 @@
                 <h1 class="error">404</h1>
             </div>
             <mat-card-content fxLayout="column" fxLayoutAlign="end center" class="box-content">
-                <mat-card fxLayout="column" fxLayoutAlign="center center" class="mat-elevation-z8 box-content-inner">
+                <mat-card fxLayout="column" fxLayoutAlign="center center" class="mat-elevation-z8 box-content-inner" *ngIf="!notAuthorized">
                     <p class="box-text">Opps, it seems that this page does not exist.</p> 
                     <p class="box-text">If you are sure it should, search for it.</p> 
                     <mat-form-field appearance="outline" class="w-100">
@@ -14,11 +14,14 @@
                         <input matInput placeholder="Enter search keyword...">
                     </mat-form-field>
                 </mat-card>
+                <mat-card fxLayout="column" fxLayoutAlign="center center" class="mat-elevation-z8 box-content-inner" *ngIf="notAuthorized">
+                    <p class="box-text">Opps, It seems that you are not authorized to access this page.</p> 
+                </mat-card>
                 <div class="box-footer">
                     <button mat-raised-button color="primary" class="mat-elevation-z8" type="button" (click)="goHome()">
                         <mat-icon>home</mat-icon>
                     </button>
-                    <button mat-raised-button color="primary" class="mat-elevation-z8" type="button" (click)="goHome()">
+                    <button mat-raised-button color="primary" class="mat-elevation-z8" type="button" (click)="goHome()" *ngIf="!notAuthorized">
                         <mat-icon>search</mat-icon>
                     </button>
                 </div>

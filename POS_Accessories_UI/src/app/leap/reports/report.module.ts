@@ -10,11 +10,26 @@ import { ProductReportComponent } from '../reports/product-report/product-report
 import { FormsModule } from '@angular/forms';
 import { AnalysisReportComponent } from './analysis-report/analysis-report.component';
 import { ProductRevenueReportComponent } from './product-revenue-report/product-revenue-report.component';
+import { AuthGuardService } from 'src/app/shared/services/auth-guard.service';
 
-export const routes: Routes = [ 
-  { path: '', component: ProductReportComponent, pathMatch: 'full' },
-  { path: 'product-revenue', component: ProductRevenueReportComponent, pathMatch: 'full' },
-  { path: 'analysis', component: AnalysisReportComponent, pathMatch: 'full' },
+export const routes: Routes = [
+  { path: '', 
+    component: ProductReportComponent, 
+    pathMatch: 'full' },
+  {
+    path: 'product-analysys',
+    component: ProductRevenueReportComponent, //Analysis Report
+    canActivate: [AuthGuardService],
+    data: { roles: [1, 2] },
+    pathMatch: 'full'
+  },
+  {
+    path: 'agent-analysis',
+    component: AnalysisReportComponent, //Revenue Report
+    canActivate: [AuthGuardService],
+    data: { roles: [1, 2, 3, 4] },
+    pathMatch: 'full',
+  }
   // { path: 'create', component: AddCouponComponent },
   // { path: 'edit/:id', component: AddCouponComponent, data: { breadcrumb: 'Edit Coupon' } }, 
 ];
@@ -23,7 +38,7 @@ export const routes: Routes = [
   declarations: [
     ProductReportComponent,
     AnalysisReportComponent,
-    ProductRevenueReportComponent    
+    ProductRevenueReportComponent
   ],
   imports: [
     CommonModule,

@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule, PreloadAllModules  } from '@angular/router'; 
+import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 
 import { PagesComponent } from './pages/pages.component';
 import { LeapComponent } from './leap/leap.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 
 export const routes: Routes = [
-    { 
-        path: 'theme', 
+    {
+        path: 'theme',
         component: PagesComponent, children: [
             { path: '', loadChildren: () => import('./pages/home/home.module').then(m => m.HomeModule) },
             { path: 'account', loadChildren: () => import('./pages/account/account.module').then(m => m.AccountModule), data: { breadcrumb: 'Account Settings' } },
@@ -25,6 +25,7 @@ export const routes: Routes = [
     { path: 'admin', loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule) },
     { path: '', loadChildren: () => import('./leap/leap.module').then(m => m.LeapModule) },
     { path: 'sign-in', loadChildren: () => import('./pages/sign-in/sign-in.module').then(m => m.SignInModule) },
+    { path: 'not-found', component: NotFoundComponent },
     { path: '**', component: NotFoundComponent }
 ];
 

@@ -37,7 +37,7 @@
         </div>
 
         <div fxLayout="row wrap" class="w-100 p-1">
-            <!-- <div fxFlex="100" fxFlex.xl="20" fxFlex.lg="20" fxFlex.md="33.3" fxFlex.sm="33.3" class="p-1"
+            <!-- <div fxFlex="100" fxFlex.xl="25" fxFlex.lg="25" fxFlex.md="33.3" fxFlex.sm="33.3" class="p-1"
                         *ngFor="let item of Object.keys(revenueModel)">
                         <mat-card class="gradient-red tile p-1">
                             <mat-icon>thumb_up_alt</mat-icon>
@@ -45,27 +45,22 @@
                             <p>{{revenueModel[item]}}</p>
                         </mat-card>
                     </div> -->
-            <div fxFlex="100" fxFlex.xl="20" fxFlex.lg="20" fxFlex.md="33.3" fxFlex.sm="33.3" class="p-1">
-                <mat-card class="gradient-red tile p-1">
-                    <mat-icon>thumb_up_alt</mat-icon>
-                    <h2>Agent Commission</h2>
-                    <p>{{revenueModel.agentCommission}}</p>
-                </mat-card>
-            </div>
-            <div fxFlex="100" fxFlex.xl="20" fxFlex.lg="20" fxFlex.md="33.3" fxFlex.sm="33.3" class="p-1">
+            <div fxFlex="100" fxFlex.xl="30" fxFlex.lg="30" fxFlex.md="33.3" fxFlex.sm="33.3" class="p-1">
                 <mat-card class="gradient-green tile p-1">
                     <mat-icon>monetization_on</mat-icon>
                     <h2>Manager Commission</h2>
                     <p>{{revenueModel.managerCommission}}</p>
                 </mat-card>
             </div>
-            <div fxFlex="100" fxFlex.xl="20" fxFlex.lg="20" fxFlex.md="33.3" fxFlex.sm="33.3" class="p-1">
+
+            <div fxFlex="100" fxFlex.xl="25" fxFlex.lg="25" fxFlex.md="33.3" fxFlex.sm="33.3" class="p-1">
                 <mat-card class="gradient-red tile p-1">
                     <mat-icon>thumb_up_alt</mat-icon>
-                    <h2>Operational Commission</h2>
-                    <p>{{revenueModel.operationalCommission}}</p>
+                    <h2>Agent Commission</h2>
+                    <p>{{revenueModel.agentCommission}}</p>
                 </mat-card>
             </div>
+
             <div fxFlex="100" fxFlex.xl="20" fxFlex.lg="20" fxFlex.md="33.3" fxFlex.sm="33.3" class="p-1">
                 <mat-card class="gradient-green tile p-1">
                     <mat-icon>monetization_on</mat-icon>
@@ -73,14 +68,21 @@
                     <p>{{revenueModel.profit}}</p>
                 </mat-card>
             </div>
-            <div fxFlex="100" fxFlex.xl="20" fxFlex.lg="20" fxFlex.md="33.3" fxFlex.sm="33.3" class="p-1">
+            <div fxFlex="100" fxFlex.xl="25" fxFlex.lg="25" fxFlex.md="33.3" fxFlex.sm="33.3" class="p-1">
                 <mat-card class="gradient-red tile p-1">
                     <mat-icon>thumb_up_alt</mat-icon>
                     <h2>Profit %</h2>
                     <p>{{revenueModel.profitPercent}}</p>
                 </mat-card>
             </div>
-            <div fxFlex="100" fxFlex.xl="20" fxFlex.lg="20" fxFlex.md="33.3" fxFlex.sm="33.3" class="p-1">
+            <div fxFlex="100" fxFlex.xl="30" fxFlex.lg="30" fxFlex.md="33.3" fxFlex.sm="33.3" class="p-1">
+                <mat-card class="gradient-red tile p-1">
+                    <mat-icon>thumb_up_alt</mat-icon>
+                    <h2>Operational Commission</h2>
+                    <p>{{revenueModel.operationalCommission}}</p>
+                </mat-card>
+            </div>
+            <div fxFlex="100" fxFlex.xl="25" fxFlex.lg="25" fxFlex.md="33.3" fxFlex.sm="33.3" class="p-1">
                 <mat-card class="gradient-green tile p-1">
                     <mat-icon>monetization_on</mat-icon>
                     <h2>Purchase Amount</h2>
@@ -94,7 +96,7 @@
                     <p>{{revenueModel.revenue}}</p>
                 </mat-card>
             </div>
-            <div fxFlex="100" fxFlex.xl="20" fxFlex.lg="20" fxFlex.md="33.3" fxFlex.sm="33.3" class="p-1">
+            <div fxFlex="100" fxFlex.xl="25" fxFlex.lg="25" fxFlex.md="33.3" fxFlex.sm="33.3" class="p-1">
                 <mat-card class="gradient-green tile p-1">
                     <mat-icon>monetization_on</mat-icon>
                     <h2>Sale Amount</h2>
@@ -150,9 +152,7 @@
                 <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
             </table>
-            <mat-paginator #paginator
-                [pageSizeOptions]="[20, 50, 100, 200]"
-                showFirstLastButtons
+            <mat-paginator #paginator [pageSizeOptions]="[25, 50, 100, 250]" showFirstLastButtons
                 aria-label="Select page of periodic elements">
             </mat-paginator>
         </div>

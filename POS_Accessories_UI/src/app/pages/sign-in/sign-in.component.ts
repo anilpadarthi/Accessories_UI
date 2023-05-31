@@ -47,7 +47,7 @@ export class SignInComponent implements OnInit {
       this.authService.AuthorizeUser(this.loginForm.value.email, this.loginForm.value.password).subscribe((res)=>{
         if (res.status) {    
           this._jwt.setSession(res.data.token);
-          this._jwt.setUserInfo(res.data.result);
+          this._jwt.setUserInfo(res.data.user);
           this.router.navigate(['/']);
         }
       });
