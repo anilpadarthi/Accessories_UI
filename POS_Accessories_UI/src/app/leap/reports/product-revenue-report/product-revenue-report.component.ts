@@ -6,6 +6,8 @@ import { PaginatorConstants } from 'src/app/shared/models/paginator-constants';
 import { MatPaginator } from '@angular/material/paginator';
 import { ProductAnalysis } from 'src/app/shared/models/product-analysis';
 import { MatTableExporterDirective } from 'mat-table-exporter';
+import { ExcelService } from 'src/app/shared/services/excel.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-product-revenue-report',
@@ -31,7 +33,9 @@ export class ProductRevenueReportComponent implements OnInit, AfterViewInit {
   @ViewChild(MatTableExporterDirective, { static: true }) exporter: MatTableExporterDirective;
 
   constructor(
-    private _reportService: ReportService
+    private _reportService: ReportService,
+    private excelService: ExcelService,
+    private snackBar: MatSnackBar,
   ) { }
 
   ngOnInit(): void {  
@@ -62,11 +66,22 @@ export class ProductRevenueReportComponent implements OnInit, AfterViewInit {
     this.loadData();
   }
 
-  onDownload(): void {
-    this.exporter.exportTable('xlsx', {
-      fileName: "Product Analysis Report",
-      sheet: "Product Analysis Report"
-    });
+  //Mat table export 
+  // onDownload(): void {
+  //   this.exporter.exportTable('xlsx', {
+  //     fileName: "Product Analysis Report",
+  //     sheet: "Product Analysis Report"
+  //   });
+  // }
+
+  //Data export from json
+  onDownload(){
+    if(this.dataSource?.data){
+      this.excelService.exportAsExcelFile(this.dataSource?.data, 'Product Analysis Report');  
+      this.snackBar.open('Product Analysis Report Downloaded Successfully!', '×', { panelClass: 'success', verticalPosition: 'top', duration: 3000 });
+    } else {
+      this.snackBar.open('No Data Available to Export!', '×', { panelClass: 'success', verticalPosition: 'top', duration: 3000 });
+    }
   }
 
 }
