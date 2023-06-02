@@ -21,7 +21,7 @@ export class ProductListComponent implements OnInit {
   public count = 0;
   public settings: Settings;
   searchText!: string | null;
-  displayedColumns = ["Id", "Name", "Code", "Status", "Actions"];
+  displayedColumns = ["ID", "Name", "Code", "Status", "Actions"];
   bogusDataSource = new MatTableDataSource<any>();
   pageEvent: PageEvent | undefined;
   tableDataSource: any[] = [];

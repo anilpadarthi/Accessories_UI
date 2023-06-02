@@ -56,6 +56,16 @@ export class DownloadService {
         }
     }
 
+    public downloadasPdf(res){
+        let blob: Blob = res as Blob;
+        let url = window.URL.createObjectURL(blob);
+
+        let anchor = document.createElement('a');
+        anchor.download = 'testDoc';
+        anchor.href = url;
+        anchor.click();
+    }
+
 
 
 }

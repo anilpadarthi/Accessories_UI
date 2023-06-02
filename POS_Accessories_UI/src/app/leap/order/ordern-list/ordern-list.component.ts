@@ -65,8 +65,8 @@ export class OrdernListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadData();
-    this.loadDropDowns();
+    //this.loadData();
+    //this.loadDropDowns();
   }
 
   loadData(): void {
@@ -129,10 +129,19 @@ export class OrdernListComponent implements OnInit {
     this.loadData();
   }
 
+  // onDownload(): void {
+  //   this.orderService.downloadOrders(this.orderListFilterRequest).subscribe((res) => {
+  //     //this.downloadService.exportAsExcelFile(res.data, 'Sales');
+  //     this.downloadService.DownloadDocument(res, 'Sales');
+  //   });
+  // }
+
   onDownload(): void {
-    this.orderService.downloadOrders(this.orderListFilterRequest).subscribe((res) => {
-      //this.downloadService.exportAsExcelFile(res.data, 'Sales');
-      this.downloadService.DownloadDocument(res, 'Sales');
+
+    const orderId = 12;
+
+    this.orderService.downloadOrdersPDF(orderId).subscribe((res) => {
+      this.downloadService.downloadasPdf(res);
     });
   }
 

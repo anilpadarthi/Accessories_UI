@@ -27,22 +27,6 @@
   }
 }
 
-.results {
-  margin: 15px 15px 15px 15px;
-}
-
-.example-container {
-  display: flex;
-  flex-direction: column;
-  max-height: 360px;
-  min-width: 300px;
-}
-
-.mat-table {
-  overflow: auto;
-  max-height: 500px;
-}
-
 .zero-results {
   text-align: center;
   color: red;
@@ -71,4 +55,8 @@
   p{
       text-transform: uppercase;
   }
+}
+
+.table-container {
+  height: calc(100vh - 540px)
 }

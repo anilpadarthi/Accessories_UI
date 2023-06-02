@@ -150,12 +150,10 @@
 
                 <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-
             </table>
-            <mat-paginator #paginator [pageSizeOptions]="[25, 50, 100, 250]" showFirstLastButtons
-                aria-label="Select page of periodic elements">
-            </mat-paginator>
         </div>
-        <div style="height: 0px"><br /></div>
+        <mat-paginator #paginator [pageSizeOptions]="[25, 50, 100, 250]" showFirstLastButtons
+            aria-label="Select page of periodic elements">
+        </mat-paginator>
     </mat-card>
 </div>

@@ -18,7 +18,7 @@ export class CouponListComponent implements OnInit {
 
   public settings: Settings;
   searchText!: string | null;
-  displayedColumns = ['Id', 'Code', 'Description', 'ValidFrom', 'ValidTo', 'Status', 'CreatedBy','Actions'];
+  displayedColumns = ['ID', 'Code', 'Description', 'ValidFrom', 'ValidTo', 'Status', 'CreatedBy','Actions'];
   bogusDataSource = new MatTableDataSource<any>();
   pageEvent: PageEvent | undefined;
   tableDataSource: any[] = [];

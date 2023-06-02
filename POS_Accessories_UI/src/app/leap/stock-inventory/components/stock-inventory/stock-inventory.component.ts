@@ -21,7 +21,7 @@ export class StockInventoryComponent implements OnInit {
 
   public settings: Settings;
   searchText!: string | null;
-  displayedColumns = ['Id', 'Product','BuyPrice','Quantity','CreatedDate', 'Actions'];
+  displayedColumns = ['ID', 'Product','BuyPrice','Quantity','CreatedDate', 'Actions'];
   bogusDataSource = new MatTableDataSource<any>();
   pageEvent: PageEvent | undefined;
   tableDataSource: any[] = [];

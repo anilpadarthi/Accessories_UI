@@ -28,7 +28,7 @@ export class WarehouseComponent implements OnInit {
   subCategoryId:number=0;
   mode:string;
   loggedInUserId:any;
-  displayedColumns = ['productId', 'productName','productCode','buyTotal','saleTotal'];
+  displayedColumns = ['productId', 'productName','productCode','buyTotal','saleTotal', 'Actions'];
   bogusDataSource = new MatTableDataSource<any>();
   pageEvent: PageEvent | undefined;
   tableDataSource: any[] = [];

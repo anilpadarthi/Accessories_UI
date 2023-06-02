@@ -50,5 +50,8 @@ export class OrderService {
     return this.http.post<any>(this.url + "/DownloadOrders", requestBody);
   }
 
+  downloadOrdersPDF(invoiceNo: any): Observable<any> {
+    return this.http.get<any>(this.url + "/GeneratePdfInvoice?orderId=" + invoiceNo);
+  }
 
 }
