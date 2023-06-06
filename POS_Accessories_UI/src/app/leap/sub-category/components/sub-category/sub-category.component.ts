@@ -104,6 +104,7 @@ export class SubCategoryComponent implements OnInit {
       panelClass: ["theme-dialog"],
       autoFocus: false,
       direction: this.settings.rtl ? "rtl" : "ltr",
+      width: '600px'
     });
     dialogRef.afterClosed().subscribe((dialogResult) => {
       if (dialogResult) {

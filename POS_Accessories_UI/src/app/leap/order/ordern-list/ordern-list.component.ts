@@ -13,6 +13,7 @@ import { ActionsEnum } from "src/app/shared/enum/actionsEnum";
 import { LookupService } from "src/app/shared/services/lookup.service";
 import { DownloadService } from "src/app/shared/services/download.service";
 import { OrderListFilterRequest } from "src/app/shared/models/requestModels/orderListFilterRequest";
+import { MakePaymentComponent } from "../make-payment/make-payment.component";
 
 
 @Component({
@@ -65,8 +66,8 @@ export class OrdernListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    //this.loadData();
-    //this.loadDropDowns();
+    this.loadData();
+    this.loadDropDowns();
   }
 
   loadData(): void {
@@ -219,14 +220,25 @@ export class OrdernListComponent implements OnInit {
     });
   }
 
-  async openMakePayment(): Promise<void> {
-
+  async openMakePayment(data): Promise<void> {
+    const dialogRef = this.dialog.open(MakePaymentComponent, {
+      data: data,
+      panelClass: ["theme-dialog"],
+      autoFocus: false,
+      direction: this.settings.rtl ? "rtl" : "ltr",
+      width: '600px'
+    });
+    dialogRef.afterClosed().subscribe((dialogResult) => {
+      if (dialogResult) {
+        //this.loadData();
+      }
+    });
   }
 
   async viewAccountTransactions(): Promise<void> {
 
   }
 
-  
+
 
 }
