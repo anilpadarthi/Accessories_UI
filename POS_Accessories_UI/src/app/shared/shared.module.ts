@@ -58,6 +58,7 @@ import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.componen
 import { LangComponent } from './lang/lang.component';
 import { MatTableExporterModule } from 'mat-table-exporter';
 import { IsNumericDirective } from './directives/is-numeric.directive';
+import { MatBadgeModule } from '@angular/material/badge';
 
 @NgModule({
   imports: [
@@ -100,7 +101,8 @@ import { IsNumericDirective } from './directives/is-numeric.directive';
     PerfectScrollbarModule,
     NgxMatSelectSearchModule,
     PipesModule,
-    MatTableExporterModule
+    MatTableExporterModule,
+    MatBadgeModule
   ],
   exports: [
     RouterModule,
@@ -153,7 +155,8 @@ import { IsNumericDirective } from './directives/is-numeric.directive';
     LangComponent,
     IsEllipsisActive,
     MatTableExporterModule,
-    IsNumericDirective
+    IsNumericDirective,
+    MatBadgeModule
   ],
   declarations: [
     RatingComponent,

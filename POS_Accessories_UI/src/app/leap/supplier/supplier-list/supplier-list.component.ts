@@ -80,19 +80,13 @@ export class SupplierListComponent implements OnInit {
     element.status = !element.status;
   }
 
-  openSupplierDialog(supplierId: any): void {
-    const dialogRef = this.dialog.open(AddSupplierComponent, {
-      data: {
-        id: supplierId
-      },
-      panelClass: ['theme-dialog'],
-      autoFocus: false,
-      direction: (this.settings.rtl) ? 'rtl' : 'ltr'
-    });
-    dialogRef.afterClosed().subscribe(dialogResult => {
-      if (dialogResult) {
-        this.loadData();
-      }
+  navigateToSupplier(): void {
+    const queryParams = {
+      
+    };
+    this.router.navigate(["create"], {
+      queryParams,
+      relativeTo: this.activatedRoute,
     });
   }
 

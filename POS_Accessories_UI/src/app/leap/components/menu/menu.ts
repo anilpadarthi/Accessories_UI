@@ -28,6 +28,6 @@ export const menuItems = [
     new Menu (41, 'LEAP_NAV.ADDSTOCK', '/stock-inventory', null, 'addstock', null, false, 40),  
     new Menu (42, 'LEAP_NAV.WAREHOUSE', '/warehouse', null, 'warehouse', null, false, 40),
 
-    new Menu (100, 'LEAP_NAV.MAKEPAYMENT', '/accountability/makepayment', null, 'assignment', null, false, 0),
-    new Menu (101, 'LEAP_NAV.THEME', '/admin', null, 'admin', null, false, 0),  
+    //new Menu (100, 'LEAP_NAV.MAKEPAYMENT', '/accountability/makepayment', null, 'assignment', null, false, 0),
+    //new Menu (101, 'LEAP_NAV.THEME', '/admin', null, 'admin', null, false, 0),  
 ]
