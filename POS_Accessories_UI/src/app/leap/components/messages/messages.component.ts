@@ -1,27 +1,33 @@
 import { Component, OnInit, ViewEncapsulation, ViewChild } from '@angular/core';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MessagesService } from './messages.service';
+import { observable } from 'rxjs';
 
 @Component({
   selector: 'app-messages',
   templateUrl: './messages.component.html',
   styleUrls: ['./messages.component.scss'],
   encapsulation: ViewEncapsulation.None,
-  providers: [ MessagesService ]
+  providers: [MessagesService]
 })
-export class MessagesComponent implements OnInit {  
+export class MessagesComponent implements OnInit {
   @ViewChild(MatMenuTrigger) trigger: MatMenuTrigger;
-  public selectedTab:number=1;
-  public messages:Array<Object>;
-  public files:Array<Object>;
-  public meetings:Array<Object>;  
-  constructor(private messagesService:MessagesService) { 
+  public selectedTab: number = 1;
+  public messages: Array<Object>;
+  public files: Array<Object>;
+  public meetings: Array<Object>;
+
+
+  notificationsCount: number = 10;
+
+  constructor(private messagesService: MessagesService) {
     this.messages = messagesService.getMessages();
     this.files = messagesService.getFiles();
-    this.meetings = messagesService.getMeetings();    
+    this.meetings = messagesService.getMeetings();
   }
 
   ngOnInit() {
+    this.getNotifications();
   }
 
   openMessagesMenu() {
@@ -29,13 +35,18 @@ export class MessagesComponent implements OnInit {
     this.selectedTab = 0;
   }
 
-  onMouseLeave(){
+  onMouseLeave() {
     this.trigger.closeMenu();
   }
 
-  stopClickPropagate(event: any){
+  stopClickPropagate(event: any) {
     event.stopPropagation();
     event.preventDefault();
+  }
+
+  //API to get notifications count
+  getNotifications(){
+
   }
 
 }

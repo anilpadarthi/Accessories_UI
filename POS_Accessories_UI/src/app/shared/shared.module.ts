@@ -57,6 +57,8 @@ import { CategoryListComponent } from './category-list/category-list.component';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import { LangComponent } from './lang/lang.component';
 import { MatTableExporterModule } from 'mat-table-exporter';
+import { IsNumericDirective } from './directives/is-numeric.directive';
+import { MatBadgeModule } from '@angular/material/badge';
 
 @NgModule({
   imports: [
@@ -99,7 +101,8 @@ import { MatTableExporterModule } from 'mat-table-exporter';
     PerfectScrollbarModule,
     NgxMatSelectSearchModule,
     PipesModule,
-    MatTableExporterModule
+    MatTableExporterModule,
+    MatBadgeModule
   ],
   exports: [
     RouterModule,
@@ -151,7 +154,9 @@ import { MatTableExporterModule } from 'mat-table-exporter';
     ConfirmDialogComponent,
     LangComponent,
     IsEllipsisActive,
-    MatTableExporterModule
+    MatTableExporterModule,
+    IsNumericDirective,
+    MatBadgeModule
   ],
   declarations: [
     RatingComponent,
@@ -164,7 +169,8 @@ import { MatTableExporterModule } from 'mat-table-exporter';
     CategoryListComponent,
     ConfirmDialogComponent,
     LangComponent,
-    IsEllipsisActive
+    IsEllipsisActive,
+    IsNumericDirective
   ], 
   providers:[
     { provide: PERFECT_SCROLLBAR_CONFIG, useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG }

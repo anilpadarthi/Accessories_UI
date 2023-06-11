@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormArray, FormGroup, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SupplierService } from 'src/app/shared/services/supplier.service'
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -20,8 +20,6 @@ export class AddSupplierComponent implements OnInit {
   public errorMessage: string = '';
 
   constructor(
-    public dialogRef: MatDialogRef<AddSupplierComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
     public router: Router,
     public fb: UntypedFormBuilder,
     private activatedRoute: ActivatedRoute,
@@ -31,17 +29,39 @@ export class AddSupplierComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+
     this.form = this.fb.group({
-      'supplierId': 0,
-      'supplierName': [null, Validators.required]
+      supplierId: 0,
+      supplierName: [null, Validators.required],
+      childProducts: this.fb.array([this.createChild()], Validators.required)
     });
 
-    this.sub = this.activatedRoute.params.subscribe(params => {
-      if (this.data.id) {
-        this.supplierId = parseInt(this.data.id);
-        this.getSupplierById();
-      }
-    });
+    // this.sub = this.activatedRoute.params.subscribe(params => {
+    //   if (this.data.id) {
+    //     this.supplierId = parseInt(this.data.id);
+    //     this.getSupplierById();
+    //   }
+    // });
+  }
+
+  createChild(): FormGroup {
+    return this.fb.group({
+      childProductId: [null, Validators.required],
+      childProductPrice: [null, Validators.required]
+    })
+  }
+
+  get childProducts(): FormArray {
+    return <FormArray>this.form.get('childProducts');
+  }
+
+  addChildProduct() {
+    this.childProducts.push(this.createChild());
+  }
+
+  removeChildProduct(index: number) {
+    console.log('remove the child - ', index);
+    this.childProducts.removeAt(index);
   }
 
   public getSupplierById() {
@@ -57,7 +77,7 @@ export class AddSupplierComponent implements OnInit {
         this.supplierService.createSupplier(this.form.value).subscribe({
           next: (res: Response) => {
             if (res.status) {
-              this.dialogRef.close(this.form.value);
+              //this.dialogRef.close(this.form.value);
               this.messageService.showSuccess(res.data);
             }
             else {
@@ -74,7 +94,6 @@ export class AddSupplierComponent implements OnInit {
         this.supplierService.updateSupplier(this.form.value).subscribe({
           next: (res: Response) => {
             if (res.status) {
-              this.dialogRef.close(this.form.value);
               this.messageService.showSuccess(res.data);
             }
             else {
@@ -89,7 +108,15 @@ export class AddSupplierComponent implements OnInit {
       }
     }
   }
-  ngOnDestroy() {
-    this.sub.unsubscribe();
+
+  navigateToSupplier(){
+    this.router.navigate(["/supplier"]);
   }
+
+
+  ngOnDestroy() {
+    //this.sub.unsubscribe();
+  }
+
+
 }

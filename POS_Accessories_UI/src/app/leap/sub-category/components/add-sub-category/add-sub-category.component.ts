@@ -37,12 +37,8 @@ export class AddSubCategoryComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.form = this.fb.group({
-      categoryId: null,
-      subCategoryId: 0,
-      subCategoryName: [null, Validators.required],
-      images: null,
-    });
+    
+    this.initializeForm();
 
     this.sub = this.activatedRoute.params.subscribe((params) => {
       if (this.data.id) {
@@ -53,6 +49,18 @@ export class AddSubCategoryComponent implements OnInit {
       }
     });
     this.getCategoryLookup();
+  }
+
+  initializeForm(){
+    this.form = this.fb.group({
+      categoryId: null,
+      subCategoryId: 0,
+      subCategoryName: [null, Validators.required],
+      agentCommission: '',
+      managerCommission: '',
+      operationCommission: '',
+      images: null,
+    });
   }
 
   public loadData() {

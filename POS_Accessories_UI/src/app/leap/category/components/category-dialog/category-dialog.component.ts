@@ -31,17 +31,24 @@ export class CategoryDialogComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.form = this.fb.group({
-      'CategoryId': 0,
-      'CategoryName': [null, Validators.required],
-      'Image': null
-    });
-
+    this.initializeForm()
     this.sub = this.activatedRoute.params.subscribe(params => {
       if (this.data.id) {
         this.categoryId = parseInt(this.data.id);
         this.getCategoryById();
       }
+    });
+
+  }
+
+  initializeForm(){
+    this.form = this.fb.group({
+      'categoryId': 0,
+      'categoryName': [null, Validators.required],
+      'agentCommission': '',
+      'managerCommission': '',
+      'operationCommission': '',
+      'images': null
     });
   }
 

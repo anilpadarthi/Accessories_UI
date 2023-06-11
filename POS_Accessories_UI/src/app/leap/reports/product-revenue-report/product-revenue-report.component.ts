@@ -8,6 +8,7 @@ import { ProductAnalysis } from 'src/app/shared/models/product-analysis';
 import { MatTableExporterDirective } from 'mat-table-exporter';
 import { ExcelService } from 'src/app/shared/services/excel.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MessageService } from 'src/app/shared/services/message.service';
 
 @Component({
   selector: 'app-product-revenue-report',
@@ -36,6 +37,7 @@ export class ProductRevenueReportComponent implements OnInit, AfterViewInit {
     private _reportService: ReportService,
     private excelService: ExcelService,
     private snackBar: MatSnackBar,
+    private messageService: MessageService
   ) { }
 
   ngOnInit(): void {  
@@ -78,9 +80,9 @@ export class ProductRevenueReportComponent implements OnInit, AfterViewInit {
   onDownload(){
     if(this.dataSource?.data){
       this.excelService.exportAsExcelFile(this.dataSource?.data, 'Product Analysis Report');  
-      this.snackBar.open('Product Analysis Report Downloaded Successfully!', '×', { panelClass: 'success', verticalPosition: 'top', duration: 3000 });
+      this.messageService.showSuccess("Product Analysis Report Downloaded Successfully!");
     } else {
-      this.snackBar.open('No Data Available to Export!', '×', { panelClass: 'success', verticalPosition: 'top', duration: 3000 });
+      this.messageService.showError('No Data Available to Export!');
     }
   }
 

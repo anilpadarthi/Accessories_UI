@@ -1,9 +1,75 @@
 <h1 mat-dialog-title>Purchase History</h1>
 
 <div>
-    <mat-card class="p-0">
-        <div class="results mat-elevation-z8">
-            <mat-table #table [dataSource]="bogusDataSource">
+    <mat-card class="p-1">
+        <div class="table-container mat-elevation-z8">
+
+            <table mat-table [dataSource]="tableDataSource">
+                <ng-container matColumnDef="productId">
+                    <th mat-header-cell *matHeaderCellDef> Product ID </th>
+                    <td mat-cell *matCellDef="let element">
+                        {{ element.productId }}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="productName">
+                    <th mat-header-cell *matHeaderCellDef> Product Name </th>
+                    <td mat-cell *matCellDef="let element"> {{ element.productName }} </td>
+                </ng-container>
+                <ng-container matColumnDef="productCode">
+                    <th mat-header-cell *matHeaderCellDef> Product Code </th>
+                    <td mat-cell *matCellDef="let element">
+                        {{ element.productCode }}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="supplierId">
+                    <th mat-header-cell *matHeaderCellDef> Supplier ID </th>
+                    <td mat-cell *matCellDef="let element">
+                        {{ element.supplierId }}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="invoiceNumber">
+                    <th mat-header-cell *matHeaderCellDef> Invoice Number </th>
+                    <td mat-cell *matCellDef="let element">
+                        {{ element.invoiceNumber }}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="qty">
+                    <th mat-header-cell *matHeaderCellDef> Quantity </th>
+                    <td mat-cell *matCellDef="let element">
+                        {{ element.qty }}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="buyPrice">
+                    <th mat-header-cell *matHeaderCellDef> Buy Price </th>
+                    <td mat-cell *matCellDef="let element">
+                        {{ element.buyPrice }}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="createdDate">
+                    <th mat-header-cell *matHeaderCellDef> Created Date </th>
+                    <td mat-cell *matCellDef="let element">
+                        {{ element.createdDate | date: 'MM/dd/yyyy'}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="Actions">
+                    <th mat-header-cell *matHeaderCellDef> Actions </th>
+                    <td mat-cell *matCellDef="let element">
+                        <button mat-icon-button matTooltip="Click to Edit" class="iconbutton" color="primary"
+                            (click)="openStockDialog(element.stockInventoryId)">
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                        <button mat-icon-button matTooltip="Click to Delete" class="iconbutton"
+                            (click)="remove(element)" color="warn">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+
+            <!-- <mat-table #table [dataSource]="bogusDataSource">
                 <ng-container matColumnDef="productId">
                     <mat-header-cell *matHeaderCellDef> Product Id </mat-header-cell>
                 </ng-container>
@@ -84,12 +150,12 @@
                     <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
                 </mat-table>
                 <div class="zero-results" *ngIf="!tableDataSource || tableDataSource.length == 0">No records found</div>
-            </div>
-            <mat-paginator #paginator [length]="totalCount" [pageSize]="pageSize" [pageSizeOptions]="pageOptions"
-                [showFirstLastButtons]="true" (page)="handlePageEvent($event)">
-            </mat-paginator>
+            </div> -->
+
         </div>
-        <div style="height: 0px;"><br></div>
+        <mat-paginator #paginator [length]="totalCount" [pageSize]="pageSize" [pageSizeOptions]="pageOptions"
+            [showFirstLastButtons]="true" (page)="handlePageEvent($event)">
+        </mat-paginator>
     </mat-card>
 
 </div>

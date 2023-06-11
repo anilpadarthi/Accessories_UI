@@ -8,10 +8,16 @@ import { Router } from '@angular/router';
   styleUrls: ['./user-menu.component.scss']
 })
 export class UserMenuComponent implements OnInit {
+
   public userImage = 'assets/images/others/admin.jpg';
-  constructor(public accountService:AccountService,public router:Router) { }
+  currentUser: any;
+
+  constructor(public accountService:AccountService, public router:Router) { 
+    this.currentUser = this.accountService.getUserInfo();
+  }
 
   ngOnInit(): void {
+
   }
 
   signOut(){

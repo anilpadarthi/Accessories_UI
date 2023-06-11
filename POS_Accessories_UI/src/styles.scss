@@ -1,10 +1,85 @@
 /* You can add global styles to this file, and also import other style files */
 @import url('https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i');
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
-@import '@angular/material/prebuilt-themes/indigo-pink.css'; 
+@import '@angular/material/prebuilt-themes/indigo-pink.css';
 @import '~swiper/swiper-bundle.min.css';
 @import "app/theme/styles/base";
 @import "app/theme/styles/admin";
 @import "app/theme/styles/theme";
 @import "app/theme/styles/gradients";
 @import "app/theme/styles/rtl";
+
+table {
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+.table-container {
+    //height: calc(100vh - 330px) !important;
+    overflow-x: auto !important;
+    margin: 15px !important;
+}
+
+.mat-header-cell {
+    background: #1976d2 !important;
+    color: white !important;
+}
+
+.mat-header-row {
+    height: 45px !important;
+}
+
+.mat-row,
+.mat-header-row {
+  display: table-row !important;
+}
+
+.mat-cell:first-of-type,
+.mat-header-cell:first-of-type {
+    padding-left: 24px !important;
+}
+
+.mat-cell,
+.mat-header-cell {
+ word-wrap: initial !important;
+ display: table-cell !important;
+ padding: 0px 10px !important;
+ line-break: unset !important;
+ width: auto !important;
+ white-space: nowrap !important;
+ overflow: hidden !important;
+ vertical-align: middle !important;
+}
+
+.mat-row:nth-child(even){
+  background-color: #f5f5f5 !important;
+}
+
+//Scroll Bar Styles
+/* Works on chrome, Safari, Edge */
+*::-webkit-scrollbar {
+    width: 8px;
+}
+
+*::-webkit-scrollbar:horizontal {
+    height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+    background: transparent !important;
+}
+
+*::-webkit-scrollbar-thumb {
+    background: #CCCCCC;
+    border-radius: 5px;
+    &:hover {
+        background: #A7ADB5;
+    }
+}
+
+
+//Dialog Styles
+
+.mat-dialog-actions {
+    padding: 24px 0px !important;
+}

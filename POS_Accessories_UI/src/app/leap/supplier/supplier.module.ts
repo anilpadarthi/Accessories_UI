@@ -12,7 +12,7 @@ import { FormsModule } from '@angular/forms';
 
 export const routes: Routes = [ 
   { path: '', component: SupplierListComponent, pathMatch: 'full' },
-  { path: 'create', component: AddSupplierComponent },
+  { path: 'create', component: AddSupplierComponent, data: { breadcrumb: 'Add Supplier' } },
   { path: 'edit/:id', component: AddSupplierComponent, data: { breadcrumb: 'Edit Supplier' } }, 
 ];
 

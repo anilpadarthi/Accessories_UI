@@ -18,7 +18,7 @@ export class ConfigurationListComponent implements OnInit {
 
   public settings: Settings;
   searchText!: string | null;
-  displayedColumns = ['Id', 'ConfigurationType', 'Amount', 'FromDate', 'ToDate', 'Status', 'Actions'];
+  displayedColumns = ['ID', 'ConfigurationType', 'Amount', 'FromDate', 'ToDate', 'Status', 'Actions'];
   bogusDataSource = new MatTableDataSource<any>();
   pageEvent: PageEvent | undefined;
   tableDataSource: any[] = [];

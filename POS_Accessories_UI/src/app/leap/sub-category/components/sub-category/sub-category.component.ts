@@ -20,7 +20,7 @@ export class SubCategoryComponent implements OnInit {
   public settings: Settings;
   searchText!: string | null;
   categoryId!: number | null;
-  displayedColumns = ["Id", "Name", "Status", "Actions"];
+  displayedColumns = ["ID", "Name", "Status", "Actions"];
   bogusDataSource = new MatTableDataSource<any>();
   tableDataSource: any[] = [];
   pageSize = PaginatorConstants.STANDARD_PAGE_SIZE;
@@ -104,6 +104,7 @@ export class SubCategoryComponent implements OnInit {
       panelClass: ["theme-dialog"],
       autoFocus: false,
       direction: this.settings.rtl ? "rtl" : "ltr",
+      width: '600px'
     });
     dialogRef.afterClosed().subscribe((dialogResult) => {
       if (dialogResult) {

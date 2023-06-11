@@ -1,1 +1,44 @@
-<p>make-payment works!</p>
+<h2 mat-dialog-title>Make Payment</h2>
+<mat-dialog-content class="mat-typography dialog-height">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" autocomplete="off" fxLayout="row wrap">
+        <div fxFlex="100">
+            <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Order ID</mat-label>
+                <input matInput formControlName="orderId" disabled>
+            </mat-form-field>
+        </div>
+        <div fxFlex="100">
+            <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Net Amount</mat-label>
+                <input matInput formControlName="netamount" disabled>
+            </mat-form-field>
+        </div>
+        <div fxFlex="100">
+            <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Amount</mat-label>
+                <input matInput formControlName="amount" required isNumeric>
+                <mat-error *ngIf="form.controls.amount.errors?.required">Name is required</mat-error>
+            </mat-form-field>
+        </div>
+        <div fxFlex="100">
+            <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Payment Type</mat-label>
+                <mat-select formControlName="paymentType" required>
+                    <mat-option value="Cash">Cash</mat-option>
+                    <mat-option value="Cheque">Cheque</mat-option>
+                </mat-select>
+                <mat-error *ngIf="form.controls.paymentType.errors?.required">Name is required</mat-error>
+            </mat-form-field>
+        </div>
+        <div fxFlex="100">
+            <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Comments</mat-label>
+                <textarea matInput formControlName="comments" rows="2"></textarea>
+            </mat-form-field>
+        </div>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+    <button mat-raised-button color="warn" type="button" mat-dialog-close>Close</button>
+    <button mat-raised-button color="primary" type="submit">Submit</button>
+</mat-dialog-actions>

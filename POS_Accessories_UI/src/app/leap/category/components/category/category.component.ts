@@ -19,7 +19,7 @@ export class CategoryComponent implements OnInit {
 
   public settings: Settings;
   searchText!: string | null;
-  displayedColumns = ['Id', 'Name', 'Status', 'Actions'];
+  displayedColumns = ['ID', 'Name', 'Status', 'Actions'];
   bogusDataSource = new MatTableDataSource<any>();
   pageEvent: PageEvent | undefined;
   tableDataSource: any[] = [];
@@ -86,7 +86,8 @@ export class CategoryComponent implements OnInit {
       },
       panelClass: ['theme-dialog'],
       autoFocus: false,
-      direction: (this.settings.rtl) ? 'rtl' : 'ltr'
+      direction: (this.settings.rtl) ? 'rtl' : 'ltr',
+      width: '600px',
     });
     dialogRef.afterClosed().subscribe(dialogResult => {
       if (dialogResult) {

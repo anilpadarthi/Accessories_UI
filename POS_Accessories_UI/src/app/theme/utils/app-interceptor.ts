@@ -25,8 +25,15 @@ export class AppInterceptor implements HttpInterceptor {
       req = req.clone({
         setHeaders: {
           Authorization: `Bearer ${token}`,
+          Accept: req.url.includes('Pdf') ? 'application/pdf' : 'application/json'
         },
       });
+
+      if(req.url.includes('Pdf')){
+        req = req.clone({
+          responseType: 'blob' 
+        });
+      }
     }
     else {
       this.router.navigate(['/sign-in']);
