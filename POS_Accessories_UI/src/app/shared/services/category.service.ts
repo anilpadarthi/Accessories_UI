@@ -29,7 +29,7 @@ export class CategoryService {
     return this.http.get<Response>(this.url + '/' + id);
   }
 
-  addCategory(category: Category): Observable<Response> {
+  addCategory(category: any): Observable<Response> {
     return this.http.post<Response>(this.url, category);
   }
 

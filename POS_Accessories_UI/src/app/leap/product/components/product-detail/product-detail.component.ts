@@ -56,7 +56,7 @@ export class ProductDetailComponent implements OnInit {
       productId: 0,
       productName: [null, Validators.required],
       productCode: [null, Validators.required],
-      purchasePrice: [null, Validators.required],
+      displayOrder: null,
       images: null,
       isNewArrival: false,
       isBundle: false,

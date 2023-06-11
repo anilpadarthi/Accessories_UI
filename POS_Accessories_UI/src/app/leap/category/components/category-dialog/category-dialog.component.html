@@ -4,13 +4,17 @@
     <div fxFlex="100">
         <mat-form-field appearance="outline" class="w-100">
             <mat-label>Name</mat-label>
-            <input matInput formControlName="categoryName" required>
-            <mat-error *ngIf="form.controls.categoryName.errors?.required">Name is required</mat-error>
+            <input matInput formControlName="CategoryName" required>
+            <mat-error *ngIf="form.controls.CategoryName.errors?.required">Name is required</mat-error>
         </mat-form-field>
     </div>
     <div fxFlex="40" class="p-2">
         <p class="mt-1"><span class="uppercase fw-500">Image</span></p>
-        <input-file formControlName="images" fileLimit="1" fileAccept="image/*"></input-file>
+        <input type="file" formControlName="Image"
+       (change)="imageUpload($event)"
+       #fileInput       
+       >
+        <!-- <input-file formControlName="images" fileLimit="1" fileAccept="image/*" (change)="imageUpload($event)" ></input-file> -->
     </div>
     <div fxLayout="row" fxLayoutAlign="space-between center" class="w-100">
         <button mat-raised-button color="warn" type="button" mat-dialog-close>Close</button>
