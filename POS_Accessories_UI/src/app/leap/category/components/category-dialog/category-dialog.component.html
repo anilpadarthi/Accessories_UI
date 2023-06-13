@@ -1,3 +1,6 @@
+<button mat-icon-button class="close-button" [mat-dialog-close]="true">
+    <mat-icon class="close-icon" color="warn">close</mat-icon>
+</button>
 <h2 mat-dialog-title>{{ categoryId > 0 ? 'Edit Category' : 'Create Category' }}</h2>
 <mat-error class="form-error" *ngIf="errorMessage != ''">{{errorMessage}}</mat-error>
 <mat-dialog-content class="mat-typography dialog-height">

@@ -14,6 +14,8 @@ import { LookupService } from "src/app/shared/services/lookup.service";
 import { DownloadService } from "src/app/shared/services/download.service";
 import { OrderListFilterRequest } from "src/app/shared/models/requestModels/orderListFilterRequest";
 import { MakePaymentComponent } from "../make-payment/make-payment.component";
+import { SelectionModel } from "@angular/cdk/collections";
+import { MessageService } from "src/app/shared/services/message.service";
 
 
 @Component({
@@ -24,6 +26,7 @@ import { MakePaymentComponent } from "../make-payment/make-payment.component";
 export class OrdernListComponent implements OnInit {
   public settings: Settings;
   displayedColumns = [
+    'select', 
     "ID",
     "Date",
     "User",
@@ -35,9 +38,9 @@ export class OrdernListComponent implements OnInit {
     "ShippedBy",
     "Actions",
   ];
-  bogusDataSource = new MatTableDataSource<any>();
+
   pageEvent: PageEvent | undefined;
-  tableDataSource: any[] = [];
+  tableDataSource: any;
   pageSize = PaginatorConstants.STANDARD_PAGE_SIZE;
   pageOptions = PaginatorConstants.LEAP_STANDARD_PAGE_OPTIONS;
   pageIndex = 1;
@@ -51,6 +54,7 @@ export class OrdernListComponent implements OnInit {
   agentLookUp: any[];
   managerLookUp: any[];
   areaLookUp: any[];
+  selection = new SelectionModel<any>(true, []);
 
   constructor(
     public changeDetectorRefs: ChangeDetectorRef,
@@ -61,6 +65,7 @@ export class OrdernListComponent implements OnInit {
     private orderService: OrderService,
     private lookupService: LookupService,
     private downloadService: DownloadService,
+    private messageService: MessageService,
   ) {
     this.settings = this.appSettings.settings;
   }
@@ -74,7 +79,7 @@ export class OrdernListComponent implements OnInit {
     this.orderListFilterRequest.pageNo = this.pageIndex;
     this.orderListFilterRequest.pageSize = this.pageSize;
     this.orderService.getPagedOrderList(this.orderListFilterRequest).subscribe((res) => {
-      this.tableDataSource = res.data.results;
+      this.tableDataSource = new MatTableDataSource<any>(res.data.results);
       this.totalCount = res.data.totalRecords;
     });
   }
@@ -212,6 +217,7 @@ export class OrdernListComponent implements OnInit {
       panelClass: ["theme-dialog"],
       autoFocus: false,
       direction: this.settings.rtl ? "rtl" : "ltr",
+      width: '800px',
     });
     dialogRef.afterClosed().subscribe((dialogResult) => {
       if (dialogResult) {
@@ -239,6 +245,42 @@ export class OrdernListComponent implements OnInit {
 
   }
 
+  /** Whether the number of selected elements matches the total number of rows. */
+  isAllSelected() {
+    const numSelected = this.selection?.selected?.length;
+    const numRows = this.tableDataSource?.data?.length;
+    return numSelected === numRows;
+  }
 
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  toggleAllRows() {
+    if (this.isAllSelected()) {
+      this.selection.clear();
+      return;
+    }
+
+    this.selection.select(...this.tableDataSource.data);
+  }
+
+  /** The label for the checkbox on the passed row */
+  checkboxLabel(row?: any): string {
+    if (!row) {
+      return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
+    }
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
+  }
+
+  onSaveClick(){
+
+    const records = this.selection?.selected;
+
+    if(records?.length){
+      const payload = records.map(item => item.orderId);
+      console.log(payload);
+    } else {
+      this.messageService.showError('Please select atleast one record to save!')
+    }
+
+  }
 
 }

@@ -1,3 +1,6 @@
+<button mat-icon-button class="close-button" [mat-dialog-close]="true">
+    <mat-icon class="close-icon" color="warn">close</mat-icon>
+</button>
 <h1 mat-dialog-title><span *ngIf="!user.id">Add</span><span *ngIf="user.id">Edit</span> user</h1>
 <div mat-dialog-content>
     <form [formGroup]="form" class="user-form">      

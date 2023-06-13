@@ -1,3 +1,6 @@
+<button mat-icon-button class="close-button" [mat-dialog-close]="true">
+    <mat-icon class="close-icon" color="warn">close</mat-icon>
+</button>
 <h1 mat-dialog-title>Category</h1>
 <form [formGroup]="form" (ngSubmit)="onSubmit()" autocomplete="off">
     <div mat-dialog-content>

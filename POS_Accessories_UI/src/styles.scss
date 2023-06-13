@@ -31,7 +31,7 @@ table {
 
 .mat-row,
 .mat-header-row {
-  display: table-row !important;
+    display: table-row !important;
 }
 
 .mat-cell:first-of-type,
@@ -41,18 +41,18 @@ table {
 
 .mat-cell,
 .mat-header-cell {
- word-wrap: initial !important;
- display: table-cell !important;
- padding: 0px 10px !important;
- line-break: unset !important;
- width: auto !important;
- white-space: nowrap !important;
- overflow: hidden !important;
- vertical-align: middle !important;
+    word-wrap: initial !important;
+    display: table-cell !important;
+    padding: 0px 10px !important;
+    line-break: unset !important;
+    width: auto !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    vertical-align: middle !important;
 }
 
-.mat-row:nth-child(even){
-  background-color: #f5f5f5 !important;
+.mat-row:nth-child(even) {
+    background-color: #f5f5f5 !important;
 }
 
 //Scroll Bar Styles
@@ -72,6 +72,7 @@ table {
 *::-webkit-scrollbar-thumb {
     background: #CCCCCC;
     border-radius: 5px;
+
     &:hover {
         background: #A7ADB5;
     }
@@ -82,4 +83,14 @@ table {
 
 .mat-dialog-actions {
     padding: 24px 0px !important;
+}
+
+.close-button {
+    float: right;
+    top: -24px;
+    right: -24px;
+}
+
+.mat-checkbox-checked.mat-accent .mat-checkbox-background {
+    background-color: #1976d2 !important;
 }

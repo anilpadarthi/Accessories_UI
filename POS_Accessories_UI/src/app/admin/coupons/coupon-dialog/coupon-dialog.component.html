@@ -1,3 +1,7 @@
+<button mat-icon-button class="close-button" [mat-dialog-close]="true">
+    <mat-icon class="close-icon" color="warn">close</mat-icon>
+</button>
+
 <h1 mat-dialog-title>Coupon</h1>
 <form [formGroup]="form" (ngSubmit)="onSubmit()" autocomplete="off" class="user-form">
     <div mat-dialog-content> 

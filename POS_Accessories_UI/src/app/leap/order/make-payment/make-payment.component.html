@@ -1,3 +1,6 @@
+<button mat-icon-button class="close-button" [mat-dialog-close]="true">
+    <mat-icon class="close-icon" color="warn">close</mat-icon>
+</button>
 <h2 mat-dialog-title>Make Payment</h2>
 <mat-dialog-content class="mat-typography dialog-height">
     <form [formGroup]="form" (ngSubmit)="onSubmit()" autocomplete="off" fxLayout="row wrap">
