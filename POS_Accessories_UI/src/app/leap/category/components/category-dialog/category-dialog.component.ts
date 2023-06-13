@@ -31,9 +31,7 @@ export class CategoryDialogComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-
     this.initializeForm()
-
     this.sub = this.activatedRoute.params.subscribe(params => {
       if (this.data.id) {
         this.categoryId = parseInt(this.data.id);
@@ -59,12 +57,23 @@ export class CategoryDialogComponent implements OnInit {
       this.form.patchValue(res.data);
     });
   }
+  selectedfile: any;
+  imageUpload(event: any) {
+    var file = event.target.files[0];
+    this.selectedfile = file;
+    console.log(this.selectedfile);
+  }
 
   public onSubmit() {
     this.errorMessage = '';
     if (this.form.valid) {
       if (this.categoryId === 0) {
-        this.categoryService.addCategory(this.form.value).subscribe({
+        var formData = new FormData();
+        formData.append("Image", this.selectedfile);
+        formData.append("CategoryId", this.form.value.CategoryId);
+        formData.append("CategoryName", this.form.value.CategoryName);
+        console.log(formData);
+        this.categoryService.addCategory(formData).subscribe({
           next: (res: Response) => {
             if (res.status) {
               this.dialogRef.close(this.form.value);

@@ -3,6 +3,7 @@
 </button>
 <h2 mat-dialog-title>{{ categoryId > 0 ? 'Edit Category' : 'Create Category' }}</h2>
 <mat-error class="form-error" *ngIf="errorMessage != ''">{{errorMessage}}</mat-error>
+ 
 <mat-dialog-content class="mat-typography dialog-height">
     <form [formGroup]="form" (ngSubmit)="onSubmit()" autocomplete="off" fxLayout="row wrap">
         <div fxFlex="100">
@@ -33,9 +34,14 @@
                 <mat-error *ngIf="form.controls.operationCommission.errors?.required">Name is required</mat-error>
             </mat-form-field>
         </div>
+      
         <div fxFlex="40" class="p-2">
             <p class="mt-1"><span class="uppercase fw-500">Image</span></p>
-            <input-file formControlName="images" fileLimit="1" fileAccept="image/*"></input-file>
+            <input type="file" formControlName="Image"
+           (change)="imageUpload($event)"
+           #fileInput       
+           >
+            <!-- <input-file formControlName="images" fileLimit="1" fileAccept="image/*" (change)="imageUpload($event)" ></input-file> -->
         </div>
     </form>
 </mat-dialog-content>
