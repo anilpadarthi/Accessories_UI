@@ -23,7 +23,7 @@
       <div fxLayoutAlign="center center" [@.disabled]="true">
         <button mat-button [matMenuTriggerFor]="cartMenu" #cartMenuTrigger="matMenuTrigger" class="flex-row-button">
           <mat-icon>shopping_cart</mat-icon>
-          <span *ngIf="cartService.Data.totalCartCount > 0" class="cart-items-count">{{ cartService.Data.totalCartCount
+          <span *ngIf="cartData?.totalCartCount > 0" class="cart-items-count">{{ cartData?.totalCartCount
             }}</span>
           <mat-icon class="mat-icon-sm">arrow_drop_down</mat-icon>
         </button>
@@ -32,16 +32,16 @@
           <ng-template matMenuContent>
             <span (mouseleave)="cartMenuTrigger.closeMenu()" class="d-block">
               <div fxLayout="row" fxLayoutAlign="space-between center" class="text-muted">
-                <b><span>{{ cartService.Data.totalCartCount }} ITEM<span
-                      *ngIf="cartService.Data.totalCartCount > 1">S</span></span></b>
+                <b><span>{{ cartData?.totalCartCount }} ITEM<span
+                      *ngIf="cartData?.totalCartCount > 1">S</span></span></b>
                 <b><a [routerLink]="['/cart']" class="text-muted">VIEW CART</a></b>
               </div>
               <div class="divider mt-1"></div>
-              <div *ngIf="cartService.Data.totalCartCount == 0" class="py-1 text-muted text-center">
+              <div *ngIf="cartData?.totalCartCount == 0" class="py-1 text-muted text-center">
                 You have no items in your shopping cart.
               </div>
               <mat-list>
-                <mat-list-item *ngFor="let product of cartService.Data.cartList">
+                <mat-list-item *ngFor="let product of cartData?.cartList">
                   <h3 matLine class="text-muted">{{ product.productName }}</h3>
                   <p matLine class="text-muted">
                     <bdi>{{ product.qty }} x £
@@ -55,15 +55,15 @@
                   </button>
                 </mat-list-item>
               </mat-list>
-              <div *ngIf="cartService.Data.cartList.length > 0" class="cart-dropdown-footer">
+              <div *ngIf="cartData?.cartList?.length > 0" class="cart-dropdown-footer">
                 <div class="divider mt-1"></div>
                 <div fxLayout="row" fxLayoutAlign="space-between center" class="text-muted mt-1">
                   <b>TOTAL:</b>
                   <b class="new-price">£
                     {{
-                    cartService.Data.totalPrice +
-                    cartService.Data.deliveryCharges +
-                    (cartService.Data.totalPrice * cartService.Data.vat) /
+                    cartData?.totalPrice +
+                    cartData?.deliveryCharges +
+                    (cartData?.totalPrice * cartData?.vat) /
                     100 | number : "1.2-2"
                     }}</b>
                 </div>

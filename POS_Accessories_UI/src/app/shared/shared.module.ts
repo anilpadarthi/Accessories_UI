@@ -39,7 +39,9 @@ import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
-import {IsEllipsisActive } from './directives/isEllipsisActive'
+import {IsEllipsisActive } from './directives/isEllipsisActive';
+
+
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   wheelPropagation: true,
   suppressScrollX: true               
@@ -59,6 +61,7 @@ import { LangComponent } from './lang/lang.component';
 import { MatTableExporterModule } from 'mat-table-exporter';
 import { IsNumericDirective } from './directives/is-numeric.directive';
 import { MatBadgeModule } from '@angular/material/badge';
+import { FilterSectionComponent } from './filter-section/filter-section.component';
 
 @NgModule({
   imports: [
@@ -170,7 +173,8 @@ import { MatBadgeModule } from '@angular/material/badge';
     ConfirmDialogComponent,
     LangComponent,
     IsEllipsisActive,
-    IsNumericDirective
+    IsNumericDirective,
+    FilterSectionComponent
   ], 
   providers:[
     { provide: PERFECT_SCROLLBAR_CONFIG, useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG }

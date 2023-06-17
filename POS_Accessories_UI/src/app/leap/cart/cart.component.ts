@@ -21,14 +21,18 @@ export class CartComponent implements OnInit {
   grandTotalWithVAT: any = null;
   grandTotalWithOutVAT: any = null;
 
-  constructor(public cartService: CartService) {}
+  constructor(public cartService: CartService) { }
 
   ngOnInit() {
-    this.cartItems = this.cartService.Data.cartList;
-    this.vatPercentage = this.cartService.Data.vat;
-    this.deliveryCharges = this.cartService.Data.deliveryCharges;
-    this.discountPercentage = this.cartService.Data.discount;
-    this.updateCalculations();
+    this.cartService.dataSubject$.subscribe(item => {
+      if (item) {
+        this.cartItems = item.cartList;
+        this.vatPercentage = item.vat;
+        this.deliveryCharges = item.deliveryCharges;
+        this.discountPercentage = item.discount;
+        this.updateCalculations();
+      }
+    })
   }
 
   public updateCartItem(qty: number, updatedProduct: OrderProduct) {
@@ -46,6 +50,7 @@ export class CartComponent implements OnInit {
     const index: number = this.cartItems.indexOf(product);
     if (index !== -1) {
       this.cartItems.splice(index, 1);
+      this.cartService.removeCartItems(this.cartItems);
       this.updateCalculations();
     }
   }
@@ -71,5 +76,6 @@ export class CartComponent implements OnInit {
       this.netTotal + this.vatAmount + this.deliveryCharges;
     this.grandTotalWithOutVAT = this.netTotal + this.deliveryCharges;
     this.cartItemCount = this.cartItems.length;
+
   }
 }

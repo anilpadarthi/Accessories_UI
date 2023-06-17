@@ -22,6 +22,8 @@ export class LeapComponent implements OnInit {
   public userRoles;
   public currentUser;
 
+  cartData: any;
+
   constructor(
     public appSettings: AppSettings,
     public router: Router,
@@ -32,6 +34,13 @@ export class LeapComponent implements OnInit {
     this.settings = this.appSettings.settings;
     this.userRoles = this.menuService.getUserRoles();
     this.currentUser = this.accountService.getUserInfo();
+
+    this.cartService.dataSubject$.subscribe(item => {
+      if(item){
+        this.cartData = item;
+      }
+    })
+
   }
 
   ngOnInit() {
