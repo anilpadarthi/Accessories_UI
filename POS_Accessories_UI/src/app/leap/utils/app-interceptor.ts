@@ -14,7 +14,6 @@ export class AppInterceptor implements HttpInterceptor {
     private accountService: AccountService, private router: Router) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-
     this.totalRequests++;
     this.spinner.show();
     const token = this.accountService.getSession();

@@ -52,7 +52,7 @@ export class MessagesComponent implements OnInit, OnDestroy {
       switchMap(() => this.orderService.getOrderNotificationCount())
     ).subscribe(result => {
       console.log(result);
-      this.notificationsCount = result?.data ?? 0
+      this.notificationsCount = result?.data ?? 0;
     });
   }
 

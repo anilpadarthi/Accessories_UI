@@ -18,7 +18,9 @@ export class AppInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
     this.totalRequests++;
-    this.spinner.show();
+    if(!req.url.includes('GetOrderNotificationCount')){
+      this.spinner.show();
+    }
 
     const token = this.accountService.getSession();
     if (token) {
