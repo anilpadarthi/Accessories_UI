@@ -54,4 +54,8 @@ export class OrderService {
     return this.http.get<any>(this.url + "/GeneratePdfInvoice?orderId=" + invoiceNo);
   }
 
+  getOrderNotificationCount(): Observable<any> {
+    return this.http.get<any>(`${this.url}/GetOrderNotificationCount`);
+  }
+
 }

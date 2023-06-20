@@ -36,6 +36,7 @@
     "express": "4.18.1",
     "file-saver": "^2.0.5",
     "mat-table-exporter": "^10.2.4",
+    "moment": "^2.29.4",
     "ngx-input-file": "10.2.0",
     "ngx-mat-select-search": "^5.0.0",
     "ngx-pagination": "5.1.1",
