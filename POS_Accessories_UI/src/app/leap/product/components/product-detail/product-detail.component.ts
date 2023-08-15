@@ -1,10 +1,5 @@
 import { Component, OnInit, Inject } from "@angular/core";
-import {
-  FormControl,
-  UntypedFormBuilder,
-  UntypedFormGroup,
-  Validators,
-} from "@angular/forms";
+import { FormArray, FormGroup, FormControl, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from "@angular/router";
 import { ProductService } from "../../../../shared/services/product.service";
 import { MatSnackBar } from "@angular/material/snack-bar";
@@ -19,6 +14,7 @@ import { ProductPriceList } from "src/app/shared/models/productPriceRequest";
   templateUrl: "./product-detail.component.html",
   styleUrls: ["./product-detail.component.scss"],
 })
+
 export class ProductDetailComponent implements OnInit {
   public form: UntypedFormGroup;
   private sub: any;
@@ -41,6 +37,9 @@ export class ProductDetailComponent implements OnInit {
   public sizeFilterCtrl: FormControl<string> = new FormControl<string>("");
   protected _onDestroy = new Subject<void>();
   public priceList: ProductPriceList[];
+  public url: any = null;
+  selectedfile: any;
+
   constructor(
     public router: Router,
     public fb: UntypedFormBuilder,
@@ -49,15 +48,15 @@ export class ProductDetailComponent implements OnInit {
     public snackBar: MatSnackBar,
     private messageService: MessageService,
     private lookupService: LookupService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.form = this.fb.group({
       productId: 0,
       productName: [null, Validators.required],
       productCode: [null, Validators.required],
-      displayOrder: null,
-      images: null,
+      displayOrder: 0,
+      imageFile: null,
       isNewArrival: false,
       isBundle: false,
       isOutOfStock: false,
@@ -68,6 +67,7 @@ export class ProductDetailComponent implements OnInit {
       specification: null,
       colourList: [[]],
       sizeList: [[]],
+      productPrices: this.fb.array([this.createChild()], Validators.required)
     });
 
     this.sub = this.activatedRoute.params.subscribe((params) => {
@@ -76,6 +76,7 @@ export class ProductDetailComponent implements OnInit {
         this.getProductById();
       }
     });
+
     this.getCategories();
     this.getColours();
     this.getSizes();
@@ -149,21 +150,26 @@ export class ProductDetailComponent implements OnInit {
   public getProductById() {
     this.productService.getProduct(this.productId).subscribe((res: any) => {
       this.form.patchValue(res.data);
+      this.getSubCategories(res.data.categoryId);
     });
   }
 
-  public navigateToCateogryList() {
+  public goToProductList() {
     this.router.navigate(["/product"]);
   }
   public onSubmit() {
-    console.log(this.form.value);
-    this.form.value.priceList = this.priceList;
+    const formData = new FormData();
+    for (const key of Object.keys(this.form.value)) {
+      const value = this.form.value[key];
+      formData.append(key, value);
+    }
+    formData.append("ImageFile", this.selectedfile);
     if (this.form.valid) {
       if (this.productId === 0) {
-        this.productService.addProduct(this.form.value).subscribe({
+        this.productService.addProduct(formData).subscribe({
           next: (res: Response) => {
             if (res.status) {
-              this.navigateToCateogryList();
+              this.goToProductList();
               this.messageService.showSuccess(res.data);
             } else {
               this.messageService.showError(res.data);
@@ -178,10 +184,10 @@ export class ProductDetailComponent implements OnInit {
         this.productService.updateProduct(this.form.value).subscribe({
           next: (res: Response) => {
             if (res.status) {
-              this.navigateToCateogryList();
-              this.messageService.showSuccess(res.message);
+              this.goToProductList();
+              this.messageService.showSuccess(res.data);
             } else {
-              this.messageService.showError(res.message);
+              this.messageService.showError(res.data);
             }
           },
           error: (e) => {
@@ -245,4 +251,45 @@ export class ProductDetailComponent implements OnInit {
   ngOnDestroy() {
     this.sub.unsubscribe();
   }
+
+  imageUpload(event: any) {
+    var file = event.target.files[0];
+    this.selectedfile = file;
+    var reader = new FileReader();
+    reader.readAsDataURL(event.target.files[0]); // read file as data url
+    reader.onload = (event) => { // called once readAsDataURL is completed
+      this.url = event.target.result;
+    }
+  }
+
+  createChild(): FormGroup {
+    return this.fb.group({
+      productPriceId:[null],
+      productId: [null],
+      fromQty:[null, Validators.required],
+      toQty:[null, Validators.required],
+      salePrice: [null, Validators.required]
+    })
+  }
+
+  get productPrices(): FormArray {
+    return <FormArray>this.form.get('productPrices');
+  }
+
+  addChildProduct() {
+    this.productPrices.push(this.createChild());
+  }
+
+  removeChildProduct(index: number) {
+    console.log('remove the child - ', index);
+    this.productPrices.removeAt(index);
+  }
+
+  validate(event: any, index: number) {
+    const matches: any = this.productPrices.value.filter(item => item.productPriceId === event.target.value);
+    if (matches.length > 1) {
+      this.productPrices.controls[index].get('childProductId').setErrors({ 'duplicate': true });
+    }
+  }
+
 }

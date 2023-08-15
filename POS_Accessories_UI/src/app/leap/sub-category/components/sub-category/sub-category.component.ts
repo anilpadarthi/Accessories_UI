@@ -83,7 +83,7 @@ export class SubCategoryComponent implements OnInit {
     this.loadData();
   }
 
-  search(): void {
+  onSearch(): void {
     this.pageIndex = 1;
     this.loadData();
   }
@@ -95,11 +95,10 @@ export class SubCategoryComponent implements OnInit {
     await this.loadData();
   }
 
-  openSubCategoryDialog(subCategoryId: any): void {
+  openSubCategoryDialog(row: any): void {
     const dialogRef = this.dialog.open(AddSubCategoryComponent, {
       data: {
-        id: subCategoryId,
-        categoryId: this.categoryId,
+        id: row ? row.subCategoryId : null
       },
       panelClass: ["theme-dialog"],
       autoFocus: false,

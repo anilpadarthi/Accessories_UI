@@ -3,7 +3,7 @@
 </button>
 <h2 mat-dialog-title>{{ categoryId > 0 ? 'Edit Category' : 'Create Category' }}</h2>
 <mat-error class="form-error" *ngIf="errorMessage != ''">{{errorMessage}}</mat-error>
- 
+
 <mat-dialog-content class="mat-typography dialog-height">
     <form [formGroup]="form" (ngSubmit)="onSubmit()" autocomplete="off" fxLayout="row wrap">
         <div fxFlex="100">
@@ -15,37 +15,39 @@
         </div>
         <div fxFlex="100">
             <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Display Order</mat-label>
+                <input matInput formControlName="displayOrder" isNumeric>
+            </mat-form-field>
+        </div>
+        <!-- <div fxFlex="100">
+            <mat-form-field appearance="outline" class="w-100">
                 <mat-label>Agent Commission</mat-label>
-                <input matInput formControlName="agentCommission" required isNumeric>
-                <mat-error *ngIf="form.controls.agentCommission.errors?.required">Name is required</mat-error>
+                <input matInput formControlName="agentCommission" isNumeric>
             </mat-form-field>
         </div>
         <div fxFlex="100">
             <mat-form-field appearance="outline" class="w-100">
                 <mat-label>Manager Commission</mat-label>
-                <input matInput formControlName="managerCommission" required isNumeric>
-                <mat-error *ngIf="form.controls.managerCommission.errors?.required">Name is required</mat-error>
+                <input matInput formControlName="managerCommission" isNumeric>
             </mat-form-field>
         </div>
         <div fxFlex="100">
             <mat-form-field appearance="outline" class="w-100">
                 <mat-label>Operation Commission</mat-label>
-                <input matInput formControlName="operationCommission" required isNumeric>
-                <mat-error *ngIf="form.controls.operationCommission.errors?.required">Name is required</mat-error>
+                <input matInput formControlName="operationCommission" isNumeric>
             </mat-form-field>
-        </div>
-      
+        </div> -->
+
         <div fxFlex="40" class="p-2">
-            <p class="mt-1"><span class="uppercase fw-500">Image</span></p>
-            <input type="file" formControlName="Image"
-           (change)="imageUpload($event)"
-           #fileInput       
-           >
-            <!-- <input-file formControlName="images" fileLimit="1" fileAccept="image/*" (change)="imageUpload($event)" ></input-file> -->
+            <p class="mt-1"><span class="uppercase fw-500">Upload Image</span></p>
+            <img *ngIf="url" [src]="url" height="100" width="100"> <br />
+            <input type="file" (change)="imageUpload($event)" #fileInput>
+        </div>
+        <div fxFlex="40" class="p-2">
+            <mat-dialog-actions align="center">
+                <button mat-raised-button color="warn" type="button" mat-dialog-close>Close</button>
+                <button mat-raised-button color="primary" type="submit">Submit</button>
+            </mat-dialog-actions>
         </div>
     </form>
 </mat-dialog-content>
-<mat-dialog-actions align="center">
-    <button mat-raised-button color="warn" type="button" mat-dialog-close>Close</button>
-    <button mat-raised-button color="primary" type="submit">Submit</button>
-</mat-dialog-actions>

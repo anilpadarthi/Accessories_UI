@@ -20,7 +20,6 @@ export class CategoryComponent implements OnInit {
   public settings: Settings;
   searchText!: string | null;
   displayedColumns = ['ID', 'Name', 'Status', 'Actions'];
-  bogusDataSource = new MatTableDataSource<any>();
   pageEvent: PageEvent | undefined;
   tableDataSource: any[] = [];
   pageSize = PaginatorConstants.STANDARD_PAGE_SIZE;
@@ -64,7 +63,7 @@ export class CategoryComponent implements OnInit {
     this.loadData();
   }
 
-  search(): void {
+  onSearch(): void {
     this.pageIndex = 1;
     this.loadData();
   }
@@ -79,10 +78,10 @@ export class CategoryComponent implements OnInit {
     element.status = !element.status;
   }
 
-  openCategoryDialog(categoryId: any): void {
+  openCategoryDialog(row: any): void {
     const dialogRef = this.dialog.open(CategoryDialogComponent, {
       data: {
-        id: categoryId
+        id: row ? row.categoryId : null
       },
       panelClass: ['theme-dialog'],
       autoFocus: false,

@@ -5,8 +5,8 @@
 export const environment = {
   production: false,
   url: '',
-  apiUrl: 'http://api.leap-tel.com'
-  //apiUrl: 'https://localhost:44352'
+  //apiUrl: 'http://api.leap-tel.com'
+  apiUrl: 'https://localhost:44352'
 };
 
 /*

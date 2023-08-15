@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import {
   FormControl,
   UntypedFormBuilder,
@@ -26,7 +26,7 @@ import { Product } from 'src/app/shared/models/product';
 
 export class BulkProductComponent implements OnInit {
   private sub: any;
-  public productId: number = 0;
+  public bundleProductId: number = 0;
   public categories: Lookup[];
   public filteredCategories: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
   public filteredSubCategories: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
@@ -41,8 +41,8 @@ export class BulkProductComponent implements OnInit {
   public priceList: ProductPriceList[];
   public products: Array<Product> = [];
   filteredProducts: Observable<Product[]>;
-  childProductId = new FormControl('');
   bulkProductForm: FormGroup;
+  productId = new FormControl('');
 
 
   constructor(
@@ -57,22 +57,22 @@ export class BulkProductComponent implements OnInit {
 
   ngOnInit(): void {
 
-
     this.bulkProductForm = this.fb.group({
       productId: 0,
       productName: [null, Validators.required],
       productCode: [null, Validators.required],
+      salePrice:[null, Validators.required],
+      categoryId: [null, Validators.required],
+      subCategoryId: [null, Validators.required],
       images: null,
-      categoryId: null,
-      subCategoryId: null,
       description: null,
-      specification: null,
-      childProducts: this.fb.array([this.createChild()], Validators.required)
+      specification: null,      
+      bundleProducts: this.fb.array([this.createChild()], Validators.required)
     });
 
     this.sub = this.activatedRoute.params.subscribe((params) => {
       if (params["id"]) {
-        this.productId = parseInt(params["id"]);
+        this.bundleProductId = parseInt(params["id"]);
         this.getProductById();
       }
     });
@@ -124,7 +124,7 @@ export class BulkProductComponent implements OnInit {
 
 
   public getProductById() {
-    this.productService.getProduct(this.productId).subscribe((res: any) => {
+    this.productService.getProduct(this.bundleProductId).subscribe((res: any) => {
       this.bulkProductForm.patchValue(res.data);
     });
   }
@@ -133,11 +133,10 @@ export class BulkProductComponent implements OnInit {
     this.router.navigate(["/product"]);
   }
   public onSubmit() {
-    console.log(this.bulkProductForm.value);
     this.bulkProductForm.value.priceList = this.priceList;
     if (this.bulkProductForm.valid) {
-      if (this.productId === 0) {
-        this.productService.addProduct(this.bulkProductForm.value).subscribe({
+      if (this.bundleProductId === 0) {
+        this.productService.addBulkProduct(this.bulkProductForm.value).subscribe({
           next: (res: Response) => {
             if (res.status) {
               this.navigateToCateogryList();
@@ -216,7 +215,7 @@ export class BulkProductComponent implements OnInit {
   getProductList() {
     this.productService.getProductList().subscribe(res => {
       this.products = res.data;
-      this.filteredProducts = this.childProductId.valueChanges.pipe(
+      this.filteredProducts = this.productId.valueChanges.pipe(
         startWith(''),
         map(value => this._filter(value || '')),
       );
@@ -230,30 +229,29 @@ export class BulkProductComponent implements OnInit {
   }
 
   createChild(): FormGroup {
-
     return this.fb.group({
-      childProductId: [null, Validators.required],
-      childProductQty: [null, Validators.required]
+      productId: [null, Validators.required],
+      quantity: 0
     })
   }
 
-  get childProducts(): FormArray {
-    return <FormArray>this.bulkProductForm.get('childProducts');
+  get bundleProducts(): FormArray {
+    return <FormArray>this.bulkProductForm.get('bundleProducts');
   }
 
   addChildProduct() {
-    this.childProducts.push(this.createChild());
+    this.bundleProducts.push(this.createChild());
   }
 
   removeChildProduct(index: number) {
     console.log('remove the child - ', index);
-    this.childProducts.removeAt(index);
+    this.bundleProducts.removeAt(index);
   }
 
   validate(event: any, index: number) {
-    const matches: any = this.childProducts.value.filter(item => item.childProductId === event.target.value);
+    const matches: any = this.bundleProducts.value.filter(item => item.productId === event.target.value);
     if (matches.length > 1) {
-      this.childProducts.controls[index].get('childProductId').setErrors({ 'duplicate': true });
+      this.bundleProducts.controls[index].get('productId').setErrors({ 'duplicate': true });
     }
   }
 

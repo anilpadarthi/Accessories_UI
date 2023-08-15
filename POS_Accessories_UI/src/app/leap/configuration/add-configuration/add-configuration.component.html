@@ -42,10 +42,6 @@
                         <mat-error *ngIf="form.controls.toDate.errors?.required">To Date is required</mat-error>
                     </mat-form-field>
                 </div>
-                <div fxFlex="40" class="p-2">
-                    <p class="mt-1"><span class="uppercase fw-500">Image</span></p>
-                    <input-file formControlName="images" fileLimit="1" fileAccept="image/*"></input-file>
-                </div>
                 <div fxLayout="row" fxLayoutAlign="space-between center" class="w-100">
                     <button mat-raised-button color="warn" type="button" (click)="navigateToListPage()">Cancel</button>
                     <button mat-raised-button color="primary" type="submit">Submit</button>

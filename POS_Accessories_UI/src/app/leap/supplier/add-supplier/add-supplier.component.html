@@ -14,9 +14,17 @@
                                 required</mat-error>
                         </mat-form-field>
                     </div>
+                    <div fxFlex="100" fxFlex.gt-md="35" class="px-1">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Code</mat-label>
+                            <input matInput formControlName="code" required />
+                            <mat-error *ngIf="form.controls.code.errors?.required">Code is
+                                required</mat-error>
+                        </mat-form-field>
+                    </div>
 
-                    <div *ngIf="childProducts.controls">
-                        <div formArrayName="childProducts" *ngFor="let t of childProducts.controls; let i = index">
+                    <div *ngIf="supplierProducts.controls">
+                        <div formArrayName="supplierProducts" *ngFor="let t of supplierProducts.controls; let i = index">
                             <div class="row" [formGroupName]="i">
                                 <div fxFlex="100" fxFlex.gt-md="50" class="px-1">
                                     <p class="sno">{{ i + 1}} .</p>
@@ -24,11 +32,11 @@
                                 <div fxFlex="100" fxFlex.gt-md="50" class="px-1">
                                     <mat-form-field appearance="outline" class="w-100">
                                         <mat-label>Product</mat-label>
-                                        <input matInput formControlName='childProductId' id="{{'childProductId'+i}}"
-                                            required [matAutocomplete]="auto" (change)="validate($event, i)">
+                                        <input matInput formControlName='productId' id="{{'productId'+i}}"
+                                            required [matAutocomplete]="auto" (change)="validate($event, i)" >
                                         <mat-autocomplete #auto="matAutocomplete">
                                             <mat-option *ngFor="let product of filteredProducts | async"
-                                                [value]="product.productName">
+                                                [value]="product.productId">
                                                 {{product.productName}}
                                             </mat-option>
                                         </mat-autocomplete>
@@ -37,13 +45,12 @@
                                 <div fxFlex="100" fxFlex.gt-md="50" class="px-1">
                                     <mat-form-field appearance="outline" class="w-100">
                                         <mat-label>Price</mat-label>
-                                        <input formControlName='childProductPrice' id="{{'childProductPrice'+i}}" matInput
-                                            required isNumeric>
+                                        <input formControlName='price' id="{{'price'+i}}" matInput
+                                            required>
                                     </mat-form-field>
                                 </div>
                                 <div fxFlex="100" fxFlex.gt-md="50" class="px-1">
-                                    <button mat-raised-button color="primary" class="remove-button"
-                                        (click)="removeChildProduct(i)">
+                                    <button mat-raised-button color="primary" class="remove-button" (click)="removeChildProduct(i)">
                                         <mat-icon>close</mat-icon>
                                     </button>
                                 </div>

@@ -28,15 +28,15 @@ export class SubCategoryService {
     return this.http.get<Response>(this.url + '/' + id);
   }
 
-  addSubCategory(subCategory: SubCategory): Observable<Response> {
+  addSubCategory(subCategory: any): Observable<Response> {
     return this.http.post<Response>(this.url, subCategory);
   }
 
-  updateSubCategory(subCategory: SubCategory): Observable<Response> {
+  updateSubCategory(subCategory: any): Observable<Response> {
     return this.http.put<Response>(this.url, subCategory);
   }
 
-  deleteSubCategory(subCategory: SubCategory): Observable<Response> {
+  deleteSubCategory(subCategory: any): Observable<Response> {
     return this.http.put<Response>(this.url + "/UpdateStatus", subCategory);
   }
 }

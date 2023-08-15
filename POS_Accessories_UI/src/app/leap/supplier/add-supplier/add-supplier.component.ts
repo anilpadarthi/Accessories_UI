@@ -1,11 +1,13 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { FormArray, FormGroup, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { FormArray, FormGroup, FormControl, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { Router, ActivatedRoute } from "@angular/router";
 import { SupplierService } from 'src/app/shared/services/supplier.service'
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Response } from 'src/app/shared/models/response';
 import { MessageService } from 'src/app/shared/services/message.service';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { ProductService } from "src/app/shared/services/product.service";
+import { ReplaySubject, Subject, takeUntil, Observable, startWith, map } from "rxjs";
+import { Product } from 'src/app/shared/models/product';
 
 @Component({
   selector: 'app-add-supplier',
@@ -18,50 +20,74 @@ export class AddSupplierComponent implements OnInit {
   private sub: any;
   public supplierId: number = 0;
   public errorMessage: string = '';
+  public products: Array<Product> = [];
+  filteredProducts: Observable<Product[]>;
+  childProductId = new FormControl('');
 
   constructor(
     public router: Router,
     public fb: UntypedFormBuilder,
-    private activatedRoute: ActivatedRoute,
+    private productService: ProductService,
     private supplierService: SupplierService,
     public snackBar: MatSnackBar,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private activatedRoute: ActivatedRoute,
   ) { }
 
   ngOnInit(): void {
-
     this.form = this.fb.group({
       supplierId: 0,
       supplierName: [null, Validators.required],
-      childProducts: this.fb.array([this.createChild()], Validators.required)
+      code: [null, Validators.required],
+      supplierProducts: this.fb.array([this.createChild()], Validators.required)
     });
 
-    // this.sub = this.activatedRoute.params.subscribe(params => {
-    //   if (this.data.id) {
-    //     this.supplierId = parseInt(this.data.id);
-    //     this.getSupplierById();
-    //   }
-    // });
+    this.getProductList();
+
+    this.sub = this.activatedRoute.params.subscribe((params) => {
+      if (params["id"]) {        
+        this.supplierId = parseInt(params["id"]);
+        this.getSupplierById();
+      }
+    });
   }
+
+  getProductList() {
+    this.productService.getProductList().subscribe(res => {
+      this.products = res.data;
+      this.filteredProducts = this.childProductId.valueChanges.pipe(
+        startWith(''),
+        map(value => this._filter(value || '')),
+      );
+    });
+  }
+
+  private _filter(value: string): Product[] {
+    const filterValue = value.toString().toLowerCase();
+
+    return this.products.filter(option => option.productName.toLowerCase().includes(filterValue));
+  }
+  
 
   createChild(): FormGroup {
     return this.fb.group({
-      childProductId: [null, Validators.required],
-      childProductPrice: [null, Validators.required]
+      supplierProductMapId:[null],
+      productId: [null, Validators.required],
+      price: [null, Validators.required]
     })
   }
 
-  get childProducts(): FormArray {
-    return <FormArray>this.form.get('childProducts');
+  get supplierProducts(): FormArray {
+    return <FormArray>this.form.get('supplierProducts');
   }
 
   addChildProduct() {
-    this.childProducts.push(this.createChild());
+    this.supplierProducts.push(this.createChild());
   }
 
   removeChildProduct(index: number) {
     console.log('remove the child - ', index);
-    this.childProducts.removeAt(index);
+    this.supplierProducts.removeAt(index);
   }
 
   public getSupplierById() {
@@ -79,6 +105,7 @@ export class AddSupplierComponent implements OnInit {
             if (res.status) {
               //this.dialogRef.close(this.form.value);
               this.messageService.showSuccess(res.data);
+              this.navigateToSupplier();
             }
             else {
               this.errorMessage = res.data;
@@ -95,6 +122,7 @@ export class AddSupplierComponent implements OnInit {
           next: (res: Response) => {
             if (res.status) {
               this.messageService.showSuccess(res.data);
+              this.navigateToSupplier();
             }
             else {
               this.errorMessage = res.data;
@@ -118,5 +146,11 @@ export class AddSupplierComponent implements OnInit {
     //this.sub.unsubscribe();
   }
 
+  validate(event: any, index: number) {
+    const matches: any = this.supplierProducts.value.filter(item => item.supplierProductMapId === event.target.value);
+    if (matches.length > 1) {
+      this.supplierProducts.controls[index].get('childProductId').setErrors({ 'duplicate': true });
+    }
+  }
 
 }

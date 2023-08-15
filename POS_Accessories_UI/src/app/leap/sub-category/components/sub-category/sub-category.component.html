@@ -1,6 +1,6 @@
 <div class="p-1">
   <mat-card class="p-0">
-    <div fxLayout="row wrap" fxLayoutAlign="space-between center" class="w-100 p-2">
+    <div fxLayout="row wrap" fxLayoutAlign="space-between center" class="w-100 p-2 p-l-15">
       <h2>Sub Category List</h2>
     </div>
     <div class="filter-controls">
@@ -16,17 +16,20 @@
         </mat-form-field>
         <mat-form-field appearance="outline" class="input-field">
           <mat-label>Search By Name</mat-label>
-          <input matInput placeholder="Search By Name" [(ngModel)]="searchText" autocomplete="off" />
+          <input matInput placeholder="Search By Name" [(ngModel)]="searchText" autocomplete="off">
         </mat-form-field>
-        <button mat-flat-button color="primary" (click)="onReset()">
-          <mat-icon>refresh</mat-icon> Reset
+        <button mat-raised-button color="primary" title="Click to search" (click)="onSearch()">
+          <mat-icon>search</mat-icon>
+          Search
         </button>
-        <button mat-raised-button color="primary" (click)="search()">
-          <mat-icon>search</mat-icon> search
+        <button mat-flat-button color="primary" title="Click to reset" (click)="onReset()">
+          <mat-icon>refresh</mat-icon>
+          Reset
         </button>
-
-        <button mat-raised-button color="primary" (click)="openSubCategoryDialog(null)">
-          <mat-icon>add</mat-icon> Add Sub Category
+        <button mat-raised-button color="primary" title="Click to Add Sub-Category"
+          (click)="openSubCategoryDialog(null)">
+          <mat-icon>add</mat-icon>
+          Create
         </button>
       </div>
     </div>
@@ -34,114 +37,45 @@
     <div class="table-container mat-elevation-z8">
       <table mat-table [dataSource]="tableDataSource">
         <ng-container matColumnDef="ID">
-            <th mat-header-cell *matHeaderCellDef> ID </th>
-            <td mat-cell *matCellDef="let element">
-              <a [routerLink]="['/product']" [queryParams]="{
-                categoryId: element.categoryId,
-                subCategoryId: element.subCategoryId}">
-              {{ element.subCategoryId }}</a>
-            </td>
+          <th mat-header-cell *matHeaderCellDef> ID </th>
+          <td mat-cell *matCellDef="let r">
+            <a [routerLink]="['/product']" [queryParams]="{categoryId: r.categoryId,subCategoryId: r.subCategoryId}">
+              {{ r.subCategoryId }}
+            </a>
+          </td>
         </ng-container>
         <ng-container matColumnDef="Name">
-            <th mat-header-cell *matHeaderCellDef> Name </th>
-            <td mat-cell *matCellDef="let element"> {{ element.subCategoryName }} </td>
+          <th mat-header-cell *matHeaderCellDef> NAME </th>
+          <td mat-cell *matCellDef="let r"> {{ r.subCategoryName }} </td>
         </ng-container>
         <ng-container matColumnDef="Status">
-            <th mat-header-cell *matHeaderCellDef> Status </th>
-            <td mat-cell *matCellDef="let element">
-              <mat-slide-toggle [checked]="element.status" (change)="updateStatus(element)">
-              </mat-slide-toggle>
-            </td>
+          <th mat-header-cell *matHeaderCellDef> STATUS </th>
+          <td mat-cell *matCellDef="let r"> {{r.status}} </td>
         </ng-container>
+
         <ng-container matColumnDef="Actions">
-            <th mat-header-cell *matHeaderCellDef> Actions </th>
-            <td mat-cell *matCellDef="let element">
-              <button mat-icon-button matTooltip="Click to Edit" class="iconbutton" color="primary"
-                (click)="openSubCategoryDialog(element.subCategoryId)">
-                <mat-icon>edit</mat-icon>
-              </button>
-              <button mat-icon-button matTooltip=" Click to Delete" class="iconbutton" (click)="remove(element)" color="warn">
-                <mat-icon>delete</mat-icon>
-              </button>
-            </td>
+          <th mat-header-cell *matHeaderCellDef> ACTIONS </th>
+          <td mat-cell *matCellDef="let r">
+            <mat-slide-toggle title="Click to Update Status" [checked]="r.status" (change)="updateStatus(r)">
+            </mat-slide-toggle>
+            <button mat-icon-button matTooltip="Click to Edit" class="iconbutton" color="primary"
+              (click)="openSubCategoryDialog(r)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button matTooltip="Click to Delete" class="iconbutton" (click)="remove(r)" color="warn">
+              <mat-icon>delete</mat-icon>
+            </button>
+            <button mat-icon-button matTooltip="Click to Commissions" class="iconbutton" (click)="remove(r)"
+              color="warn">
+              <mat-icon>money</mat-icon>
+            </button>
+          </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
-
-      <!-- <mat-table #table [dataSource]="bogusDataSource">
-        <ng-container matColumnDef="Id">
-          <mat-header-cell *matHeaderCellDef> Id </mat-header-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="Name">
-          <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="Status">
-          <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="Actions">
-          <mat-header-cell *matHeaderCellDef></mat-header-cell>
-        </ng-container>
-
-        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
-      </mat-table>
-      <div class="example-container">
-        <mat-table #table [dataSource]="tableDataSource">
-          <ng-container matColumnDef="Id">
-            <mat-cell *matCellDef="let element">
-              <a [routerLink]="['/product']" [queryParams]="{
-                  categoryId: element.categoryId,
-                  subCategoryId: element.subCategoryId
-                }">
-                {{ element.subCategoryId }}</a>
-            </mat-cell>
-          </ng-container>
-
-          <ng-container matColumnDef="Name">
-            <mat-cell *matCellDef="let element">
-              {{ element.subCategoryName }}
-            </mat-cell>
-          </ng-container>
-
-          <ng-container matColumnDef="Status">
-            <mat-cell *matCellDef="let element">
-              <mat-slide-toggle [checked]="element.status" (change)="updateStatus(element)">
-              </mat-slide-toggle>
-            </mat-cell>
-          </ng-container>
-
-          <ng-container matColumnDef="Actions">
-            <mat-cell *matCellDef="let element">
-              <button mat-icon-button matTooltip="Click to Edit" class="iconbutton" color="primary"
-                (click)="openSubCategoryDialog(element.subCategoryId)">
-                <mat-icon>edit</mat-icon>
-              </button>
-              <button mat-icon-button matTooltip=" Click to Delete" class="iconbutton" (click)="remove(element)"
-                color="warn">
-                <mat-icon>delete</mat-icon>
-              </button>
-            </mat-cell>
-          </ng-container>
-
-          <ng-container matColumnDef="symbol">
-            <mat-cell *matCellDef="let element">
-              {{ element.symbol }}
-            </mat-cell>
-          </ng-container>
-
-          <mat-header-row *matHHeaderCellDef="displayedColumns" [style.min-height]="0"></mat-header-row>
-          <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
-        </mat-table>
-        <div class="zero-results" *ngIf="!tableDataSource || tableDataSource.length == 0">
-          No records found
-        </div>
-      </div> -->
-
+      </table>
+      <div class="zero-results" *ngIf="!tableDataSource || tableDataSource.length == 0">No records found</div>
     </div>
     <mat-paginator #paginator [length]="totalCount" [pageSize]="pageSize" [pageSizeOptions]="pageOptions"
       [showFirstLastButtons]="true" (page)="handlePageEvent($event)">

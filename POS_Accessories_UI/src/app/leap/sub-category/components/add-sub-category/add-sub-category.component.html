@@ -24,7 +24,7 @@
                 <mat-error *ngIf="form.controls.subCategoryName.errors?.required">Name is required</mat-error>
             </mat-form-field>
         </div>
-        <div fxFlex="100">
+        <!-- <div fxFlex="100">
             <mat-form-field appearance="outline" class="w-100">
                 <mat-label>Agent Commission</mat-label>
                 <input matInput formControlName="agentCommission" required isNumeric>
@@ -44,14 +44,17 @@
                 <input matInput formControlName="operationCommission" required isNumeric>
                 <mat-error *ngIf="form.controls.operationCommission.errors?.required">Name is required</mat-error>
             </mat-form-field>
+        </div> -->
+        <div fxFlex="40" class="p-2">
+            <p class="mt-1"><span class="uppercase fw-500">Upload Image</span></p>
+            <img *ngIf="url" [src]="url" height="100" width="100"> <br />
+            <input type="file" (change)="imageUpload($event)" #fileInput>
         </div>
         <div fxFlex="40" class="p-2">
-            <p class="mt-1"><span class="uppercase fw-500">Image</span></p>
-            <input-file formControlName="images" fileLimit="1" fileAccept="image/*"></input-file>
+            <mat-dialog-actions align="center">
+                <button mat-raised-button color="warn" type="button" mat-dialog-close>Close</button>
+                <button mat-raised-button color="primary" type="submit">Submit</button>
+            </mat-dialog-actions>
         </div>
     </form>
 </mat-dialog-content>
-<mat-dialog-actions align="center">
-    <button mat-raised-button color="warn" type="button" mat-dialog-close>Close</button>
-    <button mat-raised-button color="primary" type="submit">Submit</button>
-</mat-dialog-actions>

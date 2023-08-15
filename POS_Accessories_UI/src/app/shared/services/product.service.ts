@@ -27,7 +27,7 @@ export class ProductService {
     return this.http.get<Response>(this.url + "/" + id);
   }
 
-  addProduct(product: Product): Observable<Response> {
+  addProduct(product: any): Observable<Response> {
     return this.http.post<Response>(this.url, product);
   }
 
@@ -38,4 +38,9 @@ export class ProductService {
   deleteProduct(product: Product): Observable<Response> {
     return this.http.put<Response>(this.url + "/UpdateStatus", product);
   }
+
+  addBulkProduct(product: any): Observable<Response> {
+    return this.http.post<Response>(this.url+"/CreateBundleProduct", product);
+  }
+
 }

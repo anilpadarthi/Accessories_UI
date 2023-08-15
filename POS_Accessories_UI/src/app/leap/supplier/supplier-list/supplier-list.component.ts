@@ -20,7 +20,7 @@ export class SupplierListComponent implements OnInit {
 
   public settings: Settings;
   searchText!: string | null;
-  displayedColumns = ['ID', 'Name', 'Status', 'Actions'];
+  displayedColumns = ['ID', 'Name', 'Code', 'Status', 'Actions'];
   bogusDataSource = new MatTableDataSource<any>();
   pageEvent: PageEvent | undefined;
   tableDataSource: any[] = [];
@@ -65,7 +65,7 @@ export class SupplierListComponent implements OnInit {
     this.loadData();
   }
 
-  search(): void {
+  onSearch(): void {
     this.pageIndex = 1;
     this.loadData();
   }
@@ -80,14 +80,17 @@ export class SupplierListComponent implements OnInit {
     element.status = !element.status;
   }
 
-  navigateToSupplier(): void {
+  createSupplier(): void {
     const queryParams = {
-      
     };
     this.router.navigate(["create"], {
       queryParams,
       relativeTo: this.activatedRoute,
     });
+  }
+
+  editSupplier(row: any): void {
+    this.router.navigateByUrl(`/supplier/edit/${row.supplierId}`);
   }
 
   public remove(supplier: any): void {

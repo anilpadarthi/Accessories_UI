@@ -1,3 +1,6 @@
+.p-l-15{
+  padding-left: 15px !important;
+}
 .filter-controls {
   margin: 0px 15px 0px 15px;
 
@@ -30,12 +33,15 @@
 
 .zero-results {
   text-align: center;
-  color: red;
+  color: gray;
   margin: 1em;
   font-weight: bold;
   font-size: 16px;
 }
 
 .table-container {
-  height: calc(100vh - 330px);
+  height: calc(100vh - 100px);
+}
+.center{
+  text-align: center;
 }

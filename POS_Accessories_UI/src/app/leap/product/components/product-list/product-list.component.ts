@@ -111,7 +111,7 @@ export class ProductListComponent implements OnInit {
     this.loadData();
   }
 
-  search(): void {
+  onSearch(): void {
     this.pageIndex = 1;
     this.loadData();
   }
@@ -125,7 +125,7 @@ export class ProductListComponent implements OnInit {
     await this.loadData();
   }
 
-  public openProductDialog(data: any): void {
+  public createProduct(): void {
     const queryParams = {
       categoryId: this.categoryId,
       subCategoryId: this.subCategoryId,
@@ -136,7 +136,7 @@ export class ProductListComponent implements OnInit {
     });
   }
 
-  public navigateToBulkProduct(data: any): void {
+  public createBulkProduct(): void {
     const queryParams = {
       categoryId: this.categoryId,
       subCategoryId: this.subCategoryId,
@@ -147,9 +147,13 @@ export class ProductListComponent implements OnInit {
     });
   }
 
-  edit(id: any): void {
-    this.router.navigateByUrl(`/product/edit/${id}`);
+  public editProduct(row: any): void {
+    this.router.navigateByUrl(`/product/edit/${row.productId}`);
   }
+
+  
+
+  
 
   updateStatus(element) {
     element.status = !element.status;

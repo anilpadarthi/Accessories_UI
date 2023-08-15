@@ -33,7 +33,7 @@ export class CategoryService {
     return this.http.post<Response>(this.url, category);
   }
 
-  updateCategory(category: Category): Observable<Response> {
+  updateCategory(category: any): Observable<Response> {
     return this.http.put<Response>(this.url, category);
   }
 

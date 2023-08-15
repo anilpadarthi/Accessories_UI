@@ -86,6 +86,12 @@
               <textarea matInput formControlName="specification"></textarea>
             </mat-form-field>
           </div>
+          <div fxFlex="100" fxFlex.gt-md="50" class="px-1">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Display Order</mat-label>
+              <input matInput formControlName="displayOrder" type="number" />
+            </mat-form-field>
+          </div>
           <div fxFlex="100" fxFlex.gt-md="50" class="px-1" style="display:inline-flex">
             <mat-checkbox formControlName="isNewArrival" color="primary">
               <div fxLayout="row" fxLayoutAlign="start center">
@@ -103,24 +109,61 @@
               </div>
             </mat-checkbox>
           </div>
-          <div fxFlex="100" fxFlex.gt-md="50" class="px-1">
-            <mat-form-field appearance="outline" class="w-100">
-              <mat-label>Display Order</mat-label>
-              <input matInput formControlName="displayOrder" />
-            </mat-form-field>
-          </div>
-          <app-product-image></app-product-image>
+
+          <!-- <app-product-image></app-product-image>
           <div fxFlex="100" fxFlex.gt-md="100" class="px-1">
             <app-product-pricing></app-product-pricing>
+          </div> -->
+        </div>
+        <div *ngIf="productPrices.controls">
+          <div formArrayName="productPrices" *ngFor="let t of productPrices.controls; let i = index">
+            <div class="row" [formGroupName]="i">
+              <div fxFlex="100" fxFlex.gt-md="50" class="px-1">
+                <p class="sno">{{ i + 1}} .</p>
+              </div>
+              <div fxFlex="100" fxFlex.gt-md="50" class="px-1">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>From Qty</mat-label>
+                  <input matInput formControlName='fromQty' id="{{'fromQty'+i}}" required
+                    (change)="validate($event, i)">
+                </mat-form-field>
+              </div>
+              <div fxFlex="100" fxFlex.gt-md="50" class="px-1">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>To Qty</mat-label>
+                  <input matInput formControlName='toQty' id="{{'toQty'+i}}" required
+                    (change)="validate($event, i)">
+                </mat-form-field>
+              </div>
+              <div fxFlex="100" fxFlex.gt-md="50" class="px-1">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Sale Price</mat-label>
+                  <input formControlName='salePrice' id="{{'salePrice'+i}}" matInput required>
+                </mat-form-field>
+              </div>
+              <div fxFlex="100" fxFlex.gt-md="50" class="px-1">
+                <button mat-raised-button color="primary" class="remove-button" (click)="removeChildProduct(i)">
+                  <mat-icon>close</mat-icon>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
 
+        <div fxFlex="40" class="p-2">
+          <p class="mt-1"><span class="uppercase fw-500">Upload Image</span></p>
+          <img *ngIf="url" [src]="url" height="100" width="100"> <br />
+          <input type="file" (change)="imageUpload($event)" #fileInput>
+        </div>
         <div fxLayout="row" fxLayoutAlign="space-between center" class="w-100">
-          <button mat-raised-button color="warn" type="button" (click)="navigateToCateogryList()">
+          <button mat-raised-button color="warn" type="button" (click)="goToProductList()">
             Cancel
           </button>
           <button mat-raised-button color="primary" type="submit">
             Submit
+          </button>
+          <button mat-raised-button color="primary" class="submit" (click)="addChildProduct()">
+            <mat-icon>add</mat-icon> Add Child Product
           </button>
         </div>
       </form>

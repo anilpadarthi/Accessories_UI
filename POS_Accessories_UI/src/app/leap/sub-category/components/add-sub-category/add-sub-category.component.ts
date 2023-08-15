@@ -23,6 +23,8 @@ export class AddSubCategoryComponent implements OnInit {
   subCategoryId: number = 0;
   categories: any[];
   errorMessage: string = "";
+  public url: any = null;
+  selectedfile: any;
 
   constructor(
     public dialogRef: MatDialogRef<AddSubCategoryComponent>,
@@ -37,9 +39,7 @@ export class AddSubCategoryComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    
     this.initializeForm();
-
     this.sub = this.activatedRoute.params.subscribe((params) => {
       if (this.data.id) {
         this.subCategoryId = parseInt(this.data.id);
@@ -51,16 +51,23 @@ export class AddSubCategoryComponent implements OnInit {
     this.getCategoryLookup();
   }
 
-  initializeForm(){
-    this.form = this.fb.group({
-      categoryId: null,
+  initializeForm() {
+    this.form = this.fb.group({     
       subCategoryId: 0,
       subCategoryName: [null, Validators.required],
-      agentCommission: '',
-      managerCommission: '',
-      operationCommission: '',
-      images: null,
+      categoryId: [null, Validators.required],
+      displayOrder: 0      
     });
+  }
+
+  imageUpload(event: any) {
+    var file = event.target.files[0];
+    this.selectedfile = file;
+    var reader = new FileReader();
+    reader.readAsDataURL(event.target.files[0]); // read file as data url
+    reader.onload = (event) => { // called once readAsDataURL is completed
+      this.url = event.target.result;
+    }
   }
 
   public loadData() {
@@ -81,8 +88,14 @@ export class AddSubCategoryComponent implements OnInit {
 
   public onSubmit() {
     if (this.form.valid) {
-      if (this.subCategoryId === 0) {
-        this.subCategoryService.addSubCategory(this.form.value).subscribe({
+      var formData = new FormData();
+      formData.append("ImageFile", this.selectedfile);        
+      formData.append("SubCategoryId", this.form.value.subCategoryId);
+      formData.append("SubCategoryName", this.form.value.subCategoryName);
+      formData.append("DisplayOrder", this.form.value.displayOrder);
+      formData.append("CategoryId", this.form.value.categoryId);
+      if (this.subCategoryId === 0) {       
+        this.subCategoryService.addSubCategory(formData).subscribe({
           next: (res: Response) => {
             if (res.status) {
               this.dialogRef.close(this.form.value);
@@ -93,11 +106,11 @@ export class AddSubCategoryComponent implements OnInit {
           },
           error: (e) => {
             console.log(e);
-            this.messageService.showError("Unable to create Category");
+            this.messageService.showError("Unable to create Sub-Category");
           },
         });
       } else {
-        this.subCategoryService.updateSubCategory(this.form.value).subscribe({
+        this.subCategoryService.updateSubCategory(formData).subscribe({
           next: (res: Response) => {
             if (res.status) {
               this.dialogRef.close(this.form.value);
@@ -108,7 +121,7 @@ export class AddSubCategoryComponent implements OnInit {
           },
           error: (e) => {
             console.log(e);
-            this.messageService.showError("Unable to update Category");
+            this.messageService.showError("Unable to update Sub-Category");
           },
         });
       }
