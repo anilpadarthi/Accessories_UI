@@ -5,13 +5,15 @@ import { Observable, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { AccountService } from '../../../app/shared/services/account.service';
 import { Router } from '@angular/router'
+import { MatSnackBar } from '@angular/material/snack-bar';
 @Injectable()
 export class AppInterceptor implements HttpInterceptor {
 
   private totalRequests = 0;
 
   constructor(private spinner: NgxSpinnerService,
-    private accountService: AccountService, private router: Router) {
+    private accountService: AccountService, private router: Router,
+    private snackBar: MatSnackBar) {
 
   }
 
@@ -60,7 +62,7 @@ export class AppInterceptor implements HttpInterceptor {
           this.router.navigate(['/sign-in']);
         }
         else {
-          this.router.navigate(['/error']);
+          this.snackBar.open(error.message, '×', { panelClass: 'error', verticalPosition: 'top', duration: 3000 });
         }
         return throwError(error);
       })

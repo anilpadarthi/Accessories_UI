@@ -5,13 +5,15 @@ import { Observable, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { AccountService } from '../../../app/shared/services/account.service';
 import { Router } from '@angular/router'
+import { MatSnackBar } from '@angular/material/snack-bar';
 @Injectable()
 export class AppInterceptor implements HttpInterceptor {
 
   private totalRequests = 0;
 
   constructor(private spinner: NgxSpinnerService,
-    private accountService: AccountService, private router: Router) { }
+    private accountService: AccountService, private router: Router,
+    private snackBar: MatSnackBar) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     this.totalRequests++;
@@ -31,7 +33,7 @@ export class AppInterceptor implements HttpInterceptor {
     return next.handle(req).pipe(map((event: HttpEvent<any>) => {
       if (event instanceof HttpResponse) {
         this.totalRequests--;
-        if(this.totalRequests === 0){
+        if (this.totalRequests === 0) {
           this.spinner.hide();
         }
       }
@@ -47,7 +49,7 @@ export class AppInterceptor implements HttpInterceptor {
           this.router.navigate(['/sign-in']);
         }
         else {
-          this.router.navigate(['/error']);
+          this.snackBar.open(error.message, '×', { panelClass: 'error', verticalPosition: 'top', duration: 3000 });
         }
         return throwError(error);
       })

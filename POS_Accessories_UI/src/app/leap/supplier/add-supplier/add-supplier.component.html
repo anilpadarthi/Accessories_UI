@@ -33,19 +33,20 @@
                                     <mat-form-field appearance="outline" class="w-100">
                                         <mat-label>Product</mat-label>
                                         <input matInput formControlName='productId' id="{{'productId'+i}}"
-                                            required [matAutocomplete]="auto" (change)="validate($event, i)" >
-                                        <mat-autocomplete #auto="matAutocomplete">
+                                            required [matAutocomplete]="auto">
+                                        <mat-autocomplete #auto="matAutocomplete" [displayWith]="getTitle.bind(this)" (optionSelected)="validate($event.option.value, i)">
                                             <mat-option *ngFor="let product of filteredProducts | async"
-                                                [value]="product.productId">
+                                                [value]="product.productId"> 
                                                 {{product.productName}}
                                             </mat-option>
                                         </mat-autocomplete>
+                                        <mat-error *ngIf="supplierProducts.controls[i]?.get('productId')?.errors?.duplicate">Duplicate Product Selected</mat-error>
                                     </mat-form-field>
                                 </div>
                                 <div fxFlex="100" fxFlex.gt-md="50" class="px-1">
                                     <mat-form-field appearance="outline" class="w-100">
                                         <mat-label>Price</mat-label>
-                                        <input formControlName='price' id="{{'price'+i}}" matInput
+                                        <input formControlName='price' id="{{'price'+i}}" matInput isNumeric
                                             required>
                                     </mat-form-field>
                                 </div>
@@ -63,7 +64,7 @@
                         (click)="navigateToSupplier()">
                             Cancel
                         </button>
-                        <button mat-raised-button color="primary" class="submit" type="submit">
+                        <button mat-raised-button color="primary" class="submit" type="submit" [disabled]="!form.valid">
                             Submit
                         </button>
                         <button mat-raised-button color="primary" class="submit" (click)="addChildProduct()">

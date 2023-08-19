@@ -8,7 +8,6 @@ import { MessageService } from 'src/app/shared/services/message.service';
 import { ProductService } from "src/app/shared/services/product.service";
 import { ReplaySubject, Subject, takeUntil, Observable, startWith, map } from "rxjs";
 import { Product } from 'src/app/shared/models/product';
-
 @Component({
   selector: 'app-add-supplier',
   templateUrl: './add-supplier.component.html',
@@ -45,7 +44,7 @@ export class AddSupplierComponent implements OnInit {
     this.getProductList();
 
     this.sub = this.activatedRoute.params.subscribe((params) => {
-      if (params["id"]) {        
+      if (params["id"]) {
         this.supplierId = parseInt(params["id"]);
         this.getSupplierById();
       }
@@ -64,16 +63,19 @@ export class AddSupplierComponent implements OnInit {
 
   private _filter(value: string): Product[] {
     const filterValue = value.toString().toLowerCase();
-
     return this.products.filter(option => option.productName.toLowerCase().includes(filterValue));
   }
-  
+
+  getTitle(productId: number) {
+    return this.products?.find(item => item.productId === productId)?.productName;
+  }
+
 
   createChild(): FormGroup {
     return this.fb.group({
-      supplierProductMapId:[null],
-      productId: [null, Validators.required],
-      price: [null, Validators.required]
+      supplierProductMapId: [''],
+      productId: ['', Validators.required],
+      price: ['', Validators.required]
     })
   }
 
@@ -137,7 +139,7 @@ export class AddSupplierComponent implements OnInit {
     }
   }
 
-  navigateToSupplier(){
+  navigateToSupplier() {
     this.router.navigate(["/supplier"]);
   }
 
@@ -146,11 +148,18 @@ export class AddSupplierComponent implements OnInit {
     //this.sub.unsubscribe();
   }
 
-  validate(event: any, index: number) {
-    const matches: any = this.supplierProducts.value.filter(item => item.supplierProductMapId === event.target.value);
-    if (matches.length > 1) {
-      this.supplierProducts.controls[index].get('childProductId').setErrors({ 'duplicate': true });
-    }
+  validate(productId: any, index: number) {
+    const matches: any = this.supplierProducts.value.filter(item => item.productId === productId);
+
+    setTimeout(() => {
+      if (matches.length > 1) {
+        this.supplierProducts.controls[index].get('productId')?.setErrors({ 'duplicate': true });
+      } else {
+        this.supplierProducts.controls[index].get('productId')?.setErrors(null);
+      }
+      this.supplierProducts.updateValueAndValidity();
+    })
+
   }
 
 }

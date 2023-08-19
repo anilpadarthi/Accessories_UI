@@ -55,6 +55,7 @@ export class CategoryDialogComponent implements OnInit {
     this.categoryService.getCategory(this.categoryId).subscribe((res: any) => {
       console.log(res);
       this.form.patchValue(res.data);
+      this.url = res.data?.image
     });
   }
 

@@ -9,6 +9,8 @@ import { PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { PaginatorConstants } from 'src/app/shared/models/paginator-constants';
 import { MessageService } from 'src/app/shared/services/message.service';
+import { ThemePalette } from '@angular/material/core';
+
 
 @Component({
   selector: 'app-category',
@@ -26,6 +28,7 @@ export class CategoryComponent implements OnInit {
   pageOptions = PaginatorConstants.LEAP_STANDARD_PAGE_OPTIONS;
   pageIndex = 1;
   totalCount!: number;
+  color: ThemePalette = 'primary';
 
   constructor(
     public changeDetectorRefs: ChangeDetectorRef,

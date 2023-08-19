@@ -46,7 +46,7 @@
                 <ng-container matColumnDef="Actions">
                     <th mat-header-cell *matHeaderCellDef> ACTIONS </th>
                     <td mat-cell *matCellDef="let r">
-                        <mat-slide-toggle title="Click to Update Status" [checked]="r.status"
+                        <mat-slide-toggle title="Click to Update Status" [checked]="r.status" [color]="color"
                             (change)="updateStatus(r)">
                         </mat-slide-toggle>
                         <button mat-icon-button matTooltip="Click to Edit" class="iconbutton" color="primary"
