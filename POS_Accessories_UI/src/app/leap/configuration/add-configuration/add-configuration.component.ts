@@ -65,10 +65,18 @@ export class AddConfigurationComponent implements OnInit {
 
 
   public onSubmit() {
-    console.log(this.form.value);
+
+    var requestBody = {
+      ConfigId: this.form.value.configId,
+      ConfigurationTypeId: this.form.value.configurationTypeId,
+      Amount: this.form.value.amount,
+      FromDate: this.form.value.fromDate,
+      ToDate: this.form.value.toDate
+    };
+    
     if (this.form.valid) {
       if (this.configurationId === 0) {
-        this.configurationService.create(this.form.value).subscribe({
+        this.configurationService.create(requestBody).subscribe({
           next: (res: Response) => {
             if (res.status) {
               this.navigateToListPage();
@@ -85,7 +93,7 @@ export class AddConfigurationComponent implements OnInit {
         })
       }
       else {
-        this.configurationService.update(this.form.value).subscribe({
+        this.configurationService.update(requestBody).subscribe({
           next: (res: Response) => {
             if (res.status) {
               this.navigateToListPage();

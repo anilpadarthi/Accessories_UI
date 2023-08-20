@@ -6,7 +6,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Response } from 'src/app/shared/models/response';
 import { MessageService } from 'src/app/shared/services/message.service';
 import { ProductService } from "src/app/shared/services/product.service";
-import { ReplaySubject, Subject, takeUntil, Observable, startWith, map } from "rxjs";
+import { Observable, startWith, map } from "rxjs";
 import { Product } from 'src/app/shared/models/product';
 @Component({
   selector: 'app-add-supplier',
@@ -34,15 +34,9 @@ export class AddSupplierComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.form = this.fb.group({
-      supplierId: 0,
-      supplierName: [null, Validators.required],
-      code: [null, Validators.required],
-      supplierProducts: this.fb.array([this.createChild()], Validators.required)
-    });
 
+    this.initializeForm();
     this.getProductList();
-
     this.sub = this.activatedRoute.params.subscribe((params) => {
       if (params["id"]) {
         this.supplierId = parseInt(params["id"]);
@@ -51,17 +45,32 @@ export class AddSupplierComponent implements OnInit {
     });
   }
 
+  initializeForm() {
+    this.form = this.fb.group({
+      supplierId: 0,
+      supplierName: [null, Validators.required],
+      code: [null, Validators.required],
+      supplierProducts: this.fb.array([this.createChild()], Validators.required)
+    });
+  }
+
   getProductList() {
     this.productService.getProductList().subscribe(res => {
       this.products = res.data;
       this.filteredProducts = this.childProductId.valueChanges.pipe(
         startWith(''),
-        map(value => this._filter(value || '')),
+        map(value => this.productfilter(value || '')),
       );
     });
   }
 
-  private _filter(value: string): Product[] {
+  public getSupplierById() {
+    this.supplierService.getSupplier(this.supplierId).subscribe((res: any) => {
+      this.form.patchValue(res.data);
+    });
+  }
+
+  private productfilter(value: string): Product[] {
     const filterValue = value.toString().toLowerCase();
     return this.products.filter(option => option.productName.toLowerCase().includes(filterValue));
   }
@@ -70,10 +79,9 @@ export class AddSupplierComponent implements OnInit {
     return this.products?.find(item => item.productId === productId)?.productName;
   }
 
-
   createChild(): FormGroup {
     return this.fb.group({
-      supplierProductMapId: [''],
+      supplierProductId: [''],
       productId: ['', Validators.required],
       price: ['', Validators.required]
     })
@@ -90,13 +98,7 @@ export class AddSupplierComponent implements OnInit {
   removeChildProduct(index: number) {
     console.log('remove the child - ', index);
     this.supplierProducts.removeAt(index);
-  }
-
-  public getSupplierById() {
-    this.supplierService.getSupplier(this.supplierId).subscribe((res: any) => {
-      this.form.patchValue(res.data);
-    });
-  }
+  }  
 
   public onSubmit() {
     this.errorMessage = '';
@@ -105,7 +107,6 @@ export class AddSupplierComponent implements OnInit {
         this.supplierService.createSupplier(this.form.value).subscribe({
           next: (res: Response) => {
             if (res.status) {
-              //this.dialogRef.close(this.form.value);
               this.messageService.showSuccess(res.data);
               this.navigateToSupplier();
             }

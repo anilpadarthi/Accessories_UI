@@ -27,19 +27,19 @@ export class ConfigurationService {
     return this.http.get<Response>(this.url);
   }
 
-  create(category: Category): Observable<Response> {
+  create(category: any): Observable<Response> {
     return this.http.post<Response>(this.url, category);
   }
 
-  update(category: Category): Observable<Response> {
+  update(category: any): Observable<Response> {
     return this.http.put<Response>(this.url, category);
   }
 
-  updateStatus(category: Category): Observable<Response> {
+  updateStatus(category: any): Observable<Response> {
     return this.http.put<Response>(this.url + "/UpdateStatus", category);
   }
 
-  delete(category: Category): Observable<Response> {
+  delete(category: any): Observable<Response> {
     return this.http.put<Response>(this.url + "/UpdateStatus", category);
   }
 }

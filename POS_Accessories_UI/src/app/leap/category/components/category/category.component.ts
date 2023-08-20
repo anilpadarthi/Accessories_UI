@@ -21,7 +21,7 @@ export class CategoryComponent implements OnInit {
 
   public settings: Settings;
   searchText!: string | null;
-  displayedColumns = ['ID', 'Name', 'Status', 'Actions'];
+  displayedColumns = ['ID', 'Name', 'DisplayOrder', 'Status', 'Actions'];
   pageEvent: PageEvent | undefined;
   tableDataSource: any[] = [];
   pageSize = PaginatorConstants.STANDARD_PAGE_SIZE;

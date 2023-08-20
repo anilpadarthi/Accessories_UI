@@ -6,6 +6,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Response } from 'src/app/shared/models/response';
 import { MessageService } from 'src/app/shared/services/message.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-category-dialog',
@@ -14,6 +15,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 })
 
 export class CategoryDialogComponent implements OnInit {
+
   public form: UntypedFormGroup;
   private sub: any;
   public categoryId: number = 0;
@@ -55,7 +57,7 @@ export class CategoryDialogComponent implements OnInit {
     this.categoryService.getCategory(this.categoryId).subscribe((res: any) => {
       console.log(res);
       this.form.patchValue(res.data);
-      this.url = res.data?.image
+      this.url = environment.apiUrl + '/' + res.data?.image
     });
   }
 
@@ -73,11 +75,12 @@ export class CategoryDialogComponent implements OnInit {
     this.errorMessage = '';
     if (this.form.valid) {
       var formData = new FormData();
-        formData.append("ImageFile", this.selectedfile);
-        formData.append("CategoryId", this.form.value.categoryId);
-        formData.append("CategoryName", this.form.value.categoryName);
-        formData.append("DisplayOrder", this.form.value.displayOrder);
-      if (this.categoryId === 0) {       
+      formData.append("ImageFile", this.selectedfile);
+      formData.append("CategoryId", this.form.value.categoryId);
+      formData.append("CategoryName", this.form.value.categoryName);
+      formData.append("DisplayOrder", this.form.value.displayOrder);
+
+      if (this.categoryId === 0) {
         this.categoryService.addCategory(formData).subscribe({
           next: (res: Response) => {
             if (res.status) {

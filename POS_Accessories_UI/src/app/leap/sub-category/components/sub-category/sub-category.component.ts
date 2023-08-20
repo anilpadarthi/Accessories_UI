@@ -20,7 +20,7 @@ export class SubCategoryComponent implements OnInit {
   public settings: Settings;
   searchText!: string | null;
   categoryId!: number | null;
-  displayedColumns = ["ID", "Name", "Status", "Actions"];
+  displayedColumns = ["ID", "Name","Category", "DisplayOrder", "Status", "Actions"];
   bogusDataSource = new MatTableDataSource<any>();
   tableDataSource: any[] = [];
   pageSize = PaginatorConstants.STANDARD_PAGE_SIZE;

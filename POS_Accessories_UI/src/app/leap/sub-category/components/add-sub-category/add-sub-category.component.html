@@ -24,6 +24,12 @@
                 <mat-error *ngIf="form.controls.subCategoryName.errors?.required">Name is required</mat-error>
             </mat-form-field>
         </div>
+        <div fxFlex="100">
+            <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Display Order</mat-label>
+                <input matInput formControlName="displayOrder" isNumeric>
+            </mat-form-field>
+        </div>
         <!-- <div fxFlex="100">
             <mat-form-field appearance="outline" class="w-100">
                 <mat-label>Agent Commission</mat-label>

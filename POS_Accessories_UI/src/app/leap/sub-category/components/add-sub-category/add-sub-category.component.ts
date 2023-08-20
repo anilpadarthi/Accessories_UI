@@ -11,6 +11,7 @@ import { Response } from "src/app/shared/models/response";
 import { MessageService } from "src/app/shared/services/message.service";
 import { LookupService } from "src/app/shared/services/lookup.service";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: "app-add-sub-category",
@@ -39,11 +40,12 @@ export class AddSubCategoryComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+
     this.initializeForm();
     this.sub = this.activatedRoute.params.subscribe((params) => {
       if (this.data.id) {
         this.subCategoryId = parseInt(this.data.id);
-        this.loadData();
+        this.getSubCategoryById();
       } else if (this.data.categoryId) {
         this.form.patchValue({ categoryId: this.data.categoryId });
       }
@@ -70,9 +72,10 @@ export class AddSubCategoryComponent implements OnInit {
     }
   }
 
-  public loadData() {
+  public getSubCategoryById() {
     this.subCategoryService.getSubCategory(this.subCategoryId).subscribe((res: any) => {
       this.form.patchValue(res.data);
+      this.url = environment.apiUrl + '/' + res.data?.image
     });
   }
 
@@ -94,6 +97,7 @@ export class AddSubCategoryComponent implements OnInit {
       formData.append("SubCategoryName", this.form.value.subCategoryName);
       formData.append("DisplayOrder", this.form.value.displayOrder);
       formData.append("CategoryId", this.form.value.categoryId);
+
       if (this.subCategoryId === 0) {       
         this.subCategoryService.addSubCategory(formData).subscribe({
           next: (res: Response) => {
