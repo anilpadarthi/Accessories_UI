@@ -28,6 +28,7 @@ export class SupplierListComponent implements OnInit {
   pageOptions = PaginatorConstants.LEAP_STANDARD_PAGE_OPTIONS;
   pageIndex = 1;
   totalCount!: number;
+  color = 'primary';
 
   constructor(
     public changeDetectorRefs: ChangeDetectorRef,

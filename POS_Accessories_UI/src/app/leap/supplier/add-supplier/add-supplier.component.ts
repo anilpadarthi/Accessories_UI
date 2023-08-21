@@ -40,7 +40,6 @@ export class AddSupplierComponent implements OnInit {
     this.sub = this.activatedRoute.params.subscribe((params) => {
       if (params["id"]) {
         this.supplierId = parseInt(params["id"]);
-        this.getSupplierById();
       }
     });
   }
@@ -61,13 +60,39 @@ export class AddSupplierComponent implements OnInit {
         startWith(''),
         map(value => this.productfilter(value || '')),
       );
+
+      if(this.supplierId){
+        this.getSupplierById(); //Edit Mode
+      }
+
     });
   }
 
   public getSupplierById() {
     this.supplierService.getSupplier(this.supplierId).subscribe((res: any) => {
-      this.form.patchValue(res.data);
+      this.editSupplier(res.data);
     });
+  }
+
+  editSupplier(data){
+    this.form.patchValue({
+      supplierId: data.supplierId,
+      supplierName: data.supplierName,
+      code: data.code,
+    });
+    this.form.setControl('supplierProducts', this.setExistingProducrs(data.supplierProducts))
+  }
+
+  setExistingProducrs(supplierProducts): FormArray {
+    const formArray = new FormArray([]);
+    supplierProducts.forEach(item => {
+      formArray.push(this.fb.group({
+        supplierProductId: item.supplierProductId,
+        productId: item.productId,
+        price: item.price
+      }));
+    });
+    return formArray;
   }
 
   private productfilter(value: string): Product[] {
