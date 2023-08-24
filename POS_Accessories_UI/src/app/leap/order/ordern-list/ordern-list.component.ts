@@ -71,6 +71,7 @@ export class OrdernListComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    debugger;
     this.loadData();
     this.loadDropDowns();
   }

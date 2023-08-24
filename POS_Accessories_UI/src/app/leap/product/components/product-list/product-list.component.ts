@@ -21,7 +21,7 @@ export class ProductListComponent implements OnInit {
   public count = 0;
   public settings: Settings;
   searchText!: string | null;
-  displayedColumns = ["ID", "Name", "Code", "Status", "Actions"];
+  displayedColumns = ["ID", "Name", "Code", "Category", "SubCategory", "DisplayOrder", "Actions"];
   bogusDataSource = new MatTableDataSource<any>();
   pageEvent: PageEvent | undefined;
   tableDataSource: any[] = [];
@@ -92,6 +92,7 @@ export class ProductListComponent implements OnInit {
   }
 
   onCategoryChange(event: any) {
+    this.pageIndex = 1;
     this.loadData();
     if (event.value) {
       this.getSubCategoryLookup(event.value);
@@ -151,9 +152,9 @@ export class ProductListComponent implements OnInit {
     this.router.navigateByUrl(`/product/edit/${row.productId}`);
   }
 
-  
 
-  
+
+
 
   updateStatus(element) {
     element.status = !element.status;

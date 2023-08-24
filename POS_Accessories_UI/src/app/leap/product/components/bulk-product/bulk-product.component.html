@@ -81,6 +81,11 @@
                           <mat-icon>add</mat-icon>  Add Child Product
                         </button>
                     </div> -->
+                    <div fxFlex="40" class="p-2">
+                        <p class="mt-1"><span class="uppercase fw-500">Upload Image</span></p>
+                        <img *ngIf="url" [src]="url" height="100" width="100"> <br />
+                        <input type="file" (change)="imageUpload($event)" #fileInput>
+                      </div>
 
                     <div *ngIf="bundleProducts.controls">
                         <div formArrayName="bundleProducts" *ngFor="let t of bundleProducts.controls; let i = index">

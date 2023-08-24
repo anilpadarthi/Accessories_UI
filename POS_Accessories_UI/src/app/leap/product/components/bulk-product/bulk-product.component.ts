@@ -17,6 +17,7 @@ import { ReplaySubject, Subject, takeUntil, Observable, startWith, map } from "r
 import { Lookup } from "src/app/shared/models/lookup";
 import { ProductPriceList } from "src/app/shared/models/productPriceRequest";
 import { Product } from 'src/app/shared/models/product';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-bulk-product',
@@ -43,6 +44,8 @@ export class BulkProductComponent implements OnInit {
   filteredProducts: Observable<Product[]>;
   bulkProductForm: FormGroup;
   productId = new FormControl('');
+  public url: any = null;
+  selectedfile: any;
 
 
   constructor(
@@ -126,21 +129,39 @@ export class BulkProductComponent implements OnInit {
   public getProductById() {
     this.productService.getProduct(this.bundleProductId).subscribe((res: any) => {
       this.bulkProductForm.patchValue(res.data);
+      if(res.data?.productImageMaps){
+        this.url = environment.apiUrl + '/' + res.data?.productImageMaps[0].imageName
+      }
     });
   }
 
   public navigateToCateogryList() {
     this.router.navigate(["/product"]);
   }
+
+
   public onSubmit() {
+    const formData = new FormData();
+    formData.append("ImageFile", this.selectedfile);
     this.bulkProductForm.value.priceList = this.priceList;
     if (this.bulkProductForm.valid) {
       if (this.bundleProductId === 0) {
         this.productService.addBulkProduct(this.bulkProductForm.value).subscribe({
           next: (res: Response) => {
             if (res.status) {
-              this.navigateToCateogryList();
-              this.messageService.showSuccess(res.data);
+              if (this.selectedfile) {
+                formData.append("ProductId", res.data.productId);
+                this.productService.addProductImage(formData).subscribe({
+                  next: (res: Response) => {
+                    if (!res.status) {
+                      this.messageService.showError(res.data);
+                    }
+                  }
+                });
+              }
+
+              this.goToProductList();
+              this.messageService.showSuccess("Product created successfully");
             } else {
               this.messageService.showError(res.data);
             }
@@ -154,10 +175,20 @@ export class BulkProductComponent implements OnInit {
         this.productService.updateProduct(this.bulkProductForm.value).subscribe({
           next: (res: Response) => {
             if (res.status) {
-              this.navigateToCateogryList();
-              this.messageService.showSuccess(res.message);
+              if (this.selectedfile) {
+                formData.append("ProductId", this.productId.toString());
+                this.productService.addProductImage(formData).subscribe({
+                  next: (res: Response) => {
+                    if (!res.status) {
+                      this.messageService.showError(res.data);
+                    }
+                  }
+                });
+              }
+              this.goToProductList();
+              this.messageService.showSuccess("Proudct updated successfully");
             } else {
-              this.messageService.showError(res.message);
+              this.messageService.showError(res.data);
             }
           },
           error: (e) => {
@@ -253,6 +284,20 @@ export class BulkProductComponent implements OnInit {
     if (matches.length > 1) {
       this.bundleProducts.controls[index].get('productId').setErrors({ 'duplicate': true });
     }
+  }
+
+  imageUpload(event: any) {
+    var file = event.target.files[0];
+    this.selectedfile = file;
+    var reader = new FileReader();
+    reader.readAsDataURL(event.target.files[0]); // read file as data url
+    reader.onload = (event) => { // called once readAsDataURL is completed
+      this.url = event.target.result;
+    }
+  }
+
+  public goToProductList() {
+    this.router.navigate(["/product"]);
   }
 
 }

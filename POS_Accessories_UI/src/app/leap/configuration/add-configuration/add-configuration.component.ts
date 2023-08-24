@@ -31,7 +31,7 @@ export class AddConfigurationComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = this.fb.group({
-      'configId': 0,
+      'configurationId': 0,
       'configurationTypeId': 0,
       'amount': [0, Validators.required],
       'fromDate': [null, Validators.required],
@@ -67,7 +67,7 @@ export class AddConfigurationComponent implements OnInit {
   public onSubmit() {
 
     var requestBody = {
-      ConfigId: this.form.value.configId,
+      ConfigurationId: this.form.value.configurationId,
       ConfigurationTypeId: this.form.value.configurationTypeId,
       Amount: this.form.value.amount,
       FromDate: this.form.value.fromDate,

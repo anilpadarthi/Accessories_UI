@@ -9,6 +9,8 @@ import { LookupService } from "src/app/shared/services/lookup.service";
 import { ReplaySubject, Subject, takeUntil } from "rxjs";
 import { Lookup } from "src/app/shared/models/lookup";
 import { ProductPriceList } from "src/app/shared/models/productPriceRequest";
+import { environment } from 'src/environments/environment';
+
 @Component({
   selector: "app-product-detail",
   templateUrl: "./product-detail.component.html",
@@ -18,21 +20,17 @@ import { ProductPriceList } from "src/app/shared/models/productPriceRequest";
 export class ProductDetailComponent implements OnInit {
   public form: UntypedFormGroup;
   private sub: any;
-  public productId: number = 0;
+  public productId = 0;
   public categories: Lookup[];
   public filteredCategories: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
-  public filteredSubCategories: ReplaySubject<any[]> = new ReplaySubject<any[]>(
-    1
-  );
+  public filteredSubCategories: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
   public filteredColours: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
   public filteredSizes: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
   public subCategories: Lookup[];
   public sizes: [];
   public colours: [];
   public categoryFilterCtrl: FormControl<string> = new FormControl<string>("");
-  public subCategoryFilterCtrl: FormControl<string> = new FormControl<string>(
-    ""
-  );
+  public subCategoryFilterCtrl: FormControl<string> = new FormControl<string>("");
   public colourFilterCtrl: FormControl<string> = new FormControl<string>("");
   public sizeFilterCtrl: FormControl<string> = new FormControl<string>("");
   protected _onDestroy = new Subject<void>();
@@ -51,25 +49,8 @@ export class ProductDetailComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.form = this.fb.group({
-      productId: 0,
-      productName: [null, Validators.required],
-      productCode: [null, Validators.required],
-      displayOrder: 0,
-      imageFile: null,
-      isNewArrival: false,
-      isBundle: false,
-      isOutOfStock: false,
-      isVatEnabled: false,
-      categoryId: null,
-      subCategoryId: null,
-      description: null,
-      specification: null,
-      colourList: [[]],
-      sizeList: [[]],
-      productPrices: this.fb.array([this.createChild()], Validators.required)
-    });
 
+    this.initializeForm();
     this.sub = this.activatedRoute.params.subscribe((params) => {
       if (params["id"]) {
         this.productId = parseInt(params["id"]);
@@ -104,6 +85,27 @@ export class ProductDetailComponent implements OnInit {
       .subscribe(() => {
         this.filter("size");
       });
+  }
+
+  initializeForm(): void {
+    this.form = this.fb.group({
+      productId: 0,
+      productName: [null, Validators.required],
+      productCode: [null, Validators.required],
+      displayOrder: 0,
+      imageFile: null,
+      isNewArrival: false,
+      isBundle: false,
+      isOutOfStock: false,
+      isVatEnabled: false,
+      categoryId: null,
+      subCategoryId: null,
+      description: null,
+      specification: null,
+      colourList: [[]],
+      sizeList: [[]],
+      productPrices: this.fb.array([this.createChild()], Validators.required)
+    });
   }
 
   getCategories() {
@@ -151,26 +153,37 @@ export class ProductDetailComponent implements OnInit {
     this.productService.getProduct(this.productId).subscribe((res: any) => {
       this.form.patchValue(res.data);
       this.getSubCategories(res.data.categoryId);
+      if(res.data?.productImageMaps){
+        this.url = environment.apiUrl + '/' + res.data?.productImageMaps[0].imageName
+      }
     });
   }
 
   public goToProductList() {
     this.router.navigate(["/product"]);
   }
+
   public onSubmit() {
     const formData = new FormData();
-    for (const key of Object.keys(this.form.value)) {
-      const value = this.form.value[key];
-      formData.append(key, value);
-    }
     formData.append("ImageFile", this.selectedfile);
     if (this.form.valid) {
       if (this.productId === 0) {
-        this.productService.addProduct(formData).subscribe({
+        this.productService.addProduct(this.form.value).subscribe({
           next: (res: Response) => {
             if (res.status) {
+              if (this.selectedfile) {
+                formData.append("ProductId", res.data.productId);
+                this.productService.addProductImage(formData).subscribe({
+                  next: (res: Response) => {
+                    if (!res.status) {
+                      this.messageService.showError(res.data);
+                    }
+                  }
+                });
+              }
+
               this.goToProductList();
-              this.messageService.showSuccess(res.data);
+              this.messageService.showSuccess("Product created successfully");
             } else {
               this.messageService.showError(res.data);
             }
@@ -184,8 +197,18 @@ export class ProductDetailComponent implements OnInit {
         this.productService.updateProduct(this.form.value).subscribe({
           next: (res: Response) => {
             if (res.status) {
+              if (this.selectedfile) {
+                formData.append("ProductId", this.productId.toString());
+                this.productService.addProductImage(formData).subscribe({
+                  next: (res: Response) => {
+                    if (!res.status) {
+                      this.messageService.showError(res.data);
+                    }
+                  }
+                });
+              }
               this.goToProductList();
-              this.messageService.showSuccess(res.data);
+              this.messageService.showSuccess("Proudct updated successfully");
             } else {
               this.messageService.showError(res.data);
             }
@@ -198,6 +221,7 @@ export class ProductDetailComponent implements OnInit {
       }
     }
   }
+
 
   public onCategorySelectionChange(event: any) {
     if (event.value) {
@@ -264,10 +288,10 @@ export class ProductDetailComponent implements OnInit {
 
   createChild(): FormGroup {
     return this.fb.group({
-      productPriceId:[null],
+      productPriceId: [null],
       productId: [null],
-      fromQty:[null, Validators.required],
-      toQty:[null, Validators.required],
+      fromQty: [null, Validators.required],
+      toQty: [null, Validators.required],
       salePrice: [null, Validators.required]
     })
   }

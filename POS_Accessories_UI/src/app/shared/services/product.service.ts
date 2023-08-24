@@ -27,20 +27,24 @@ export class ProductService {
     return this.http.get<Response>(this.url + "/" + id);
   }
 
-  addProduct(product: any): Observable<Response> {
-    return this.http.post<Response>(this.url, product);
+  addProduct(requestBody: any): Observable<Response> {
+    return this.http.post<Response>(this.url, requestBody);
   }
 
-  updateProduct(product: Product): Observable<Response> {
-    return this.http.put<Response>(this.url, product);
+  addProductImage(requestBody: any): Observable<Response> {
+    return this.http.post<Response>(this.url+"/AddProductImage", requestBody);
   }
 
-  deleteProduct(product: Product): Observable<Response> {
-    return this.http.put<Response>(this.url + "/UpdateStatus", product);
+  updateProduct(requestBody: any): Observable<Response> {
+    return this.http.put<Response>(this.url, requestBody);
   }
 
-  addBulkProduct(product: any): Observable<Response> {
-    return this.http.post<Response>(this.url+"/CreateBundleProduct", product);
+  deleteProduct(requestBody: any): Observable<Response> {
+    return this.http.put<Response>(this.url + "/UpdateStatus", requestBody);
+  }
+
+  addBulkProduct(requestBody: any): Observable<Response> {
+    return this.http.post<Response>(this.url+"/CreateBundleProduct", requestBody);
   }
 
 }
