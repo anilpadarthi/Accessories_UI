@@ -60,7 +60,7 @@ export class LeapComponent implements OnInit {
     const filteredMenus = [];
     this.menuItems.forEach((element, index) => {
       if(element.title && element.icon !== 'view_list'){
-        const isMenuExists = this.userRoles[element.title]?.indexOf(this.currentUser.roleId) !== -1
+        const isMenuExists = this.userRoles[element.title]?.indexOf(this.currentUser.userRoleId) !== -1
         if(isMenuExists){
           filteredMenus.push(element);
           if(element.parentId){
