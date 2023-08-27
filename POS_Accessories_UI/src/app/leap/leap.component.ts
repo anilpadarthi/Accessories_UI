@@ -21,8 +21,7 @@ export class LeapComponent implements OnInit {
 
   public userRoles;
   public currentUser;
-
-  cartData: any;
+  public cartData: any;
 
   constructor(
     public appSettings: AppSettings,
@@ -34,9 +33,8 @@ export class LeapComponent implements OnInit {
     this.settings = this.appSettings.settings;
     this.userRoles = this.menuService.getUserRoles();
     this.currentUser = this.accountService.getUserInfo();
-
     this.cartService.dataSubject$.subscribe(item => {
-      if(item){
+      if (item) {
         this.cartData = item;
       }
     })
@@ -56,22 +54,22 @@ export class LeapComponent implements OnInit {
   }
 
   //Display Menus based on Roles
-  filterMenus(){
+  filterMenus() {
     const filteredMenus = [];
     this.menuItems.forEach((element, index) => {
-      if(element.title && element.icon !== 'view_list'){
+      if (element.title && element.icon !== 'view_list') {
         const isMenuExists = this.userRoles[element.title]?.indexOf(this.currentUser.userRoleId) !== -1
-        if(isMenuExists){
+        if (isMenuExists) {
           filteredMenus.push(element);
-          if(element.parentId){
+          if (element.parentId) {
             const parentMenu = this.menuItems.find(item => item.id === element.parentId);
             const parentMenuExists = filteredMenus.filter(item => item.id === parentMenu?.id)
-            if(parentMenuExists.length === 0){
+            if (parentMenuExists.length === 0) {
               filteredMenus.push(parentMenu);
             }
           }
         }
-      } 
+      }
     });
     this.roleBasedMenus = filteredMenus;
   }
@@ -139,4 +137,5 @@ export class LeapComponent implements OnInit {
       this.settings.adminSidenavIsPinned = true;
     }
   }
+
 }

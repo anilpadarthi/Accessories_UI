@@ -47,7 +47,6 @@
                     <bdi>{{ product.qty }} x £
                       {{ product.salePrice | number : "1.2-2" }}</bdi>
                   </p>
-                  <!-- <img  [src]="" alt="image"> -->
                   <button mat-icon-button color="warn" class="remove"
                     (click)="remove(product); stopClickPropagate($event)" matTooltip="Remove"
                     matTooltipPosition="before">
@@ -100,7 +99,7 @@
           <img [src]="userImage" alt="user-image" />
           <div class="user-info">
             <p class="name">{{currentUser?.userName}}</p>
-            <p class="position">{{currentUser.userRoleId}}<br /></p>
+            <p class="position">{{currentUser?.userRole?.roleName}}<br /></p>
           </div>
         </div>
       </div>

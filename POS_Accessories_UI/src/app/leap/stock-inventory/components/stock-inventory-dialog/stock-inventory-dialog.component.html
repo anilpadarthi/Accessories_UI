@@ -1,51 +1,61 @@
-<h1 mat-dialog-title>Stock</h1>
+<button mat-icon-button class="close-button" [mat-dialog-close]="">
+    <mat-icon class="close-icon" color="warn">close</mat-icon>
+</button>
+
+<h2 mat-dialog-title>Stock</h2>
 <mat-error class="form-error" *ngIf="errorMessage != ''">{{errorMessage}}</mat-error>
-<form [formGroup]="form" (ngSubmit)="onSubmit()" autocomplete="off" fxLayout="row wrap">
-    <div fxFlex="100" fxFlex.gt-md="50" class="px-1">
-        <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Product</mat-label>
-            <input matInput [formControl]="productId" required [matAutocomplete]="auto">
-            <mat-error *ngIf="form.controls.productId.errors?.required">Product is required</mat-error>
-            <mat-autocomplete #auto="matAutocomplete">
-                <mat-option *ngFor="let product of filteredProducts | async" [value]="product.productName">
-                    {{product.productName}}
-                </mat-option>
-            </mat-autocomplete>
-        </mat-form-field>
-    </div>
-    <div fxFlex="100" fxFlex.gt-md="50" class="px-1">
-        <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Quantity</mat-label>
-            <input matInput formControlName="qty" required>
-            <mat-error *ngIf="form.controls.qty.errors?.required">Quantity is required</mat-error>
-        </mat-form-field>
-    </div>
-    <div fxFlex="100" fxFlex.gt-md="50" class="px-1">
-        <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Buy Price</mat-label>
-            <input matInput formControlName="buyPrice" required>
-            <mat-error *ngIf="form.controls.buyPrice.errors?.required">Buy Price is required</mat-error>
-        </mat-form-field>
-    </div>
-    <div fxFlex="100" fxFlex.gt-md="50" class="px-1">
-        <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Supplier</mat-label>
-            <mat-select formControlName="supplierId">
-                <mat-option [value]="null">All</mat-option>
-                <mat-option *ngFor="let supplier of suppliers" [value]="supplier.id">
-                    <span>{{supplier.name}}</span>
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
-    </div>
-    <div fxFlex="100" fxFlex.gt-md="50" class="px-1">
-        <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Invoice Number</mat-label>
-            <input matInput formControlName="invoiceNumber">
-        </mat-form-field>
-    </div>
-    <div fxLayout="row" fxLayoutAlign="space-between center" class="w-100">
-        <button mat-raised-button color="warn" type="button" mat-dialog-close>Close</button>
-        <button mat-raised-button color="primary" type="submit">Submit</button>
-    </div>
-</form>
+
+<mat-dialog-content>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" autocomplete="off" fxLayout="row wrap">
+        <div fxFlex="100" fxFlex.gt-md="50" class="px-1">
+            <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Product</mat-label>
+                <input matInput [formControl]="productId" required [matAutocomplete]="auto">
+                <mat-error *ngIf="form.controls.productId.errors?.required">Product is required</mat-error>
+                <mat-autocomplete #auto="matAutocomplete">
+                    <mat-option *ngFor="let product of filteredProducts | async" [value]="product.productName">
+                        {{product.productName}}
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+        </div>
+        <div fxFlex="100" fxFlex.gt-md="50" class="px-1">
+            <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Quantity</mat-label>
+                <input matInput formControlName="qty" required>
+                <mat-error *ngIf="form.controls.qty.errors?.required">Quantity is required</mat-error>
+            </mat-form-field>
+        </div>
+        <div fxFlex="100" fxFlex.gt-md="50" class="px-1">
+            <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Buy Price</mat-label>
+                <input matInput formControlName="buyPrice" required>
+                <mat-error *ngIf="form.controls.buyPrice.errors?.required">Buy Price is required</mat-error>
+            </mat-form-field>
+        </div>
+        <div fxFlex="100" fxFlex.gt-md="50" class="px-1">
+            <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Supplier</mat-label>
+                <mat-select formControlName="supplierId">
+                    <mat-option [value]="null">All</mat-option>
+                    <mat-option *ngFor="let supplier of suppliers" [value]="supplier.id">
+                        <span>{{supplier.name}}</span>
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div fxFlex="100" fxFlex.gt-md="50" class="px-1">
+            <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Invoice Number</mat-label>
+                <input matInput formControlName="invoiceNumber">
+            </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="space-between center" class="w-100">
+
+        </div>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+    <button mat-raised-button color="warn" type="button" mat-dialog-close>Close</button>
+    <button mat-raised-button color="primary" type="submit">Submit</button>
+</mat-dialog-actions>

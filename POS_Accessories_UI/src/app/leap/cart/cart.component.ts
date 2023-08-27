@@ -1,7 +1,8 @@
 import { Component, OnInit, Inject } from "@angular/core";
 import { OrderProduct } from "src/app/shared/models/orderProduct";
 import { CartService } from "../../shared/services/cart.service";
-
+import jwt_decode from 'jwt-decode';
+import { AccountService } from "src/app/shared/services/account.service";
 @Component({
   selector: "app-cart",
   templateUrl: "./cart.component.html",
@@ -21,18 +22,29 @@ export class CartComponent implements OnInit {
   grandTotalWithVAT: any = null;
   grandTotalWithOutVAT: any = null;
 
-  constructor(public cartService: CartService) { }
+  constructor(public cartService: CartService, private accountService: AccountService) { }
 
   ngOnInit() {
     this.cartService.dataSubject$.subscribe(item => {
       if (item) {
         this.cartItems = item.cartList;
-        this.vatPercentage = item.vat;
-        this.deliveryCharges = item.deliveryCharges;
+        //this.vatPercentage = item.vat;
+        //this.deliveryCharges = item.deliveryCharges;
         this.discountPercentage = item.discount;
         this.updateCalculations();
       }
     })
+    this.getDelChargesVat();
+  }
+
+  getDelChargesVat(){
+    const token: any = this.DecodeToken(this.accountService?.getSession());
+    const configList = JSON.parse(token?.configurationList);
+
+    this.deliveryCharges = configList.find(item => item.ConfigurationTypeId === 1)?.Amount;
+    this.vatPercentage = configList.find(item => item.ConfigurationTypeId === 2)?.Amount;
+
+    this.getDelChargesVat();
   }
 
   public updateCartItem(qty: number, updatedProduct: OrderProduct) {
@@ -78,4 +90,10 @@ export class CartComponent implements OnInit {
     this.cartItemCount = this.cartItems.length;
 
   }
+
+  DecodeToken(token: string): string {
+    return jwt_decode(token);
+  }
+
+
 }

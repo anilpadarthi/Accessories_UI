@@ -99,7 +99,8 @@ export class StockInventoryComponent implements OnInit {
         },
         panelClass: ['theme-dialog'],
         autoFocus: false,
-        direction: (this.settings.rtl) ? 'rtl' : 'ltr'
+        direction: (this.settings.rtl) ? 'rtl' : 'ltr',
+        width: '600px'
       });
       dialogRef.afterClosed().subscribe(dialogResult => { 
         if(dialogResult){    
