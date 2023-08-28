@@ -101,13 +101,8 @@ export class ProductsComponent implements OnInit {
     };
     this.productService.getAll(request).subscribe((res) => {
       this.products = res.data.results;
-      this.totalCount = res.data.totalRecords;
-      //TODO:remove this hardcodings
-      this.products.forEach((a) => {
-        a.availibilityCount = 10;
-        a.newPrice = a.productId * 10;
-        a.oldPrice = a.productId * 10;
-      });
+      console.log(this.products);
+      this.totalCount = res.data.totalRecords;    
     });
   }
 

@@ -30,7 +30,7 @@ export class AnalyticsComponent implements OnInit {
 
   ngOnInit() {
     //this.analytics = analytics;
-    this.getGraphMetricsReport()
+    //this.getGraphMetricsReport()
   }
 
   onSelect(event) {

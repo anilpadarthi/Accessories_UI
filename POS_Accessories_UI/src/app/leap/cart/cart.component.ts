@@ -3,6 +3,8 @@ import { OrderProduct } from "src/app/shared/models/orderProduct";
 import { CartService } from "../../shared/services/cart.service";
 import jwt_decode from 'jwt-decode';
 import { AccountService } from "src/app/shared/services/account.service";
+import { ConfigurationService } from "src/app/shared/services/configuration.service";
+
 @Component({
   selector: "app-cart",
   templateUrl: "./cart.component.html",
@@ -22,29 +24,33 @@ export class CartComponent implements OnInit {
   grandTotalWithVAT: any = null;
   grandTotalWithOutVAT: any = null;
 
-  constructor(public cartService: CartService, private accountService: AccountService) { }
+  constructor(public cartService: CartService,
+    public configurationService: ConfigurationService, private accountService: AccountService) { }
 
   ngOnInit() {
     this.cartService.dataSubject$.subscribe(item => {
       if (item) {
         this.cartItems = item.cartList;
-        //this.vatPercentage = item.vat;
-        //this.deliveryCharges = item.deliveryCharges;
         this.discountPercentage = item.discount;
-        this.updateCalculations();
+        this.getDelChargesVat();       
       }
     })
-    this.getDelChargesVat();
   }
 
-  getDelChargesVat(){
-    const token: any = this.DecodeToken(this.accountService?.getSession());
-    const configList = JSON.parse(token?.configurationList);
+  getDelChargesVat() {
+    this.configurationService.getActiveConfigurations().subscribe((res) => {
+      debugger;
+      this.vatPercentage = this.getConfiguration(res.data,1);
+      this.deliveryCharges = this.getConfiguration(res.data,2);
+      this.updateCalculations();
+    });
+    // const token: any = this.DecodeToken(this.accountService?.getSession());
+    // const configList = JSON.parse(token?.configurationList);
 
-    this.deliveryCharges = configList.find(item => item.ConfigurationTypeId === 1)?.Amount;
-    this.vatPercentage = configList.find(item => item.ConfigurationTypeId === 2)?.Amount;
+    // this.deliveryCharges = configList.find(item => item.ConfigurationTypeId === 1)?.Amount;
+    // this.vatPercentage = configList.find(item => item.ConfigurationTypeId === 2)?.Amount;
 
-    this.getDelChargesVat();
+    // this.getDelChargesVat();
   }
 
   public updateCartItem(qty: number, updatedProduct: OrderProduct) {
@@ -95,5 +101,17 @@ export class CartComponent implements OnInit {
     return jwt_decode(token);
   }
 
+  getConfiguration(data: any, configurationType: Number): number {
+    let configValue = 0;
+    var value = data.filter(
+      (a) =>
+        a.configurationTypeId == configurationType
+       
+    )[0];
+    if (value) {
+      configValue = value.amount;
+    }
+    return configValue;
+  }
 
 }

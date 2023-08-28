@@ -66,7 +66,6 @@ export class SaleHistoryComponent implements OnInit {
 
   loadData(): void {
     console.log(this.data);
-    debugger;
      this.getStockPurchaseHistory(this.data.id);
   }
   handlePageEvent(event: PageEvent): void {
@@ -77,7 +76,6 @@ export class SaleHistoryComponent implements OnInit {
   }
  
   getStockPurchaseHistory(productId:number){
-    debugger;
     const request = {
           pageNo: this.pageIndex,
           pageSize: this.pageSize,

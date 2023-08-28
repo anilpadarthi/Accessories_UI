@@ -20,6 +20,7 @@ export class Product {
     public priceList?: ProductPriceList[],
     public availibilityCount?: number,
     public newPrice?: number,
-    public oldPrice?: number
+    public oldPrice?: number,
+    public salePrice?: number
   ) {}
 }

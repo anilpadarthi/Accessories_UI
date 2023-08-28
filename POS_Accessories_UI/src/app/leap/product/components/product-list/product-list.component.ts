@@ -102,6 +102,7 @@ export class ProductListComponent implements OnInit {
   }
 
   onSubCategoryChange(event: any) {
+    this.pageIndex = 1;
     this.loadData();
   }
 

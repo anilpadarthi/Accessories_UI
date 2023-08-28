@@ -60,7 +60,7 @@ export class ControlsComponent implements OnInit {
       currentProduct = new OrderProduct(
         product.productId,
         this.count,
-        product.newPrice
+        product.salePrice
       );
       currentProduct.productName = product.productName;
       currentProduct.productCode = product.productCode;

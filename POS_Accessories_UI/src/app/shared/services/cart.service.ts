@@ -44,15 +44,7 @@ export class CartService {
     public snackBar: MatSnackBar,
     public configurationService: ConfigurationService,
     private accountService: AccountService
-  ) {
-    this.configurationService.getActiveConfigurations().subscribe((res) => {
-      this.Data.vat = this.getConfiguration(res.data, 1);
-      this.Data.deliveryCharges = this.getConfiguration(res.data, 2);
-      if(this.accountService.getItem('appData')){
-        this.Data = this.accountService.getItem('appData');
-        this.dataSubject.next(this.Data);
-      }
-    });
+  ) {    
   }
 
   getConfiguration(data: any, configurationType: Number): number {
@@ -71,7 +63,7 @@ export class CartService {
 
   public addToCart(product: OrderProduct) {
     let message, status;
-
+console.log(product);
     this.Data.totalPrice = null;
     this.Data.totalCartCount = null;
 
