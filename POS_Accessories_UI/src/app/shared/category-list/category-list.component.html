@@ -6,7 +6,7 @@
         <div *ngFor="let subCategory of category.subCategories" 
             [class.highlighted]="subCategory?.subCategoryName?.toLowerCase() === currentSubCategory">
             <button mat-menu-item (click)="changeCategory($event)" class="active" 
-                [matTooltip]="subCategory.subCategoryName" matTooltipPosition="above">
+                [matTooltip]="subCategory.subCategoryName" matTooltipPosition="right">
                 <span>{{subCategory.subCategoryName}}</span>
             </button>
         </div>
