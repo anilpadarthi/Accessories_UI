@@ -2,11 +2,13 @@
     <button mat-menu-item (click)="changeCategory($event)">
         <span class="font-bold">{{category.categoryName}}</span>
     </button>
-     <div *ngIf="category.subCategories.length > 0" class="sub-category">
-        <div *ngFor="let subCategory of category.subCategories">
-        <button mat-menu-item (click)="changeCategory($event)">
-            <span>{{subCategory.subCategoryName}}</span>
-        </button>
+    <div *ngIf="category.subCategories.length > 0" class="sub-category">
+        <div *ngFor="let subCategory of category.subCategories" 
+            [class.highlighted]="subCategory?.subCategoryName?.toLowerCase() === currentSubCategory">
+            <button mat-menu-item (click)="changeCategory($event)" class="active" 
+                [matTooltip]="subCategory.subCategoryName" matTooltipPosition="above">
+                <span>{{subCategory.subCategoryName}}</span>
+            </button>
+        </div>
     </div>
-    </div>  
 </div>

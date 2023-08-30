@@ -36,15 +36,19 @@ export class CartService {
 
   public url = environment.url + "/assets/data/";
 
-  public dataSubject = new BehaviorSubject<any>('');    
-  public dataSubject$ = this.dataSubject.asObservable();   
+  public dataSubject = new BehaviorSubject<any>('');
+  public dataSubject$ = this.dataSubject.asObservable();
 
   constructor(
     public http: HttpClient,
     public snackBar: MatSnackBar,
     public configurationService: ConfigurationService,
     private accountService: AccountService
-  ) {    
+  ) {
+    if (this.accountService.getItem('appData')) {
+      this.Data = this.accountService.getItem('appData');
+      this.dataSubject.next(this.Data);
+    }
   }
 
   getConfiguration(data: any, configurationType: Number): number {
@@ -63,7 +67,6 @@ export class CartService {
 
   public addToCart(product: OrderProduct) {
     let message, status;
-console.log(product);
     this.Data.totalPrice = null;
     this.Data.totalCartCount = null;
 
@@ -95,8 +98,8 @@ console.log(product);
     });
   }
 
-  public removeCartItems(cartItems){
-    if(cartItems){
+  public removeCartItems(cartItems) {
+    if (cartItems) {
       this.Data.cartList = cartItems;
       this.Data.totalCartCount = cartItems?.length;
       this.accountService.setItem('appData', this.Data);

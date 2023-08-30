@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Category } from 'src/app/shared/models/category';
 import { Response } from 'src/app/shared/models/response';
 import { environment } from 'src/environments/environment';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +11,9 @@ import { Observable } from 'rxjs';
 export class CategoryService {
 
   url: string;
+
+  public categorySubject = new BehaviorSubject<any>('');    
+  public categorySubject$ = this.categorySubject.asObservable();
 
   constructor(public http: HttpClient) {
     this.url = `${environment.apiUrl}/api/Category`

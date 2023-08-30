@@ -11,6 +11,7 @@ export class CategoryListComponent {
   @Input() categoryParentId;
   @Output() change: EventEmitter<any> = new EventEmitter();
   mainCategories;
+  currentSubCategory: string = '';
 
   constructor() { }
 
@@ -28,6 +29,7 @@ export class CategoryListComponent {
   }
 
   public changeCategory(event){
+    this.currentSubCategory = event.target.innerText.toLowerCase();
     this.change.emit(event);
   }
 }

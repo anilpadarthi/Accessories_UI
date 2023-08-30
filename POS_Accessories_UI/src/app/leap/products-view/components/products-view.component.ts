@@ -72,6 +72,11 @@ export class ProductsComponent implements OnInit {
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
     this.settings = this.appSettings.settings;
+    this.categoryService.categorySubject$.subscribe(item => {
+      if(item && item.name){
+        this.getProductsOnCategorySubCategory(item.name);
+      }
+    })
   }
 
   ngOnInit() {
@@ -95,7 +100,7 @@ export class ProductsComponent implements OnInit {
   public getAllProducts() {
     let request = {
       pageNo: this.pageIndex,
-      pageSize: this.pageSize,
+      pageSize: 100000,
       categoryId: this.categoryId,
       subCategoryId: this.subCategoryId,
     };
@@ -106,30 +111,32 @@ export class ProductsComponent implements OnInit {
     });
   }
 
-  public getCategories() {
+  getCategories() {
     this.categoryService.getCategoryList().subscribe((res) => {
       this.categories = res.data;
-      this.sub = this.activatedRoute.params.subscribe((params) => {
-        if (params["name"]) {
-          this.categories.forEach((a) => {
-            if (a.categoryName.toLowerCase() == params["name"].toLowerCase()) {
-              this.categoryId = a.categoryId;
-            }
-            if (a.subCategories) {
-              a.subCategories.forEach((s) => {
-                if (
-                  s.subCategoryName.toLowerCase() ==
-                  params["name"].toLowerCase()
-                ) {
-                  this.subCategoryId = s.subCategoryId;
-                }
-              });
+      this.getAllProducts();
+    });
+  }
+
+  getProductsOnCategorySubCategory(name){
+    if (name) {
+      this.categories.forEach((a) => {
+        if (a.categoryName.toLowerCase() == name.toLowerCase()) {
+          this.categoryId = a.categoryId;
+        }
+        if (a.subCategories) {
+          a.subCategories.forEach((s) => {
+            if (
+              s.subCategoryName.toLowerCase() ==
+              name.toLowerCase()
+            ) {
+              this.subCategoryId = s.subCategoryId;
             }
           });
         }
-        this.getAllProducts();
       });
-    });
+      this.getAllProducts();
+    }
   }
 
   getColours() {
@@ -148,10 +155,6 @@ export class ProductsComponent implements OnInit {
   //   this.brands = this.appService.getBrands();
   //   this.brands.forEach(brand => { brand.selected = false });
   // }
-
-  ngOnDestroy() {
-    this.sub.unsubscribe();
-  }
 
   @HostListener("window:resize")
   public onWindowResize(): void {
@@ -200,10 +203,18 @@ export class ProductsComponent implements OnInit {
 
   public onChangeCategory(event) {
     if (event.target) {
-      this.router.navigate([
-        "/products-view",
-        event.target.innerText.toLowerCase(),
-      ]);
+      // this.router.navigateByUrl(
+      //   "/products-view", { state: event.target.innerText.toLowerCase(), skipLocationChange: true }
+      // );
+      let data = {
+        name: event.target.innerText.toLowerCase()
+      }
+      this.categoryService.categorySubject.next(data);
     }
   }
+
+  ngOnDestroy() {
+    //this.sub.unsubscribe();
+  }
+  
 }
