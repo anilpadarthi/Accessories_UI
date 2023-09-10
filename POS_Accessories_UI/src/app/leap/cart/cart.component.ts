@@ -28,29 +28,22 @@ export class CartComponent implements OnInit {
     public configurationService: ConfigurationService, private accountService: AccountService) { }
 
   ngOnInit() {
+    this.getDelChargesVat();
     this.cartService.dataSubject$.subscribe(item => {
       if (item) {
         this.cartItems = item.cartList;
         this.discountPercentage = item.discount;
-        this.getDelChargesVat();       
+        this.updateCalculations();
       }
     })
   }
 
   getDelChargesVat() {
     this.configurationService.getActiveConfigurations().subscribe((res) => {
-      debugger;
       this.vatPercentage = this.getConfiguration(res.data,1);
       this.deliveryCharges = this.getConfiguration(res.data,2);
       this.updateCalculations();
     });
-    // const token: any = this.DecodeToken(this.accountService?.getSession());
-    // const configList = JSON.parse(token?.configurationList);
-
-    // this.deliveryCharges = configList.find(item => item.ConfigurationTypeId === 1)?.Amount;
-    // this.vatPercentage = configList.find(item => item.ConfigurationTypeId === 2)?.Amount;
-
-    // this.getDelChargesVat();
   }
 
   public updateCartItem(qty: number, updatedProduct: OrderProduct) {

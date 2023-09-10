@@ -1,0 +1,63 @@
+.filter-controls {
+    margin: 0px 15px 0px 15px;
+  
+    button {
+      margin-right: 10px;
+    }
+  
+    mat-form-field {
+      margin-right: 10px;
+      font-size: 0.8em;
+    }
+  
+    mat-select {
+      width: 100%;
+    }
+  
+    .date-control {
+      width: 198px !important;
+    }
+  
+    .right
+    {
+      float:right;
+    }
+    mat-checkbox {
+      margin-right: 1em;
+    }
+  }
+  
+  .zero-results {
+    text-align: center;
+    color: red;
+    margin: 1em;
+    font-weight: bold;
+    font-size: 16px;
+  }
+  
+  .actions {
+    width: 60%;
+  }
+  
+  .tile{
+    text-align: right;
+    .mat-icon{
+        position: absolute;
+        left: 4px;
+        top: 50%;
+        line-height: 0;
+        font-size: 54px;
+        opacity: 0.3;
+    }
+    h2{
+        font-weight: 500;
+    }
+    p{
+        text-transform: uppercase;
+    }
+  }
+  
+  .table-container {
+    //height: calc(100vh - 540px)
+    height: calc(100vh - 240px)
+  }

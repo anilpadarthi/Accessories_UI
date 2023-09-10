@@ -16,16 +16,36 @@ export class ReportService {
     this.url = `${environment.apiUrl}/api/Report`
   }
 
-  getProductAnalysisReport(requestBody: any): Observable<any> {
-    return this.http.post<any>(`${this.url}/ProductAnalysisReport`, requestBody);
-  }
+  // getProductAnalysisReport(requestBody: any): Observable<any> {
+  //   return this.http.post<any>(`${this.url}/ProductAnalysisReport`, requestBody);
+  // }
 
-  getRevenueReport(requestBody: any): Observable<any> {
-    return this.http.post<any>(`${this.url}/RevenueReport`, requestBody);
-  }
+  // getRevenueReport(requestBody: any): Observable<any> {
+  //   return this.http.post<any>(`${this.url}/RevenueReport`, requestBody);
+  // }
 
   getGraphMetricsReport(requestBody: any): Observable<any> {
     return this.http.post<any>(`${this.url}/GetGraphMetricsReport`, requestBody);
+  }
+
+  getSaleReport(requestBody: any): Observable<any> {
+    return this.http.post<any>(`${this.url}/GetSaleReport`, requestBody);
+  }
+
+  getMonthlySaleReport(requestBody: any): Observable<any> {
+    return this.http.post<any>(`${this.url}/GetMonthlySaleReport`, requestBody);
+  }
+
+  getRevenueReport(requestBody: any): Observable<any> {
+    return this.http.post<any>(`${this.url}/GetRevenueReport`, requestBody);
+  }
+
+  getProductAnalysisReport(requestBody: any): Observable<any> {
+    return this.http.post<any>(`${this.url}/GetProductAnalysisReport`, requestBody);
+  }
+
+  getWarehouseReport(requestBody: any): Observable<any> {
+    return this.http.post<any>(`${this.url}/GetWarehouseReport`, requestBody);
   }
 
   

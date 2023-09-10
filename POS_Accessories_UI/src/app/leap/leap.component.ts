@@ -4,6 +4,7 @@ import { Router, NavigationEnd } from "@angular/router";
 import { MenuService } from "./components/menu/menu.service";
 import { CartService } from "../shared/services/cart.service";
 import { AccountService } from "../shared/services/account.service";
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: "app-leap",
@@ -17,7 +18,7 @@ export class LeapComponent implements OnInit {
   public menuItems: Array<any>;
   public roleBasedMenus: Array<any> = [];
   public toggleSearchBar: boolean = false;
-  public hideSideNavUrl = ["/order-create", "/products-view"];
+  public hideSideNavUrl = ["/sales", "/products-view"];
 
   public userRoles;
   public currentUser;
@@ -33,6 +34,7 @@ export class LeapComponent implements OnInit {
     this.settings = this.appSettings.settings;
     this.userRoles = this.menuService.getUserRoles();
     this.currentUser = this.accountService.getUserInfo();
+    this.userImage =  environment.apiUrl + '/' + this.currentUser.image
     this.cartService.dataSubject$.subscribe(item => {
       if (item) {
         this.cartData = item;

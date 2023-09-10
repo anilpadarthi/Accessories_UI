@@ -51,7 +51,6 @@ export class MessagesComponent implements OnInit, OnDestroy {
     this.timerSubscription = timer(0, this.timer).pipe(
       switchMap(() => this.orderService.getOrderNotificationCount())
     ).subscribe(result => {
-      console.log(result);
       this.notificationsCount = result?.data ?? 0;
     });
   }

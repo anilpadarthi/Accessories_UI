@@ -6,7 +6,6 @@ import { AppSettings, Settings } from 'src/app/app.settings';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CategoryService } from '../../../../shared/services/category.service'
 import { PageEvent } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
 import { PaginatorConstants } from 'src/app/shared/models/paginator-constants';
 import { MessageService } from 'src/app/shared/services/message.service';
 import { ThemePalette } from '@angular/material/core';

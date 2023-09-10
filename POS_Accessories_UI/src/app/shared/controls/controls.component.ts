@@ -37,7 +37,7 @@ export class ControlsComponent implements OnInit {
     }
   }
 
-  public addToCart(product: Product) {
+  public addToCart(product: any) {
     let currentProduct = this.cartService.Data.cartList.filter(
       (item) => item.productId == product.productId
     )[0];
@@ -64,6 +64,7 @@ export class ControlsComponent implements OnInit {
       );
       currentProduct.productName = product.productName;
       currentProduct.productCode = product.productCode;
+      currentProduct.image = product.image;
     }
     this.cartService.addToCart(currentProduct);
   }

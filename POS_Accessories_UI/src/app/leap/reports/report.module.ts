@@ -11,6 +11,11 @@ import { FormsModule } from '@angular/forms';
 import { AnalysisReportComponent } from './analysis-report/analysis-report.component';
 import { ProductRevenueReportComponent } from './product-revenue-report/product-revenue-report.component';
 import { AuthGuardService } from 'src/app/shared/services/auth-guard.service';
+import { SaleReportComponent } from './sale-report/sale-report.component';
+import { RevenueReportComponent } from './revenue-report/revenue-report.component';
+import { MonthlySaleReportComponent } from './monthly-sale-report/monthly-sale-report.component';
+import { ProductAnalysisReportComponent } from './product-analysis-report/product-analysis-report.component';
+import { WarehouseReportComponent } from './warehouse-report/warehouse-report.component';
 
 export const routes: Routes = [
   { path: '', 
@@ -29,16 +34,24 @@ export const routes: Routes = [
     canActivate: [AuthGuardService],
     data: { roles: [1, 2, 3, 4] },
     pathMatch: 'full',
-  }
-  // { path: 'create', component: AddCouponComponent },
-  // { path: 'edit/:id', component: AddCouponComponent, data: { breadcrumb: 'Edit Coupon' } }, 
+  },
+  { path: 'salereport', component: SaleReportComponent },
+  { path: 'revenuereport', component: RevenueReportComponent },
+  { path: 'monthlysalereport', component: MonthlySaleReportComponent },
+  { path: 'warehousereport', component: WarehouseReportComponent },
+  { path: 'productanalysisreport', component: ProductAnalysisReportComponent },
 ];
 
 @NgModule({
   declarations: [
     ProductReportComponent,
     AnalysisReportComponent,
-    ProductRevenueReportComponent
+    ProductRevenueReportComponent,
+    SaleReportComponent,
+    RevenueReportComponent,
+    MonthlySaleReportComponent,
+    ProductAnalysisReportComponent,
+    WarehouseReportComponent
   ],
   imports: [
     CommonModule,

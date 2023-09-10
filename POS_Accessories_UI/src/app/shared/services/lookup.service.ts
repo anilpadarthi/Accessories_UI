@@ -70,4 +70,7 @@ export class LookupService {
   getShops(areaId: number): Observable<any> {
     return this.http.get<any>(this.url + "/Shops/" + areaId);
   }
+  getUserRoles(): Observable<any> {
+    return this.http.get<any>(this.url + "/UserRoles");
+  }
 }

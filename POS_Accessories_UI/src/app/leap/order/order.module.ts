@@ -12,13 +12,21 @@ import { FormsModule } from "@angular/forms";
 import { ViewOrderDetailsComponent } from './view-order-details/view-order-details.component';
 import { OrderHistoryComponent } from './order-history/order-history.component';
 import { MakePaymentComponent } from './make-payment/make-payment.component';
+import { NewOrderListComponent } from './new-order-list/new-order-list.component';
 
 export const routes: Routes = [
   { path: "", component: OrdernListComponent, pathMatch: "full" },
+  { path: "new", component: NewOrderListComponent, pathMatch: "full" },
 ];
 
 @NgModule({
-  declarations: [OrdernListComponent, OrderDialogComponent, ViewOrderDetailsComponent, OrderHistoryComponent, MakePaymentComponent],
+  declarations: [
+    OrdernListComponent, 
+    OrderDialogComponent, 
+    ViewOrderDetailsComponent, 
+    OrderHistoryComponent, 
+    MakePaymentComponent, 
+    NewOrderListComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),

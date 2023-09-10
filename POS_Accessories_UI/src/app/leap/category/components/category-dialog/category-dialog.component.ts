@@ -42,7 +42,6 @@ export class CategoryDialogComponent implements OnInit {
         this.getCategoryById();
       }
     });
-
   }
 
   initializeForm() {

@@ -47,4 +47,8 @@ export class ProductService {
     return this.http.post<Response>(this.url+"/CreateBundleProduct", requestBody);
   }
 
+  getAllProducts(requestBody: any): Observable<any> {
+    return this.http.post<any>(this.url + "/GetAllProducts", requestBody);
+  }
+
 }

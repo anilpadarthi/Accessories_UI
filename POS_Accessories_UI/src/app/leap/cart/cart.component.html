@@ -35,7 +35,7 @@
     </div>
     <div *ngFor="let product of cartService.Data.cartList" class="mat-row">
       <div class="mat-cell">
-        <img [src]="'assets/images/products/keyboard/1-medium.png'" />
+        <img [src]="product.image" />
       </div>
       <div class="mat-cell">
         <a

@@ -9,6 +9,8 @@ import { filter, map, Subscription } from "rxjs";
 import { OrderDetails } from "src/app/shared/models/orderDetails";
 import { CartService } from "src/app/shared/services/cart.service";
 import { OrderService } from "src/app/shared/services/order.service";
+import { LookupService } from "src/app/shared/services/lookup.service";
+import { AccountService } from "src/app/shared/services/account.service";
 
 @Component({
   selector: "app-checkout",
@@ -31,14 +33,19 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   grandTotal = 0;
   watcher: Subscription;
   isOrderPlaced: boolean = false;
-  deliveryAddress: string = "Charter House,25 High street,Bourne Mouth,UK";
   public form: UntypedFormGroup;
+  areaList: any[];
+  shopList: any[];
+  shopAddress = '';
+  shopId = 0;
 
   constructor(
     public cartService: CartService,
     public fb: UntypedFormBuilder,
     public mediaObserver: MediaObserver,
-    public orderService: OrderService
+    public orderService: OrderService,
+    private lookupService: LookupService,
+    private accountService: AccountService
   ) {
     this.watcher = mediaObserver
       .asObservable()
@@ -75,6 +82,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     this.form = this.fb.group({
       paymentMode: "",
     });
+    this.getAreaLookup();
   }
 
   ngOnDestroy() {
@@ -82,10 +90,12 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   }
 
   public placeOrder() {
+    let currentUser = this.accountService.getUserInfo();
+
     let order = new OrderDetails();
     order.items = this.cartService.Data.cartList;
     order.itemTotal = this.grandTotal;
-    order.shippingAddress = this.deliveryAddress;
+    order.shippingAddress = this.shopAddress;
     order.paymentMethod = this.form.value.paymentMode;
     order.discountPercentage = this.cartService.Data.discount;
     order.deliveryCharges = this.cartService.Data.deliveryCharges;
@@ -97,8 +107,8 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
     //TODO:Remove this hardcoding
     order.orderStatus = "Pending";
-    order.shopId = 0;
-    order.userId = 0;
+    order.shopId = this.shopId;
+    order.userId = currentUser.userId;
     this.orderService.create(order).subscribe((res: any) => {
       if (res.status) {
         this.isOrderPlaced = true;
@@ -110,5 +120,30 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         this.cartService.Data.vat = null;
       }
     });
+  }
+
+  getAreaLookup() {
+    this.lookupService.getAreas().subscribe((res) => {
+      this.areaList = res.data;
+    });
+  }
+
+  getShopLookup(areaId: number) {
+    this.lookupService.getShops(areaId).subscribe((res) => {
+      this.shopList = res.data;
+    });
+  }
+
+  onAreaChange(event: any) {
+    if (event.value) {
+      this.getShopLookup(event.value);
+    } else {
+      this.shopList = [];
+    }
+  }
+  onShopChange(event: any) {
+    console.log(event);
+    this.shopAddress = event.value.address + ',' + event.value.postCode;
+    this.shopId = event.value.shopId;
   }
 }

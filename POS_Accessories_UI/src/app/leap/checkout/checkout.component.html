@@ -6,11 +6,31 @@
     <form [formGroup]="form" (ngSubmit)="placeOrder()" autocomplete="off">
       <div *ngIf="!isOrderPlaced">
         <div fxLayout="row">
+          <mat-form-field appearance="outline">
+            <mat-label>Area</mat-label>
+            <mat-select (selectionChange)="onAreaChange($event)">
+                <mat-option [value]="null">All</mat-option>
+                <mat-option *ngFor="let item of areaList" [value]="item.id">
+                    <span>{{item.name}}</span>
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+      <br />
+        <mat-form-field appearance="outline">
+            <mat-label>Shop</mat-label>
+            <mat-select  (selectionChange)="onShopChange($event)">
+                <mat-option [value]="null">All</mat-option>
+                <mat-option *ngFor="let item of shopList" [value]="item">
+                    <span>{{item.shopName}}</span>
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <br />
           <div fxFlex="100" class="p-1">
             <h3 class="text-muted mt-2">Delivery Address</h3>
             <div class="divider"></div>
-            <div *ngFor="let item of deliveryAddress.split(',')">
-              <span>{{ item }}</span><br />
+            <div>
+              <span>{{ shopAddress }}</span><br />
             </div>
           </div>
         </div>

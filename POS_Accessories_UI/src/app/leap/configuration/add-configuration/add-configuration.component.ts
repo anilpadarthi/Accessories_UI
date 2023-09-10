@@ -63,9 +63,7 @@ export class AddConfigurationComponent implements OnInit {
     this.router.navigate(['/configuration']);
   }
 
-
   public onSubmit() {
-
     var requestBody = {
       ConfigurationId: this.form.value.configurationId,
       ConfigurationTypeId: this.form.value.configurationTypeId,

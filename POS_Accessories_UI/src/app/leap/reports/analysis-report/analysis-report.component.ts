@@ -1,8 +1,6 @@
 import { Component, OnInit, AfterViewInit, ViewChild  } from '@angular/core';
 import { ReportService } from 'src/app/shared/services/report.service'
-import { PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { PaginatorConstants } from 'src/app/shared/models/paginator-constants';
 import {MatPaginator} from '@angular/material/paginator';
 import { ProductAnalysis } from 'src/app/shared/models/product-analysis';
 

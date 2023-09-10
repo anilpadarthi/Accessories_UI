@@ -19,8 +19,8 @@ import { SubCategoryService } from "src/app/shared/services/subCategory.service"
 import { LookupService } from "src/app/shared/services/lookup.service";
 import { ProductDialogComponent } from "./product-dialog/product-dialog.component";
 import { PaginatorConstants } from "src/app/shared/models/paginator-constants";
-import { parseTemplate } from "@angular/compiler";
 import { PageEvent } from "@angular/material/paginator";
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: "app-products-view",
@@ -41,7 +41,7 @@ export class ProductsComponent implements OnInit {
     "Highest first",
   ];
   public sort: any;
-  public products: Array<Product> = [];
+  public products = [];
   public categories: Category[] = [];
   public subCategories: SubCategory[] = [];
   public brands = [];
@@ -57,8 +57,8 @@ export class ProductsComponent implements OnInit {
   pageIndex = 1;
   pageEvent: PageEvent | undefined;
   totalCount!: number;
-  categoryId: number;
-  subCategoryId: number;
+  categoryId: number = null;
+  subCategoryId: number = null;
 
   constructor(
     public appSettings: AppSettings,
@@ -73,7 +73,7 @@ export class ProductsComponent implements OnInit {
   ) {
     this.settings = this.appSettings.settings;
     this.categoryService.categorySubject$.subscribe(item => {
-      if(item && item.name){
+      if (item && item.name) {
         this.getProductsOnCategorySubCategory(item.name);
       }
     })
@@ -99,15 +99,14 @@ export class ProductsComponent implements OnInit {
 
   public getAllProducts() {
     let request = {
-      pageNo: this.pageIndex,
-      pageSize: 100000,
       categoryId: this.categoryId,
       subCategoryId: this.subCategoryId,
     };
-    this.productService.getAll(request).subscribe((res) => {
+    this.productService.getAllProducts(request).subscribe((res) => {
       this.products = res.data.results;
+      this.products.forEach(e=> e.image = environment.apiUrl + '/' + e.image );
       console.log(this.products);
-      this.totalCount = res.data.totalRecords;    
+      this.totalCount = res.data.totalRecords;
     });
   }
 
@@ -118,7 +117,7 @@ export class ProductsComponent implements OnInit {
     });
   }
 
-  getProductsOnCategorySubCategory(name){
+  getProductsOnCategorySubCategory(name) {
     if (name) {
       this.categories.forEach((a) => {
         if (a.categoryName.toLowerCase() == name.toLowerCase()) {
@@ -216,5 +215,5 @@ export class ProductsComponent implements OnInit {
   ngOnDestroy() {
     //this.sub.unsubscribe();
   }
-  
+
 }

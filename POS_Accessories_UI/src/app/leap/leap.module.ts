@@ -16,8 +16,8 @@ import { MessagesComponent } from './components/messages/messages.component';
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
 import { ErrorComponent } from './error/components/error.component';
 import { WarehouseComponent } from 'src/app/leap/stock-inventory/components/warehouse/warehouse.component';
-import { PurchaseHistoryComponent } from './stock-inventory/components/purchase-history/purchase-history.component';
 import { AuthGuardService } from '../shared/services/auth-guard.service';
+
 
 const allRoles: any[] = [1, 2, 3, 4, 5, 6];
 const adminRoles: any[] = [1, 2]
@@ -54,6 +54,30 @@ export const routes = [
         loadChildren: () => import('./supplier/supplier.module').then(m => m.SupplierModule),
         canActivate: [AuthGuardService],
         data: { breadcrumb: 'Supplier', roles: adminRoles }
+      },
+      {
+        path: 'user',
+        loadChildren: () => import('./user/user.module').then(m => m.UserModule),
+        canActivate: [AuthGuardService],
+        data: { roles: adminRoles }
+      },
+      {
+        path: 'area',
+        loadChildren: () => import('./area/area.module').then(m => m.AreaModule),
+        canActivate: [AuthGuardService],
+        data: { roles: adminRoles }
+      },
+      {
+        path: 'shop',
+        loadChildren: () => import('./shop/shop.module').then(m => m.ShopModule),
+        canActivate: [AuthGuardService],
+        data: { roles: adminRoles }
+      },
+      {
+        path: 'network',
+        loadChildren: () => import('./network/network.module').then(m => m.NetworkModule),
+        canActivate: [AuthGuardService],
+        data: { roles: adminRoles }
       },
       {
         path: 'coupon',
@@ -130,7 +154,7 @@ export const routes = [
     FullScreenComponent,
     MessagesComponent,
     BreadcrumbComponent,
-    ErrorComponent
+    ErrorComponent,
   ],
   imports: [
     CommonModule,
