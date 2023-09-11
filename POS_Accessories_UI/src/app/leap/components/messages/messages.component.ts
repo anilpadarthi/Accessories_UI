@@ -3,6 +3,7 @@ import { MatMenuTrigger } from '@angular/material/menu';
 import { MessagesService } from './messages.service';
 import { OrderService } from 'src/app/shared/services/order.service';
 import { Observable, Subscription, map, mergeMap, switchMap, timer } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-messages',
@@ -23,7 +24,8 @@ export class MessagesComponent implements OnInit, OnDestroy {
   timer: number = 2 * 60 * 1000; //2 Minutes
 
   constructor(private messagesService: MessagesService,
-    private orderService: OrderService) {
+    private orderService: OrderService, 
+    private router: Router) {
     this.messages = messagesService.getMessages();
     this.files = messagesService.getFiles();
     this.meetings = messagesService.getMeetings();
@@ -34,8 +36,7 @@ export class MessagesComponent implements OnInit, OnDestroy {
   }
 
   openMessagesMenu() {
-    this.trigger.openMenu();
-    this.selectedTab = 0;
+   this.router.navigate(['/order-list/new'])
   }
 
   onMouseLeave() {

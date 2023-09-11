@@ -16,7 +16,7 @@ import { NewOrderListComponent } from './new-order-list/new-order-list.component
 
 export const routes: Routes = [
   { path: "", component: OrdernListComponent, pathMatch: "full" },
-  { path: "new", component: NewOrderListComponent, pathMatch: "full" },
+  { path: "new", component: NewOrderListComponent},
 ];
 
 @NgModule({

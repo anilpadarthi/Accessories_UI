@@ -25,7 +25,7 @@ export const routes: Routes = [
     { path: 'admin', loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule) },
     { path: '', loadChildren: () => import('./leap/leap.module').then(m => m.LeapModule) },
     { path: 'sign-in', loadChildren: () => import('./pages/sign-in/sign-in.module').then(m => m.SignInModule) },
-    { path: 'not-found', component: NotFoundComponent },
+    { path: 'not-authorized', component: NotFoundComponent },
     { path: '**', component: NotFoundComponent }
 ];
 
