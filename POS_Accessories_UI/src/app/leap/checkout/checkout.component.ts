@@ -85,10 +85,6 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     this.getAreaLookup();
   }
 
-  ngOnDestroy() {
-    this.watcher.unsubscribe();
-  }
-
   public placeOrder() {
     let currentUser = this.accountService.getUserInfo();
 
@@ -118,6 +114,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         this.cartService.Data.discount = null;
         this.cartService.Data.deliveryCharges = null;
         this.cartService.Data.vat = null;
+        this.accountService.setItem('appData', '');
       }
     });
   }
@@ -146,4 +143,10 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     this.shopAddress = event.value.address + ',' + event.value.postCode;
     this.shopId = event.value.shopId;
   }
+
+  ngOnDestroy() {
+    this.watcher.unsubscribe();
+  }
+
+
 }

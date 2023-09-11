@@ -3,13 +3,16 @@ import { HttpClient } from "@angular/common/http";
 import { Product } from "src/app/shared/models/product";
 import { Response } from "src/app/shared/models/response";
 import { environment } from "src/environments/environment";
-import { Observable } from "rxjs";
+import { BehaviorSubject, Observable } from "rxjs";
 
 @Injectable({
   providedIn: "root",
 })
 export class ProductService {
   url: string;
+
+  public allProductsSubject = new BehaviorSubject<any>('');
+  public allProductsSubject$ = this.allProductsSubject.asObservable();
 
   constructor(public http: HttpClient) {
     this.url = `${environment.apiUrl}/api/Product`

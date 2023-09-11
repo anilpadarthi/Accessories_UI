@@ -1,7 +1,6 @@
 import { Component, OnInit, Inject } from "@angular/core";
 import { OrderProduct } from "src/app/shared/models/orderProduct";
 import { CartService } from "../../shared/services/cart.service";
-import jwt_decode from 'jwt-decode';
 import { AccountService } from "src/app/shared/services/account.service";
 import { ConfigurationService } from "src/app/shared/services/configuration.service";
 
@@ -25,7 +24,8 @@ export class CartComponent implements OnInit {
   grandTotalWithOutVAT: any = null;
 
   constructor(public cartService: CartService,
-    public configurationService: ConfigurationService, private accountService: AccountService) { }
+    public configurationService: ConfigurationService, 
+    private accountService: AccountService) { }
 
   ngOnInit() {
     this.getDelChargesVat();
@@ -42,6 +42,8 @@ export class CartComponent implements OnInit {
     this.configurationService.getActiveConfigurations().subscribe((res) => {
       this.vatPercentage = this.getConfiguration(res.data,1);
       this.deliveryCharges = this.getConfiguration(res.data,2);
+      this.cartService.Data.vat = this.vatPercentage;
+      this.cartService.Data.deliveryCharges = this.deliveryCharges;
       this.updateCalculations();
     });
   }
@@ -51,6 +53,7 @@ export class CartComponent implements OnInit {
       this.cartItems.forEach((product) => {
         if (product.productId == updatedProduct.productId) {
           product.qty = qty;
+          this.cartService.addToCart(updatedProduct);
         }
       });
     }
@@ -73,7 +76,7 @@ export class CartComponent implements OnInit {
 
   updateCalculations() {
     this.itemTotal = 0;
-    this.cartItems.forEach((product) => {
+    this.cartItems?.forEach((product) => {
       this.itemTotal += product.qty * product.salePrice;
     });
     this.netTotal = this.itemTotal;
@@ -86,13 +89,10 @@ export class CartComponent implements OnInit {
     this.grandTotalWithVAT =
       this.netTotal + this.vatAmount + this.deliveryCharges;
     this.grandTotalWithOutVAT = this.netTotal + this.deliveryCharges;
-    this.cartItemCount = this.cartItems.length;
+    this.cartItemCount = this.cartItems?.length;
 
   }
 
-  DecodeToken(token: string): string {
-    return jwt_decode(token);
-  }
 
   getConfiguration(data: any, configurationType: Number): number {
     let configValue = 0;

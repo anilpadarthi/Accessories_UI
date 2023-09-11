@@ -67,8 +67,8 @@ export class CartService {
 
   public addToCart(product: OrderProduct) {
     let message, status;
-    this.Data.totalPrice = null;
-    this.Data.totalCartCount = null;
+    this.Data.totalPrice = 0;
+    this.Data.totalCartCount = 0;
 
     if (this.Data.cartList.filter(
       (item) => item.productId == product.productId
@@ -83,7 +83,7 @@ export class CartService {
     this.Data.cartList.forEach((product) => {
       this.Data.totalPrice =
         this.Data.totalPrice + product.qty * product.salePrice;
-      this.Data.totalCartCount = this.Data.totalCartCount + product.qty;
+      this.Data.totalCartCount = this.Data.totalCartCount + +product.qty;
     });
 
     this.accountService.setItem('appData', this.Data);

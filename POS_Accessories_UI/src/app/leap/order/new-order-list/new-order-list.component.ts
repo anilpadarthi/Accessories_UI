@@ -22,7 +22,6 @@ import { MessageService } from "src/app/shared/services/message.service";
   styleUrls: ['./new-order-list.component.scss']
 })
 
-
 export class NewOrderListComponent implements OnInit {
   public settings: Settings;
   displayedColumns = [

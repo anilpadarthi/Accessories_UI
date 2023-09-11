@@ -11,7 +11,6 @@ import { MatDialog } from "@angular/material/dialog";
 import { ProductService } from "src/app/shared/services/product.service";
 import { CategoryService } from "src/app/shared/services/category.service";
 import { Category } from "../../../shared/models/category";
-import { Product } from "../../../shared/models/product";
 import { Settings, AppSettings } from "src/app/app.settings";
 import { isPlatformBrowser } from "@angular/common";
 import { SubCategory } from "src/app/shared/models/subCategory";
@@ -21,6 +20,9 @@ import { ProductDialogComponent } from "./product-dialog/product-dialog.componen
 import { PaginatorConstants } from "src/app/shared/models/paginator-constants";
 import { PageEvent } from "@angular/material/paginator";
 import { environment } from 'src/environments/environment';
+
+import { Subscription } from "rxjs";
+import { NgxSpinnerService } from "ngx-spinner";
 
 @Component({
   selector: "app-products-view",
@@ -60,6 +62,10 @@ export class ProductsComponent implements OnInit {
   categoryId: number = null;
   subCategoryId: number = null;
 
+  catSubscription: Subscription;
+  productsSubscription: Subscription;
+
+
   constructor(
     public appSettings: AppSettings,
     private activatedRoute: ActivatedRoute,
@@ -69,14 +75,23 @@ export class ProductsComponent implements OnInit {
     public subCategoryService: SubCategoryService,
     public dialog: MatDialog,
     private router: Router,
+    private spinner: NgxSpinnerService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
     this.settings = this.appSettings.settings;
-    this.categoryService.categorySubject$.subscribe(item => {
+    this.catSubscription =  this.categoryService.categorySubject$.subscribe(item => {
       if (item && item.name) {
         this.getProductsOnCategorySubCategory(item.name);
       }
     })
+
+    this.productsSubscription = this.productService.allProductsSubject$.subscribe(item => {
+      if (item && item?.allProducts) {
+        this.products = item?.allProducts;
+        //this.categories = item?.allCategories;
+      }
+    })
+
   }
 
   ngOnInit() {
@@ -89,6 +104,10 @@ export class ProductsComponent implements OnInit {
       this.viewCol = 33.3;
     }
 
+    // if(this.categories?.length == 0){
+    //   this.getCategories();
+    // }
+
     this.getCategories();
 
     if (this.showExtraFilter) {
@@ -97,7 +116,7 @@ export class ProductsComponent implements OnInit {
     }
   }
 
-  public getAllProducts() {
+  public getAllProducts(initialLoading?) {
     let request = {
       categoryId: this.categoryId,
       subCategoryId: this.subCategoryId,
@@ -105,15 +124,23 @@ export class ProductsComponent implements OnInit {
     this.productService.getAllProducts(request).subscribe((res) => {
       this.products = res.data.results;
       this.products.forEach(e=> e.image = environment.apiUrl + '/' + e.image );
-      console.log(this.products);
-      this.totalCount = res.data.totalRecords;
+      if(initialLoading){
+        this.productService.allProductsSubject.next({ 
+          allProducts: this.products,
+          //allCategories: this.categories
+        })
+      }
+      //console.log(this.products);
+      //this.totalCount = res.data.totalRecords;
     });
   }
 
   getCategories() {
     this.categoryService.getCategoryList().subscribe((res) => {
       this.categories = res.data;
-      this.getAllProducts();
+      if(this.products.length === 0){
+        this.getAllProducts(true);
+      }
     });
   }
 
@@ -149,11 +176,6 @@ export class ProductsComponent implements OnInit {
       this.sizes = res.data;
     });
   }
-
-  // public getBrands(){
-  //   this.brands = this.appService.getBrands();
-  //   this.brands.forEach(brand => { brand.selected = false });
-  // }
 
   @HostListener("window:resize")
   public onWindowResize(): void {
@@ -212,8 +234,10 @@ export class ProductsComponent implements OnInit {
     }
   }
 
+
   ngOnDestroy() {
-    //this.sub.unsubscribe();
+    this.catSubscription.unsubscribe();
+    this.productsSubscription.unsubscribe();
   }
 
 }

@@ -107,6 +107,9 @@
                 </mat-checkbox>
             </div>
        
+        </div>
+
+        <div class="filter-controls">
             <div class="row right">
                 <button mat-flat-button color="primary" (click)="onSaveClick()">
                     <mat-icon>save</mat-icon> Save
@@ -124,7 +127,6 @@
         </div>
 
         <div class="table-container mat-elevation-z8">
-
             <table mat-table [dataSource]="tableDataSource">
                 <!-- Checkbox Column -->
                 <ng-container matColumnDef="select">
