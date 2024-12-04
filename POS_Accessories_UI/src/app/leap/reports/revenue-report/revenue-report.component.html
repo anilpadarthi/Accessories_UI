@@ -1,1 +1,63 @@
-<p>revenue-report works!</p>
+<div class="p-1">
+    <mat-card class="p-0">
+        <div fxLayout="row wrap" fxLayoutAlign="space-between center" class="w-100 p-2">
+            <h2>Revenue Report</h2>
+        </div>
+        <div class="filter-controls">
+            <div class="row wrap">
+                <mat-form-field appearance="outline" class="input-field">
+                    <mat-label>User</mat-label>
+                    <mat-select [(ngModel)]="selectedUserId">
+                      <mat-option [value]="null">Select</mat-option>
+                      <mat-option *ngFor="let item of userList" [value]="item.id">
+                        <span>{{ item.name }}</span>
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                <mat-form-field appearance="outline" class="input-field date-control">
+                    <mat-label>From Date</mat-label>
+                    <input matInput [matDatepicker]="validFrom" [(ngModel)]="fromDate">
+                    <mat-datepicker-toggle matSuffix [for]="validFrom"></mat-datepicker-toggle>
+                    <mat-datepicker #validFrom></mat-datepicker>
+                  </mat-form-field>
+          
+                  <mat-form-field appearance="outline" class="input-field date-control">
+                    <mat-label>To Date</mat-label>
+                    <input matInput [matDatepicker]="validTo" [(ngModel)]="toDate">
+                    <mat-datepicker-toggle matSuffix [for]="validTo"></mat-datepicker-toggle>
+                    <mat-datepicker #validTo></mat-datepicker>
+                  </mat-form-field>
+                <button mat-flat-button color="primary" (click)="onReset()">
+                    <mat-icon>refresh</mat-icon>
+                </button>
+                <button mat-raised-button color="primary" (click)="onSearch()">
+                    <mat-icon>search</mat-icon>
+                </button>
+                <button mat-raised-button color="primary" (click)="onDownload()">
+                    <mat-icon>download</mat-icon>
+                </button>
+            </div>
+        </div>
+
+       
+        <div class="table-container mat-elevation-z8">
+            <table mat-table [dataSource]="tableDataSource">
+                <ng-container matColumnDef="Date">
+                    <th mat-header-cell *matHeaderCellDef> Date </th>
+                    <td mat-cell *matCellDef="let element"> {{element.monthName}} </td>
+                </ng-container>
+                <ng-container matColumnDef="TotalSale">
+                    <th mat-header-cell *matHeaderCellDef> Total Sale </th>
+                    <td mat-cell *matCellDef="let element"> {{element.totalSale}} </td>
+                </ng-container>
+                <ng-container matColumnDef="TotalOrderCount">
+                    <th mat-header-cell *matHeaderCellDef>Total Orders Count</th>
+                    <td mat-cell *matCellDef="let element"> {{element.totalOrdersCount}} </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+        </div>       
+    </mat-card>
+</div>

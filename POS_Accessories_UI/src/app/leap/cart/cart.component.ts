@@ -1,8 +1,10 @@
 import { Component, OnInit, Inject } from "@angular/core";
 import { OrderProduct } from "src/app/shared/models/orderProduct";
-import { CartService } from "../../shared/services/cart.service";
+import { CartService, Data } from "../../shared/services/cart.service";
 import { AccountService } from "src/app/shared/services/account.service";
 import { ConfigurationService } from "src/app/shared/services/configuration.service";
+import { ActivatedRoute, Router } from "@angular/router";
+import { OrderService } from "src/app/shared/services/order.service";
 
 @Component({
   selector: "app-cart",
@@ -23,25 +25,54 @@ export class CartComponent implements OnInit {
   grandTotalWithVAT: any = null;
   grandTotalWithOutVAT: any = null;
 
-  constructor(public cartService: CartService,
-    public configurationService: ConfigurationService, 
-    private accountService: AccountService) { }
+  orderDetails: any = null;
+
+  constructor(
+    public cartService: CartService,
+    public configurationService: ConfigurationService,
+    private accountService: AccountService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private orderService: OrderService
+  ) {}
 
   ngOnInit() {
+    this.route.queryParams.subscribe((params) => {
+      const orderId = params["orderId"];
+      if (orderId) {
+        this.getOrderDetails(orderId);
+      }
+    });
+
     this.getDelChargesVat();
-    this.cartService.dataSubject$.subscribe(item => {
+    this.cartService.dataSubject$.subscribe((item) => {
       if (item) {
         this.cartItems = item.cartList;
         this.discountPercentage = item.discount;
         this.updateCalculations();
       }
-    })
+    });
+  }
+
+  getOrderDetails(orderId) {
+    this.orderService.getById(orderId).subscribe((res) => {
+      if (res.data) {
+        this.orderDetails = res.data;
+        this.cartService.Data.cartList = [];
+        if (this.orderDetails?.items) {
+          this.cartService.Data.cartList = this.orderDetails?.items;
+          this.cartItems = this.orderDetails?.items;
+          this.discountPercentage = this.orderDetails?.discountPercentage;
+          this.updateCalculations();
+        }
+      }
+    });
   }
 
   getDelChargesVat() {
     this.configurationService.getActiveConfigurations().subscribe((res) => {
-      this.vatPercentage = this.getConfiguration(res.data,1);
-      this.deliveryCharges = this.getConfiguration(res.data,2);
+      this.vatPercentage = this.getConfiguration(res.data, 1);
+      this.deliveryCharges = this.getConfiguration(res.data, 2);
       this.cartService.Data.vat = this.vatPercentage;
       this.cartService.Data.deliveryCharges = this.deliveryCharges;
       this.updateCalculations();
@@ -90,21 +121,16 @@ export class CartComponent implements OnInit {
       this.netTotal + this.vatAmount + this.deliveryCharges;
     this.grandTotalWithOutVAT = this.netTotal + this.deliveryCharges;
     this.cartItemCount = this.cartItems?.length;
-
   }
-
 
   getConfiguration(data: any, configurationType: Number): number {
     let configValue = 0;
     var value = data.filter(
-      (a) =>
-        a.configurationTypeId == configurationType
-       
+      (a) => a.configurationTypeId == configurationType
     )[0];
     if (value) {
       configValue = value.amount;
     }
     return configValue;
   }
-
 }

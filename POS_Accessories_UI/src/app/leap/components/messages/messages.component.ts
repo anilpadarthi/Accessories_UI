@@ -36,7 +36,7 @@ export class MessagesComponent implements OnInit, OnDestroy {
   }
 
   openMessagesMenu() {
-   this.router.navigate(['/order-list/new'])
+   this.router.navigate(['/orders/new'])
   }
 
   onMouseLeave() {

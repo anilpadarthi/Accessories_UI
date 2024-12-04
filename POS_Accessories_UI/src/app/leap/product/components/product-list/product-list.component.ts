@@ -22,11 +22,10 @@ export class ProductListComponent implements OnInit {
   searchText!: string | null;
   displayedColumns = ["ID", "Name", "Code", "Category", "SubCategory", "DisplayOrder", "Actions"];
   bogusDataSource = new MatTableDataSource<any>();
-  pageEvent: PageEvent | undefined;
   tableDataSource: any[] = [];
   pageSize = PaginatorConstants.STANDARD_PAGE_SIZE;
   pageOptions = PaginatorConstants.LEAP_STANDARD_PAGE_OPTIONS;
-  pageIndex = 1;
+  pageIndex = 0;
   totalCount!: number;
   categoryId!: number | null;
   subCategoryId!: number | null;
@@ -51,7 +50,7 @@ export class ProductListComponent implements OnInit {
 
   loadData() {
     const request = {
-      pageNo: this.pageIndex,
+      pageNo: this.pageIndex + 1,
       pageSize: this.pageSize,
       searchText: this.searchText,
       categoryId: this.categoryId,
@@ -67,12 +66,12 @@ export class ProductListComponent implements OnInit {
   getCategoryLookup() {
     this.lookupService.getCategories().subscribe((res) => {
       this.categories = res.data;
-      let selectedCategoryId =
-        this.activatedRoute.snapshot.queryParamMap.get("categoryId");
+      let selectedCategoryId = this.activatedRoute.snapshot.queryParamMap.get("categoryId");
       if (selectedCategoryId) {
         this.categoryId = parseInt(selectedCategoryId);
         this.getSubCategoryLookup(this.categoryId);
-      } else {
+      }
+      else {
         this.loadData();
       }
     });
@@ -81,8 +80,7 @@ export class ProductListComponent implements OnInit {
   getSubCategoryLookup(categoryId: number) {
     this.lookupService.getSubCategories(categoryId).subscribe((res) => {
       this.subCategories = res.data;
-      let selectedSubCategoryId =
-        this.activatedRoute.snapshot.queryParamMap.get("subCategoryId");
+      let selectedSubCategoryId = this.activatedRoute.snapshot.queryParamMap.get("subCategoryId");
       if (selectedSubCategoryId) {
         this.subCategoryId = parseInt(selectedSubCategoryId);
         this.loadData();
@@ -91,8 +89,7 @@ export class ProductListComponent implements OnInit {
   }
 
   onCategoryChange(event: any) {
-    this.pageIndex = 1;
-    this.totalCount = 0;
+    this.pageIndex = 0;
     this.loadData();
     if (event.value) {
       this.getSubCategoryLookup(event.value);
@@ -102,25 +99,23 @@ export class ProductListComponent implements OnInit {
   }
 
   onSubCategoryChange(event: any) {
-    this.pageIndex = 1;
-    this.totalCount = 0;
+    this.pageIndex = 0;
     this.loadData();
   }
 
   handlePageEvent(event: PageEvent): void {
-    this.pageEvent = event;
-    this.pageIndex = event.pageIndex + 1;
+    this.pageIndex = event.pageIndex;
     this.pageSize = event.pageSize;
     this.loadData();
   }
 
   onSearch(): void {
-    this.pageIndex = 1;
+    this.pageIndex = 0;
     this.loadData();
   }
 
   async onReset(): Promise<void> {
-    this.pageIndex = 1;
+    this.pageIndex = 0;
     this.searchText = null;
     this.categoryId = null;
     this.subCategoryId = null;

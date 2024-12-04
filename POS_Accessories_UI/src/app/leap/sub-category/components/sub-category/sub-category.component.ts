@@ -20,13 +20,13 @@ export class SubCategoryComponent implements OnInit {
   public settings: Settings;
   searchText!: string | null;
   categoryId!: number | null;
-  displayedColumns = ["ID", "Name","Category", "DisplayOrder", "Status", "Actions"];
+  displayedColumns = ["ID", "Name", "Category", "DisplayOrder", "Status", "Actions"];
   bogusDataSource = new MatTableDataSource<any>();
   tableDataSource: any[] = [];
   pageSize = PaginatorConstants.STANDARD_PAGE_SIZE;
   pageOptions = PaginatorConstants.LEAP_STANDARD_PAGE_OPTIONS;
   pageEvent: PageEvent | undefined;
-  pageIndex = 1;
+  pageIndex = 0;
   totalCount!: number;
   categories: any[];
 
@@ -59,12 +59,13 @@ export class SubCategoryComponent implements OnInit {
   }
 
   onCategoryChange() {
+    this.pageIndex = 0;
     this.loadData();
   }
 
   async loadData(): Promise<void> {
     const request = {
-      pageNo: this.pageIndex,
+      pageNo: this.pageIndex + 1,
       pageSize: this.pageSize,
       searchText: this.searchText,
       categoryId: this.categoryId,
@@ -77,19 +78,18 @@ export class SubCategoryComponent implements OnInit {
   }
 
   handlePageEvent(event: PageEvent): void {
-    this.pageEvent = event;
-    this.pageIndex = event.pageIndex + 1;
+    this.pageIndex = (this.pageSize === event.pageSize) ? event.pageIndex : 0;
     this.pageSize = event.pageSize;
     this.loadData();
   }
 
   onSearch(): void {
-    this.pageIndex = 1;
+    this.pageIndex = 0;
     this.loadData();
   }
 
   async onReset(): Promise<void> {
-    this.pageIndex = 1;
+    this.pageIndex = 0;
     this.searchText = null;
     this.categoryId = null;
     await this.loadData();

@@ -13,7 +13,7 @@
               <span>{{ item.name }}</span>
             </mat-option>
           </mat-select>
-        </mat-form-field> 
+        </mat-form-field>
 
         <mat-form-field appearance="outline" class="input-field">
           <mat-label>Payment Method</mat-label>
@@ -223,15 +223,15 @@
             <mat-menu #menu="matMenu">
               <button mat-menu-item (click)="downloadInvoice(true)">
                 <mat-icon>download</mat-icon>
-                <span>VAT</span>
+                <span>VAT Invoice</span>
               </button>
               <button mat-menu-item (click)="downloadInvoice(false)">
                 <mat-icon>download</mat-icon>
-                <span>With Out VAT</span>
+                <span>With Out VAT Invoice</span>
               </button>
               <button mat-menu-item (click)="InvoiceEmail(true)">
                 <mat-icon>email</mat-icon>
-                <span>EMAIL</span>
+                <span>EMAIL Invoice</span>
               </button>
               <button mat-menu-item (click)="viewOrderHistory(element.orderId)">
                 <mat-icon>print</mat-icon>
@@ -250,8 +250,7 @@
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"
-        (click)="selection.toggle(row)"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)"></tr>
       </table>
 
       <!-- <mat-table #table [dataSource]="bogusDataSource">
@@ -387,8 +386,8 @@
       </div> -->
 
     </div>
-    <mat-paginator #paginator [length]="totalCount" [pageSize]="pageSize" [pageSizeOptions]="pageOptions"
-      [showFirstLastButtons]="true" (page)="handlePageEvent($event)">
+    <mat-paginator #paginator [length]="totalCount" [pageIndex]="pageIndex" [pageSize]="pageSize"
+      [pageSizeOptions]="pageOptions" [showFirstLastButtons]="true" (page)="handlePageEvent($event)">
     </mat-paginator>
   </mat-card>
 </div>

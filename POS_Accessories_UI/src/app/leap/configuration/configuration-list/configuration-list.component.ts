@@ -20,11 +20,10 @@ export class ConfigurationListComponent implements OnInit {
   searchText!: string | null;
   displayedColumns = ['ID', 'ConfigurationType', 'Amount', 'FromDate', 'ToDate', 'Status', 'Actions'];
   bogusDataSource = new MatTableDataSource<any>();
-  pageEvent: PageEvent | undefined;
   tableDataSource: any[] = [];
   pageSize = PaginatorConstants.STANDARD_PAGE_SIZE;
   pageOptions = PaginatorConstants.LEAP_STANDARD_PAGE_OPTIONS;
-  pageIndex = 1;
+  pageIndex = 0;
   totalCount!: number;
 
   constructor(
@@ -45,7 +44,7 @@ export class ConfigurationListComponent implements OnInit {
 
   loadData(): void {
     const request = {
-      pageNo: this.pageIndex,
+      pageNo: this.pageIndex + 1,
       pageSize: this.pageSize,
       searchText: this.searchText
     };
@@ -57,19 +56,18 @@ export class ConfigurationListComponent implements OnInit {
   }
 
   handlePageEvent(event: PageEvent): void {
-    this.pageEvent = event;
-    this.pageIndex = event.pageIndex + 1;
+    this.pageIndex = event.pageIndex;
     this.pageSize = event.pageSize;
     this.loadData();
   }
 
   search(): void {
-    this.pageIndex = 1;
+    this.pageIndex = 0;
     this.loadData();
   }
 
   onReset(): void {
-    this.pageIndex = 1;
+    this.pageIndex = 0;
     this.searchText = null;
     this.loadData();
   }

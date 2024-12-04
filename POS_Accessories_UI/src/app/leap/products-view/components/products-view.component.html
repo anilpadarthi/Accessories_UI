@@ -3,7 +3,7 @@
     perfectScrollbar>
     <mat-accordion displayMode="flat" multi="true">
       <mat-expansion-panel expanded>
-        <mat-expansion-panel-header>
+        <mat-expansion-panel-header class="panel-header">
           <mat-panel-title>
             <h4>Categories</h4>
           </mat-panel-title>
@@ -93,41 +93,70 @@
     </div>
 
     <div *ngIf="viewType == 'grid'" fxLayout="row wrap" class="products-wrapper">
-      <div *ngFor="
-          let product of products
-            | paginate : { itemsPerPage: count, currentPage: page }
-        " fxFlex="100" [fxFlex.gt-sm]="viewCol" fxFlex.sm="50" class="col">
-        <mat-card class="product-item text-center">
-          <a [routerLink]="[
-              '/products-view',
-              product.productId,
-              product.productName
-            ]" class="image-link">
-            <img [src]="product.image" alt="" height="100px" width="100px"/>
-          </a>
-          <a [routerLink]="[
-              '/products-view',
-              product.productId,
-              product.productName
-            ]" isEllipsisActive class="title text-truncate">
-            {{ product.productName }}
-          </a>
-          <span class="productCodeColor">{{ product.productCode }}</span>
-          <div fxLayout="row" fxLayoutAlign="space-between center" class="prices">
-            <div fxLayout="column" fxLayoutAlign="center start">
-              <p class="new-price">
-                £ {{ product.salePrice | number : "1.2-2" }}
-              </p>
+
+      <ng-container *ngIf="currentView === 'categories'">
+        <div *ngFor="let category of categories
+                | paginate : { itemsPerPage: count, currentPage: page }" 
+                fxFlex="100" [fxFlex.gt-sm]="viewCol" fxFlex.sm="50" class="col">
+          <mat-card class="product-item text-center" (click)="showSubcategories(category)">
+            <a class="image-link">
+              <img [src]="category.image" alt="" height="100px" width="100px" />
+            </a>
+            <a isEllipsisActive class="title text-truncate">
+              {{ category.categoryName }}
+            </a>
+          </mat-card>
+        </div>
+      </ng-container>
+
+      <ng-container *ngIf="currentView === 'subcategories'">
+        <div *ngFor="let subCategory of selectedCategory?.subCategories
+                | paginate : { itemsPerPage: count, currentPage: page }" 
+                fxFlex="100" [fxFlex.gt-sm]="viewCol" fxFlex.sm="50" class="col">
+          <mat-card class="product-item text-center" (click)="showProducts(subCategory)">
+            <a class="image-link">
+              <img [src]="subCategory.image" alt="" height="100px" width="100px" />
+            </a>
+            <a isEllipsisActive class="title text-truncate">
+              {{ subCategory.subCategoryName }}
+            </a>
+          </mat-card>
+        </div>
+      </ng-container>
+
+      <ng-container *ngIf="currentView === 'products'">
+        <div *ngFor="let product of products | paginate : { itemsPerPage: count, currentPage: page }
+                "fxFlex="100" [fxFlex.gt-sm]="viewCol" fxFlex.sm="50" class="col">
+          <mat-card class="product-item text-center">
+            <a [routerLink]="['/products-view', product.productId, product.productName]" class="image-link">
+              <img [src]="product.image" alt="" height="100px" width="100px" />
+            </a>
+            <a [routerLink]="['/products-view', product.productId, product.productName]" isEllipsisActive 
+              class="title text-truncate">
+              {{ product.productName }}
+            </a>
+            <span class="productCodeColor">{{ product.productCode }}</span>
+            <div fxLayout="row" fxLayoutAlign="space-between center" class="prices">
+              <div fxLayout="column" fxLayoutAlign="center start">
+                <p class="new-price">
+                  £ {{ product.salePrice | number : "1.2-2" }}
+                </p>
+              </div>
+              <div>
+                <app-controls [product]="product" (onOpenProductDialog)="openProductDialog(product)"></app-controls>
+              </div>
             </div>
-            <div>
-              <app-controls [product]="product" (onOpenProductDialog)="openProductDialog(product)"></app-controls>
-            </div>
-          </div>
-        </mat-card>
-      </div>
+          </mat-card>
+        </div>
+      </ng-container>
+
     </div>
 
-    <div *ngIf="viewType == 'list'" fxLayout="row wrap" class="products-wrapper">
+    <!-- <div *ngIf="viewType == 'grid'" fxLayout="row wrap" class="products-wrapper">
+      
+    </div> -->
+
+    <!-- <div *ngIf="viewType == 'list'" fxLayout="row wrap" class="products-wrapper">
       <div
         *ngFor="let product of products" fxFlex="100" class="col">
         <mat-card class="product-item">
@@ -166,7 +195,7 @@
           </div>
         </mat-card>
       </div>
-    </div>
+    </div> -->
 
     <!-- <div *ngIf="products.length > 0" fxLayout="row wrap">
       <div fxFlex="100">
@@ -177,5 +206,6 @@
         </mat-card>
       </div>
     </div> -->
+
   </mat-sidenav-content>
 </mat-sidenav-container>

@@ -19,6 +19,7 @@ export class OrderDetails {
     public shippingAddress?: string,
     public vatPercentage?: number,
     public discountPercentage?: number,
+    public paymentMethodId?: number,
     public items?: OrderProduct[]
   ) {}
 }

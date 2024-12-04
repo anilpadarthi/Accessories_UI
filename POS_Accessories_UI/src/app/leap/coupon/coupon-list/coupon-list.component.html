@@ -163,8 +163,8 @@
                 <div class="zero-results" *ngIf="!tableDataSource || tableDataSource.length == 0">No records found</div>
             </div> -->
         </div>
-        <mat-paginator #paginator [length]="totalCount" [pageSize]="pageSize" [pageSizeOptions]="pageOptions"
-            [showFirstLastButtons]="true" (page)="handlePageEvent($event)">
+        <mat-paginator #paginator [length]="totalCount" [pageIndex]="pageIndex" [pageSize]="pageSize"
+            [pageSizeOptions]="pageOptions" [showFirstLastButtons]="true" (page)="handlePageEvent($event)">
         </mat-paginator>
     </mat-card>
 </div>

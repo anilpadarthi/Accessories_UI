@@ -39,16 +39,16 @@ export class CartService {
   public dataSubject = new BehaviorSubject<any>('');
   public dataSubject$ = this.dataSubject.asObservable();
 
-  constructor(
-    public http: HttpClient,
+  constructor(public http: HttpClient,
     public snackBar: MatSnackBar,
     public configurationService: ConfigurationService,
-    private accountService: AccountService
-  ) {
+    private accountService: AccountService) {
+
     if (this.accountService.getItem('appData')) {
       this.Data = this.accountService.getItem('appData');
       this.dataSubject.next(this.Data);
     }
+    
   }
 
   getConfiguration(data: any, configurationType: Number): number {
@@ -70,9 +70,7 @@ export class CartService {
     this.Data.totalPrice = 0;
     this.Data.totalCartCount = 0;
 
-    if (this.Data.cartList.filter(
-      (item) => item.productId == product.productId
-    )[0]) {
+    if (this.Data.cartList.filter((item) => item.productId == product.productId)[0]) {
       let item = this.Data.cartList.filter(
         (item) => item.productId == product.productId
       )[0];

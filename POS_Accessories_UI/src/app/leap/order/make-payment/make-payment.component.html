@@ -10,19 +10,24 @@
                 <input matInput formControlName="orderId" disabled>
             </mat-form-field>
         </div>
+        <mat-radio-group  [(ngModel)]="selectedTax" name="taxType" (change)="onTaxTypeChanged($event)">
+            <mat-radio-button  [value]="1">VAT</mat-radio-button>
+            <mat-radio-button [value]="2">NON VAT </mat-radio-button>
+          </mat-radio-group>
         <div fxFlex="100">
-            <mat-form-field appearance="outline" class="w-100">
-                <mat-label>Net Amount</mat-label>
+            <mat-form-field appearance="outline" class="w-100" *ngIf="isVatAmount">
+                <mat-label>VAT Amount</mat-label>
                 <input matInput formControlName="netamount" disabled>
             </mat-form-field>
         </div>
         <div fxFlex="100">
-            <mat-form-field appearance="outline" class="w-100">
-                <mat-label>Amount</mat-label>
-                <input matInput formControlName="amount" required isNumeric>
-                <mat-error *ngIf="form.controls.amount.errors?.required">Name is required</mat-error>
+            <mat-form-field appearance="outline" class="w-100" *ngIf="!isVatAmount">
+                <mat-label>With out VAT Amount</mat-label>
+                <input matInput formControlName="netamount" disabled>
             </mat-form-field>
         </div>
+       
+
         <div fxFlex="100">
             <mat-form-field appearance="outline" class="w-100">
                 <mat-label>Payment Type</mat-label>
@@ -32,6 +37,28 @@
                 </mat-select>
                 <mat-error *ngIf="form.controls.paymentType.errors?.required">Name is required</mat-error>
             </mat-form-field>
+        </div>
+        <mat-radio-group  [(ngModel)]="selectedAmountType" name="amountType" (change)="onAmountTypeChanged($event)">
+            <mat-radio-button  [value]="1">Full Amount</mat-radio-button>
+            <mat-radio-button [value]="2">Other Amount </mat-radio-button>
+          </mat-radio-group>
+
+          <div fxFlex="100">
+            <mat-form-field appearance="outline" class="w-100" *ngIf="!isVatAmount">
+                <mat-label>Amount</mat-label>
+                <input matInput formControlName="amount">
+            </mat-form-field>
+        </div>
+        <div fxFlex="100">
+            <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Reference Number</mat-label>
+                <input matInput formControlName="referenceNumber">
+            </mat-form-field>
+        </div>
+        <div fxFlex="40" class="p-2">
+            <p class="mt-1"><span class="uppercase fw-500">Upload Image</span></p>
+            <img *ngIf="url" [src]="url" height="100" width="100"> <br />
+            <input type="file" (change)="imageUpload($event)" #fileInput>
         </div>
         <div fxFlex="100">
             <mat-form-field appearance="outline" class="w-100">

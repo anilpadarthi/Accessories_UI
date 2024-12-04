@@ -15,8 +15,9 @@ import { MakePaymentComponent } from './make-payment/make-payment.component';
 import { NewOrderListComponent } from './new-order-list/new-order-list.component';
 
 export const routes: Routes = [
-  { path: "", component: OrdernListComponent, pathMatch: "full" },
-  { path: "new", component: NewOrderListComponent},
+  { path: "", component: OrdernListComponent },
+  { path: "list", component: OrdernListComponent },
+  { path: "new", component: NewOrderListComponent,},
 ];
 
 @NgModule({

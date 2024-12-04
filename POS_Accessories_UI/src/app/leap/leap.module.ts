@@ -96,13 +96,13 @@ export const routes = [
         loadChildren: () => import('./reports/report.module').then(m => m.ReportModule)
       },
       {
-        path: 'order-list',
+        path: 'orders',
         loadChildren: () => import('./order/order.module').then(m => m.OrderModule),
         canActivate: [AuthGuardService],
         data: { roles: allRoles }
       },
       {
-        path: 'order-create',
+        path: 'create-order',
         loadChildren: () => import('./products-view/products-view.module').then(m => m.ProductsViewModule),
         canActivate: [AuthGuardService],
         data: { roles: [1, 2, 3, 4, 5] }

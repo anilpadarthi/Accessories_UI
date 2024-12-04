@@ -1,8 +1,13 @@
 import { Injectable } from '@angular/core';
 import {  Router } from '@angular/router';
+import { Subject } from 'rxjs';
 
 @Injectable()
 export class AccountService {
+
+  public toggleNavbarSubject = new Subject<any>();
+  public toggleNavbarSubject$ = this.toggleNavbarSubject.asObservable();
+
   constructor(private router: Router) {}
 
   public setSession(key: string){

@@ -9,23 +9,23 @@
           <mat-form-field appearance="outline">
             <mat-label>Area</mat-label>
             <mat-select (selectionChange)="onAreaChange($event)">
-                <mat-option [value]="null">All</mat-option>
-                <mat-option *ngFor="let item of areaList" [value]="item.id">
-                    <span>{{item.name}}</span>
-                </mat-option>
+              <mat-option [value]="null">All</mat-option>
+              <mat-option *ngFor="let item of areaList" [value]="item.id">
+                <span>{{item.name}}</span>
+              </mat-option>
             </mat-select>
-        </mat-form-field>
-      <br />
-        <mat-form-field appearance="outline">
+          </mat-form-field>
+          <br />
+          <mat-form-field appearance="outline">
             <mat-label>Shop</mat-label>
-            <mat-select  (selectionChange)="onShopChange($event)">
-                <mat-option [value]="null">All</mat-option>
-                <mat-option *ngFor="let item of shopList" [value]="item">
-                    <span>{{item.shopName}}</span>
-                </mat-option>
+            <mat-select (selectionChange)="onShopChange($event)">
+              <mat-option [value]="null">All</mat-option>
+              <mat-option *ngFor="let item of shopList" [value]="item">
+                <span>{{item.shopName}}</span>
+              </mat-option>
             </mat-select>
-        </mat-form-field>
-        <br />
+          </mat-form-field>
+          <br />
           <div fxFlex="100" class="p-1">
             <h3 class="text-muted mt-2">Delivery Address</h3>
             <div class="divider"></div>
@@ -37,17 +37,14 @@
         <div fxLayout="row">
           <div fxFlex="100" fxFlex.gt-sm="50" class="px-1">
             <br />
-            <mat-form-field appearance="outline" class="w-50">
-              <mat-label>Payment Mode</mat-label>
+            <mat-form-field appearance="outline">
+              <mat-label>Payment Method</mat-label>
               <mat-select formControlName="paymentMode" required>
-                <mat-option value="cash">
-                  <span>Cash</span>
-                </mat-option>
-                <mat-option value="card">
-                  <span>Card</span>
+                <mat-option [value]="null">All</mat-option>
+                <mat-option *ngFor="let item of paymentMethodList" [value]="item.id">
+                  <span>{{item.name}}</span>
                 </mat-option>
               </mat-select>
-              <!-- <mat-error *ngIf="form.controls.categoryId.errors?.required">Category is required</mat-error> -->
             </mat-form-field>
           </div>
         </div>

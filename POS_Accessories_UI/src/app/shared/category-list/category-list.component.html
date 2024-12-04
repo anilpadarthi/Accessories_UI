@@ -1,4 +1,24 @@
-<div *ngFor="let category of categories">
+<mat-accordion displayMode="flat" multi="true">
+    <mat-expansion-panel expanded *ngFor="let category of categories">
+        <mat-expansion-panel-header class="panel-header">
+            <mat-panel-title>
+                <span class="font-bold">{{category.categoryName}}</span>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <div *ngIf="category.subCategories.length > 0" class="sub-category">
+            <div *ngFor="let subCategory of category.subCategories" style="margin: 3px 0px"
+                [class.highlighted]="subCategory?.subCategoryName?.toLowerCase() === currentSubCategory">
+                <button mat-menu-item (click)="changeCategory($event)" class="active" 
+                    [matTooltip]="subCategory.subCategoryName" matTooltipPosition="right">
+                    <span>{{subCategory.subCategoryName}}</span>
+                </button>
+            </div>
+        </div>
+    </mat-expansion-panel>
+</mat-accordion>
+
+<!-- <div *ngFor="let category of categories">
     <button mat-menu-item (click)="changeCategory($event)">
         <span class="font-bold">{{category.categoryName}}</span>
     </button>
@@ -11,4 +31,18 @@
             </button>
         </div>
     </div>
-</div>
+</div> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+

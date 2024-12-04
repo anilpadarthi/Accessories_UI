@@ -23,6 +23,7 @@ import { environment } from 'src/environments/environment';
 
 import { Subscription } from "rxjs";
 import { NgxSpinnerService } from "ngx-spinner";
+import { AccountService } from "src/app/shared/services/account.service";
 
 @Component({
   selector: "app-products-view",
@@ -65,9 +66,12 @@ export class ProductsComponent implements OnInit {
   catSubscription: Subscription;
   productsSubscription: Subscription;
 
+  currentView: 'categories' | 'subcategories' | 'products' = 'categories';
+  selectedCategory: any = null;
+  selectedSubcategory: any = null;
 
-  constructor(
-    public appSettings: AppSettings,
+
+  constructor(public appSettings: AppSettings,
     private activatedRoute: ActivatedRoute,
     private lookupService: LookupService,
     public productService: ProductService,
@@ -76,12 +80,14 @@ export class ProductsComponent implements OnInit {
     public dialog: MatDialog,
     private router: Router,
     private spinner: NgxSpinnerService,
-    @Inject(PLATFORM_ID) private platformId: Object
-  ) {
+    private accountService: AccountService,
+    @Inject(PLATFORM_ID) private platformId: Object) {
+
     this.settings = this.appSettings.settings;
     this.catSubscription =  this.categoryService.categorySubject$.subscribe(item => {
       if (item && item.name) {
         this.getProductsOnCategorySubCategory(item.name);
+        this.showProducts(item.name);
       }
     })
 
@@ -91,6 +97,9 @@ export class ProductsComponent implements OnInit {
         //this.categories = item?.allCategories;
       }
     })
+
+    //To toggle/hide sidenav bar
+    this.accountService.toggleNavbarSubject.next(true);
 
   }
 
@@ -138,9 +147,9 @@ export class ProductsComponent implements OnInit {
   getCategories() {
     this.categoryService.getCategoryList().subscribe((res) => {
       this.categories = res.data;
-      if(this.products.length === 0){
-        this.getAllProducts(true);
-      }
+      // if(this.products.length === 0){
+      //   this.getAllProducts(true);
+      // }
     });
   }
 
@@ -152,10 +161,7 @@ export class ProductsComponent implements OnInit {
         }
         if (a.subCategories) {
           a.subCategories.forEach((s) => {
-            if (
-              s.subCategoryName.toLowerCase() ==
-              name.toLowerCase()
-            ) {
+            if (s.subCategoryName.toLowerCase() == name.toLowerCase()) {
               this.subCategoryId = s.subCategoryId;
             }
           });
@@ -224,9 +230,6 @@ export class ProductsComponent implements OnInit {
 
   public onChangeCategory(event) {
     if (event.target) {
-      // this.router.navigateByUrl(
-      //   "/products-view", { state: event.target.innerText.toLowerCase(), skipLocationChange: true }
-      // );
       let data = {
         name: event.target.innerText.toLowerCase()
       }
@@ -234,6 +237,23 @@ export class ProductsComponent implements OnInit {
     }
   }
 
+
+  showSubcategories(category: any) {
+    this.selectedCategory = category;
+    this.currentView = 'subcategories';
+  }
+
+  showProducts(subcategory: any) {
+    this.selectedSubcategory = subcategory;
+    this.currentView = 'products';
+
+    if (subcategory && subcategory.subCategoryId) {
+      this.categoryId = subcategory.categoryId;
+      this.subCategoryId = subcategory.subCategoryId;
+      this.getAllProducts();
+    }
+
+  }
 
   ngOnDestroy() {
     this.catSubscription.unsubscribe();

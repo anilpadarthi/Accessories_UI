@@ -24,20 +24,27 @@ export class LeapComponent implements OnInit {
   public currentUser;
   public cartData: any;
 
-  constructor(
-    public appSettings: AppSettings,
+  constructor(public appSettings: AppSettings,
     public router: Router,
     private menuService: MenuService,
     public cartService: CartService,
-    private accountService: AccountService
-  ) {
+    private accountService: AccountService) {
+
     this.settings = this.appSettings.settings;
     this.userRoles = this.menuService.getUserRoles();
     this.currentUser = this.accountService.getUserInfo();
-    this.userImage =  environment.apiUrl + '/' + this.currentUser.image
+    this.userImage =  environment.apiUrl + '/' + this.currentUser?.image
     this.cartService.dataSubject$.subscribe(item => {
       if (item) {
         this.cartData = item;
+      }
+    })
+
+    this.accountService.toggleNavbarSubject$.subscribe(result => {
+      if(result){
+        setTimeout(() => {
+          this.sidenav.toggle();
+        }, 50);
       }
     })
 

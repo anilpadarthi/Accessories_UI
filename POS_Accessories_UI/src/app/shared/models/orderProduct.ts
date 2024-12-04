@@ -7,6 +7,8 @@ export class OrderProduct {
     public productSizeId?: number,
     public productName?: string,
     public productCode?: string,
-    public image?: string
+    public image?: string,
+    public orderId?: number,
+    public orderDetailId?:number,
   ) {}
 }

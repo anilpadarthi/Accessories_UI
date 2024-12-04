@@ -21,11 +21,10 @@ export class CategoryComponent implements OnInit {
   public settings: Settings;
   searchText!: string | null;
   displayedColumns = ['ID', 'Name', 'DisplayOrder', 'Status', 'Actions'];
-  pageEvent: PageEvent | undefined;
   tableDataSource: any[] = [];
   pageSize = PaginatorConstants.STANDARD_PAGE_SIZE;
   pageOptions = PaginatorConstants.LEAP_STANDARD_PAGE_OPTIONS;
-  pageIndex = 1;
+  pageIndex = 0;
   totalCount!: number;
   color: ThemePalette = 'primary';
 
@@ -47,7 +46,7 @@ export class CategoryComponent implements OnInit {
 
   loadData(): void {
     const request = {
-      pageNo: this.pageIndex,
+      pageNo: this.pageIndex + 1,
       pageSize: this.pageSize,
       searchText: this.searchText
     };
@@ -59,19 +58,20 @@ export class CategoryComponent implements OnInit {
   }
 
   handlePageEvent(event: PageEvent): void {
-    this.pageEvent = event;
-    this.pageIndex = event.pageIndex + 1;
+    this.totalCount = event.length;
+    this.pageIndex = (this.pageSize === event.pageSize) ? event.pageIndex : 0;
     this.pageSize = event.pageSize;
     this.loadData();
   }
 
   onSearch(): void {
-    this.pageIndex = 1;
+    this.pageIndex = 0;
+    this.pageSize = 10;
     this.loadData();
   }
 
   onReset(): void {
-    this.pageIndex = 1;
+    this.pageIndex = 0;
     this.searchText = null;
     this.loadData();
   }

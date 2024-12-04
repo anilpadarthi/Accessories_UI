@@ -16,6 +16,7 @@ import { OrderListFilterRequest } from "src/app/shared/models/requestModels/orde
 import { MakePaymentComponent } from "../make-payment/make-payment.component";
 import { SelectionModel } from "@angular/cdk/collections";
 import { MessageService } from "src/app/shared/services/message.service";
+
 @Component({
   selector: 'app-new-order-list',
   templateUrl: './new-order-list.component.html',
@@ -25,7 +26,6 @@ import { MessageService } from "src/app/shared/services/message.service";
 export class NewOrderListComponent implements OnInit {
   public settings: Settings;
   displayedColumns = [
-    'select', 
     "ID",
     "Date",
     "User",
@@ -38,11 +38,10 @@ export class NewOrderListComponent implements OnInit {
     "Actions",
   ];
 
-  pageEvent: PageEvent | undefined;
   tableDataSource: any;
   pageSize = PaginatorConstants.STANDARD_PAGE_SIZE;
   pageOptions = PaginatorConstants.LEAP_STANDARD_PAGE_OPTIONS;
-  pageIndex = 1;
+  pageIndex = 0;
   totalCount!: number;
   actions = ActionsEnum;
   action: ActionsEnum = ActionsEnum.Edit;
@@ -70,12 +69,13 @@ export class NewOrderListComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.orderListFilterRequest.orderStatusId = 1;
     this.loadData();
     this.loadDropDowns();
   }
 
   loadData(): void {
-    this.orderListFilterRequest.pageNo = this.pageIndex;
+    this.orderListFilterRequest.pageNo = this.pageIndex + 1;
     this.orderListFilterRequest.pageSize = this.pageSize;
     this.orderService.getPagedOrderList(this.orderListFilterRequest).subscribe((res) => {
       this.tableDataSource = new MatTableDataSource<any>(res.data.results);
@@ -112,24 +112,23 @@ export class NewOrderListComponent implements OnInit {
   }
 
   handlePageEvent(event: PageEvent): void {
-    this.pageEvent = event;
-    this.pageIndex = event.pageIndex + 1;
+    this.pageIndex = event.pageIndex;
     this.pageSize = event.pageSize;
     this.loadData();
   }
 
   search(): void {
-    this.pageIndex = 1;
+    this.pageIndex = 0;
     this.loadData();
   }
 
   onFilter(): void {
-    this.pageIndex = 1;
+    this.pageIndex = 0;
     this.loadData();
   }
 
   onClear(): void {
-    this.pageIndex = 1;
+    this.pageIndex = 0;
     this.orderListFilterRequest = new OrderListFilterRequest();
     this.loadData();
   }

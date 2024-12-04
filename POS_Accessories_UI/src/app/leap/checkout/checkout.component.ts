@@ -36,6 +36,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   public form: UntypedFormGroup;
   areaList: any[];
   shopList: any[];
+  paymentMethodList: any[];
   shopAddress = '';
   shopId = 0;
 
@@ -67,12 +68,12 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    debugger;
     this.cartService.Data.cartList.forEach((product) => {
       this.itemTotal += product.qty * product.salePrice;
     });
     if (this.cartService.Data.discount > 0) {
-      this.discountAmount =
-        (this.itemTotal * this.cartService.Data.discount) / 100;
+      this.discountAmount = (this.itemTotal * this.cartService.Data.discount) / 100;
       this.itemTotal -= this.discountAmount;
     }
     this.vatPercentage = this.cartService.Data.vat;
@@ -83,16 +84,18 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       paymentMode: "",
     });
     this.getAreaLookup();
+    this.getPaymentTypeLookup();
   }
 
   public placeOrder() {
+    debugger;
     let currentUser = this.accountService.getUserInfo();
 
     let order = new OrderDetails();
     order.items = this.cartService.Data.cartList;
     order.itemTotal = this.grandTotal;
     order.shippingAddress = this.shopAddress;
-    order.paymentMethod = this.form.value.paymentMode;
+    order.paymentMethodId = this.form.value.paymentMode;
     order.discountPercentage = this.cartService.Data.discount;
     order.deliveryCharges = this.cartService.Data.deliveryCharges;
     order.vatAmount = this.vat;
@@ -143,6 +146,12 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     this.shopAddress = event.value.address + ',' + event.value.postCode;
     this.shopId = event.value.shopId;
   }
+  getPaymentTypeLookup() {
+    this.lookupService.getOrderPaymentTypes().subscribe((res) => {
+      this.paymentMethodList = res.data;
+    });
+  }
+
 
   ngOnDestroy() {
     this.watcher.unsubscribe();

@@ -16,8 +16,6 @@ import { OrderListFilterRequest } from "src/app/shared/models/requestModels/orde
 import { MakePaymentComponent } from "../make-payment/make-payment.component";
 import { SelectionModel } from "@angular/cdk/collections";
 import { MessageService } from "src/app/shared/services/message.service";
-
-
 @Component({
   selector: "app-ordern-list",
   templateUrl: "./ordern-list.component.html",
@@ -152,17 +150,20 @@ export class OrdernListComponent implements OnInit {
   }
 
   editOrder(orderDetails: any): void {
-    const dialogRef = this.dialog.open(OrderDialogComponent, {
-      data: {
-        orderId: orderDetails.orderId,
-      },
-      panelClass: ["theme-dialog"],
-      autoFocus: false,
-      direction: this.settings.rtl ? "rtl" : "ltr",
-    });
-    dialogRef.afterClosed().subscribe((dialogResult) => {
-      this.loadData();
-    });
+    // const dialogRef = this.dialog.open(OrderDialogComponent, {
+    //   data: {
+    //     orderId: orderDetails.orderId,
+    //   },
+    //   panelClass: ["theme-dialog"],
+    //   autoFocus: false,
+    //   direction: this.settings.rtl ? "rtl" : "ltr",
+    // });
+    // dialogRef.afterClosed().subscribe((dialogResult) => {
+    //   this.loadData();
+    // });
+
+    this.router.navigate(['/cart'], { queryParams: { orderId: orderDetails.orderId } })
+
   }
 
   viewOrder(orderDetails: any): void {

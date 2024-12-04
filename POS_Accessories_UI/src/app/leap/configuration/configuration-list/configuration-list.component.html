@@ -148,8 +148,8 @@
             </div> -->
 
         </div>
-        <mat-paginator #paginator [length]="totalCount" [pageSize]="pageSize" [pageSizeOptions]="pageOptions"
-            [showFirstLastButtons]="true" (page)="handlePageEvent($event)">
-        </mat-paginator>
+        <mat-paginator #paginator [length]="totalCount" [pageIndex]="pageIndex" [pageSize]="pageSize"
+        [pageSizeOptions]="pageOptions" [showFirstLastButtons]="true" (page)="handlePageEvent($event)">
+      </mat-paginator>
     </mat-card>
 </div>
